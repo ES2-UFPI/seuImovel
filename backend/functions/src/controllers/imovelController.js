@@ -6,13 +6,15 @@ module.exports = {
 
 
         //paginacao
-        const {page = 1} = request.params; 
-
+        const {page = 1} = request.query; 
+        const qtd_imoveisListados = 5;
+        
         const docRef = db.collection('houses')
         let imoveis = []
     
         await docRef
-        .limit(1)
+        .limit(qtd_imoveisListados)
+        .offset((page - 1) * qtd_imoveisListados)
         .get()
         .then((snapshot=>{
             snapshot.forEach(doc =>{

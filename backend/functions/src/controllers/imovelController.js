@@ -4,7 +4,7 @@ module.exports = {
 
     async index(request, response){
 
-
+  
         //paginacao
         const {page = 1} = request.query; 
         const qtd_imoveisListados = 5;

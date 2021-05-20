@@ -3,10 +3,19 @@ const db = require('../database/db')
 module.exports = {
 
     async index(request, response){
+
+  
+        //paginacao
+        const {page = 1} = request.query; 
+        const qtd_imoveisListados = 5;
+        
         const docRef = db.collection('houses')
         let imoveis = []
     
-        await docRef.get()
+        await docRef
+        .limit(qtd_imoveisListados)
+        .offset((page - 1) * qtd_imoveisListados)
+        .get()
         .then((snapshot=>{
             snapshot.forEach(doc =>{
                 imoveis.push({
@@ -24,6 +33,7 @@ module.exports = {
                     valor : doc.data().valor,
                 })
             })
+
             response.json(imoveis)
     
         }))

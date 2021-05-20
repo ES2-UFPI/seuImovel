@@ -3,10 +3,17 @@ const db = require('../database/db')
 module.exports = {
 
     async index(request, response){
+
+
+        //paginacao
+        const {page = 1} = request.params; 
+
         const docRef = db.collection('houses')
         let imoveis = []
     
-        await docRef.get()
+        await docRef
+        .limit(1)
+        .get()
         .then((snapshot=>{
             snapshot.forEach(doc =>{
                 imoveis.push({
@@ -24,6 +31,7 @@ module.exports = {
                     valor : doc.data().valor,
                 })
             })
+
             response.json(imoveis)
     
         }))

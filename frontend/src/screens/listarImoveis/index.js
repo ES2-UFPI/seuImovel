@@ -8,6 +8,7 @@ export default function ListarImoveis() {
 
     const [listaImoveis, setListaImoveis] = useState([])
 
+    //conexão de api
     async function loadListMovel(){
         const response = await api.get('/listaImoveis')
         setListaImoveis(response.data)

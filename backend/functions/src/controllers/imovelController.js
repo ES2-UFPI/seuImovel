@@ -4,7 +4,6 @@ module.exports = {
 
     async index(request, response){
 
-  
         //paginacao
         const {page = 1} = request.query; 
         const qtd_imoveisListados = 5;
@@ -40,6 +39,44 @@ module.exports = {
         .catch(()=>{
             response.status(404).send()
         })
+    },
+
+    async post(req, res){
+        const docRef = db.collection('houses')
+        const {descricao,
+               numero, 
+               banheiros, 
+               complemento, 
+               dimensao,
+               imagens,
+               latitude,longitude,
+               proprietario,
+               quartos,
+               tipo,
+               valor} = req.body
+
+        
+
+        const imovel = {descricao,
+            numero, 
+            banheiros, 
+            complemento, 
+            dimensao,
+            imagens,
+            latitude,longitude,
+            proprietario,
+            quartos,
+            tipo,
+            valor}
+        
+        try {
+         await docRef.add(imovel)   
+        } catch (e) {
+            return res.status(400).json({sucess: false, msg: "Erro de inserção"})
+        }
+        
+
+        return res.status(200).json({success: true, msg: 'Imóvel cadastrado com sucesso', data: imovel})
     }
     
     }

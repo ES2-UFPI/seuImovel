@@ -1,7 +1,10 @@
 const db = require('../database/db')
 
 module.exports = {
-    async index(request, response){
+    /*A rota relacionada a função Index
+    lista a configuração de usuário, basta passar o cpf do usuário na rota /usuarioConfig/113456923954
+    */
+    async index(request, response){//Configuração do Plano do usuário
         const docRef = db.collection('users')
         const {cpf} = request.params
 
@@ -23,7 +26,12 @@ module.exports = {
         })
     },
 
-    async setPlano(request,response){
+
+    /*A rota relacionada a função setPlano
+    muda as configurações relacionadas ao plano do usuário
+    basta passar o cpf na rota e no body envia os dados que devem ser modificados!
+    */
+    async setPlano(request,response){//UPGRADE PREMIUM
         const docRef = db.collection('users')
         const {cpf} = request.params
         const {plano , descricaoPlano, notificacoes, raioNotificacoes} = request.body
@@ -51,9 +59,6 @@ module.exports = {
         .catch(()=>{
             response.status(404).send()
         })
-
-
-
 
 
     }

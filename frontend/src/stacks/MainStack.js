@@ -1,6 +1,7 @@
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack';
 import ImoveisNoMap from '../screens/ImoveisNoMap/index'
+import ListarImoveis from '../screens/listarImoveis/index'
 
 
 const Stack = createStackNavigator();
@@ -16,12 +17,13 @@ export default () =>{
         //InitialRouteName = "NOME_DA_TELA_A_SER_TESTADA"
         // <Stack.Screen name = "NOME_DA_TELA_A_SER_TESTADA" component = {ComponenteDaTela(Arquivo .js)} />
         
-        initialRouteName = "ImoveisNoMapa"
+        initialRouteName = "ListarImoveis"
             screenOptions ={{
             
             headerShown:false
 
         }} >
+            <Stack.Screen name = "ListagemDeImoveis" component = {ListarImoveis} />
             <Stack.Screen name = "ImoveisNoMapa" component = {ImoveisNoMap} />
         </Stack.Navigator>
     )

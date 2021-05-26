@@ -36,10 +36,7 @@ export default function ListarImoveis() {
                                 <Text style={styles.description}>{item.descricao+'\n'}</Text> 
                                 <Text style={styles.endereco}>{item.complemento}</Text>
                             </Text>
-                            <Image
-                            style={styles.imageHome}
-                            source={{uri: item.imagens[0].toString()}}
-                            />
+                            
                         </View>                  
                 )}}        
             >

@@ -11,6 +11,8 @@ module.exports = {
         const docRef = db.collection('houses')
         let imoveis = []
     
+        const quantTotalImoveis = (await docRef.get()).size //quantidade total de imóveis
+
         await docRef
         .limit(qtd_imoveisListados)
         .offset((page - 1) * qtd_imoveisListados)
@@ -33,6 +35,7 @@ module.exports = {
                 })
             })
 
+            response.header('X-Total-Count',quantTotalImoveis)//retorna a quantidade no cabeçalho da requisição
             response.json(imoveis)
     
         }))

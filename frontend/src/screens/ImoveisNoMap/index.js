@@ -20,11 +20,11 @@ export default function ImoveisNoMapa() {
     const [imagem,setImage] =  React.useState('')
     const [loading,setLoading] = React.useState(false)
     const [page,setPage] = React.useState(1)
-    const url = 'https://resizedimgs.vivareal.com/fit-in/870x653/vr.images.sp/fe5e3c89f8adf34cf5c9faf25491fe29.jpg';
 
     
     async function loadListMovel(){
-        
+        console.log("hited")
+
         if(loading){
           console.log("IsLoading")
           return;
@@ -101,7 +101,8 @@ export default function ImoveisNoMapa() {
   totalImoveis > listaImoveis.length?
 <View style = {{zIndex:2,width:100,height:40,position:'absolute',left:1}} 
 onPress= {()=>{
-loadListMovel();
+
+  console.log("cu");
 }}>
 
 <TouchableOpacity style = {{borderWidth:1,borderRadius:20}}>

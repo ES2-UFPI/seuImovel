@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import ImoveisNoMap from '../screens/ImoveisNoMap/index'
 import ListarImoveis from '../screens/listarImoveis/index'
 import ConfigUsuario from '../screens/configUsuario/index'
-
+import CadastroImovel from '../screens/CadastroImovel/index'
 
 const Stack = createStackNavigator();
 
@@ -18,7 +18,7 @@ export default () =>{
         //InitialRouteName = "NOME_DA_TELA_A_SER_TESTADA"
         // <Stack.Screen name = "NOME_DA_TELA_A_SER_TESTADA" component = {ComponenteDaTela(Arquivo .js)} />
         
-        initialRouteName = "ImoveisNoMapa"
+        initialRouteName = "CadastroIMovel"
             screenOptions ={{
             
             headerShown:false
@@ -27,6 +27,8 @@ export default () =>{
             <Stack.Screen name= "ConfigUsuario" component = {ConfigUsuario}/>
             <Stack.Screen name = "ListagemDeImoveis" component = {ListarImoveis} />
             <Stack.Screen name = "ImoveisNoMapa" component = {ImoveisNoMap} />
+            <Stack.Screen name = "CadastroIMovel" component = {CadastroImovel} />
+
         </Stack.Navigator>
     )
 }

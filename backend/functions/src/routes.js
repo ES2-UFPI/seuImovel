@@ -11,6 +11,7 @@ routes.get('/listaImoveis',imovelController.index)
 routes.post('/cadastrarImovel',imovelController.create)
 //Usuario 
 routes.get('/usuarioConfig/:cpf',usuarioConfigController.index)
-routes.post('/usuarioConfig/:cpf',usuarioConfigController.update)
+//Alterei aqui - mike
+routes.put('/usuarioConfig/:cpf',usuarioConfigController.update)
 
 module.exports = routes

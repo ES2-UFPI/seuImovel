@@ -41,7 +41,7 @@ module.exports = {
         })
     },
 
-    async post(req, res){
+    async create(req, res){
         const docRef = db.collection('houses')
         const {descricao,
                numero, 

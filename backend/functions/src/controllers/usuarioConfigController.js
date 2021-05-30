@@ -23,7 +23,7 @@ module.exports = {
         })
     },
 
-    async setPlano(request,response){
+    async update(request,response){
         const docRef = db.collection('users')
         const {cpf} = request.params
         const {plano , descricaoPlano, notificacoes, raioNotificacoes} = request.body

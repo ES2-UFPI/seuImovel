@@ -20,6 +20,7 @@ module.exports = {
         .then((snapshot=>{
             snapshot.forEach(doc =>{
                 imoveis.push({
+                    id : doc.id,
                     descricao : doc.data().descricao,
                     numero : doc.data().numero,
                     banheiros : doc.data().banheiros,

@@ -11,6 +11,8 @@ module.exports = {
         const docRef = db.collection('houses')
         let imoveis = []
     
+        const quantTotalImoveis = (await docRef.get()).size //quantidade total de imóveis
+
         await docRef
         .limit(qtd_imoveisListados)
         .offset((page - 1) * qtd_imoveisListados)
@@ -18,6 +20,7 @@ module.exports = {
         .then((snapshot=>{
             snapshot.forEach(doc =>{
                 imoveis.push({
+                    id : doc.id,
                     descricao : doc.data().descricao,
                     numero : doc.data().numero,
                     banheiros : doc.data().banheiros,
@@ -33,6 +36,7 @@ module.exports = {
                 })
             })
 
+            response.header('X-Total-Count',quantTotalImoveis)//retorna a quantidade no cabeçalho da requisição
             response.json(imoveis)
     
         }))
@@ -43,13 +47,17 @@ module.exports = {
 
     async create(req, res){
         const docRef = db.collection('houses')
-        const {descricao,
+        //#var storageRef = firebase.storage().ref()
+        const {
+               cpf,
+               descricao,
                numero, 
                banheiros, 
                complemento, 
                dimensao,
                imagens,
-               latitude,longitude,
+               latitude,
+               longitude,
                proprietario,
                quartos,
                tipo,
@@ -57,26 +65,28 @@ module.exports = {
 
         
 
-        const imovel = {descricao,
+        const imovel = {
+            cpf,
+            descricao,
             numero, 
             banheiros, 
             complemento, 
             dimensao,
             imagens,
-            latitude,longitude,
+            latitude,
+            longitude,
             proprietario,
             quartos,
             tipo,
             valor}
         
-        try {
-         await docRef.add(imovel)   
-        } catch (e) {
-            return res.status(400).json({sucess: false, msg: "Erro de inserção"})
-        }
-        
-
-        return res.status(200).json({success: true, msg: 'Imóvel cadastrado com sucesso', data: imovel})
+         await docRef.add(imovel)
+         .then(
+            res.status(200).send()
+         )
+         .catch(()=>{
+            res.status(400).send()
+        })        
     }
     
     }

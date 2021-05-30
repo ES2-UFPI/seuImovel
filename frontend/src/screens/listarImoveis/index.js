@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {FlatList, Text, View, TouchableOpacity, Image, StatusBar,} from 'react-native'
 import styles from './style'
 import api from '../../services/api'
+import { Feather } from '@expo/vector-icons';
+
 
 
 export default function ListarImoveis() {
@@ -21,32 +23,25 @@ export default function ListarImoveis() {
 
 
     return (
-        <View >
+        <View style={styles.container}>
             <FlatList 
-                contentContainerStyle={{
-                    paddingTop: StatusBar.currentHeight || 42
-                }}
                 showsVerticalScrollIndicator={false}
                 data={listaImoveis}
                 keyExtractor={item => String(item.descricao)}
                 renderItem={({item}) =>{
                     return(
-                        <View style={styles.container}>
-                            <View style={styles.contextHomes}>
-                                <Text style={styles.contextText}>
-                                    <Text style={styles.title}>{'Casa - '+ item.tipo+'\n'}</Text> 
-                                    <Text style={styles.description}>{item.descricao+'\n'}</Text> 
-                                    <Text style={styles.endereco}>{item.complemento}</Text>
-                                </Text>
-                                <Image
-                                style={styles.imageHome}
-                                source={require('../../../assets/figHome.png',)}
-                                />
-                            </View>
-                        </View>                        
+                        <View style={styles.contextHomes}>
+                            <Text style={styles.contextText}>
+                                <Text style={styles.title}>{'Casa - '+ item.tipo+ ' (R$' + item.valor+')\n'}</Text> 
+                                <Text style={styles.description}>{item.descricao+'\n'}</Text> 
+                                <Text style={styles.endereco}>{item.complemento}</Text>
+                            </Text>
+                            
+                        </View>                  
                 )}}        
             >
             </FlatList>
+            <Feather name="map" size={30} style={styles.icon}/>
         </View>
     )
 }

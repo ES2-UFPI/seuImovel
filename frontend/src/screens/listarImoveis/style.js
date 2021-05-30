@@ -1,19 +1,21 @@
 import { StyleSheet } from 'react-native'
-
+import Constants from 'expo-constants'
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#b3ff66',
+        backgroundColor: '#fff',
+        paddingTop: Constants.statusBarHeight + 10,
     },
     contextHomes:{
         flexDirection: 'row',
         backgroundColor: '#fff',
-        marginBottom: 15,
+        marginVertical: 10,
         marginHorizontal: 8,
         padding: 15,
-        borderRadius: 12,
-        flex: 1,
+        borderBottomWidth: 2,
+        borderColor: 'grey'
+
     },
     contextText:{
         width: '80%'
@@ -34,8 +36,14 @@ const styles = StyleSheet.create({
     imageHome: {
         width: 80,
         height: 80,
-        borderRadius: 50,
+        borderRadius: 12,
     },
+    icon:{
+        color: 'green',
+        position: 'absolute',
+        right: 20,
+        bottom: 20,   
+    }
 })
 
 export default styles

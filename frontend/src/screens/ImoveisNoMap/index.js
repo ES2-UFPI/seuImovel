@@ -68,12 +68,15 @@ export default function ImoveisNoMapa() {
 
 
   return (
+    
     <View style={styles.container}>
       <StatusBar></StatusBar>
+      
       <View style={{ alignItems: 'center', paddingTop: 30 }} >
         <SearchBar></SearchBar>
 
       </View>
+      
       <MapView
         style={styles.map}
         initialRegion={{

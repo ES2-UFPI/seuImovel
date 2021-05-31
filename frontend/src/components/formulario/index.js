@@ -5,7 +5,7 @@ export default({keyboardType,formPlaceHolder,setValue})=>{
     return (
         <View style = {styles.formContainer}>
             <View style = {styles.containerText}>
-                <Text style = {styles.firstText}>{formPlaceHolder}</Text>
+                {/* <Text style = {styles.firstText}>{formPlaceHolder}</Text> */}
                 <TextInput
                 keyboardType = {keyboardType}
                 onChangeText= {setValue} 
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
  
     firstText:{
-        width: '20%',
+        width: '35%',
         fontSize: 13,
         fontWeight: 'bold',
         color: 'black',
@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 50,
         borderColor: 'grey',
-        borderWidth: 1 
+        borderWidth: 1,
+        height: 40
         
     },
 })

@@ -184,14 +184,14 @@ const enviarBD = (fileName, downloadURL) => {
     return (
         <View style = {styles.screenContainer}>        
             <ScrollView style = {styles.container}>
-                <StatusBar></StatusBar>
+                {/* <StatusBar></StatusBar> */}
                 <View style = {styles.titleContainer}>
                     <Text style = {styles.title} >Cadastro de Imóvel</Text>
                 </View>
 
                 <Formulario setValue = {value =>setImovel({
                                 ...imovel,descricao:value})} 
-                      formPlaceHolder = {'Descricao'}>
+                      formPlaceHolder = {'Descrição'}>
                 </Formulario>
 
                 <Formulario formPlaceHolder = {'Banheiros'}
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
         width:'100%',
         borderWidth:1,
         borderColor:'green',
-        borderRadius:20
+        // borderRadius:20
     },
     title:{
         fontSize:18,
@@ -315,16 +315,18 @@ const styles = StyleSheet.create({
         backgroundColor:'green',
         justifyContent:'center',
         alignItems:'center',
-        width:'100%',
+        width:'70%',
+        height: 35,
         padding:10,
         marginBottom:30,
         borderRadius:30,
-        borderWidth:1
+        alignSelf: 'center',
     },
     cadastrarText:{
-        fontFamily:'Inter_900Black',
         fontSize:20,
-        fontFamily:'Inter_900Black'
+        fontFamily:'Inter_900Black',
+        fontWeight: 'bold',
+        color: 'white'
     },
     firstText:{
         width: '20%',

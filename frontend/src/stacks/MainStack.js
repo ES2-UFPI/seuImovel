@@ -18,7 +18,7 @@ export default () =>{
         //InitialRouteName = "NOME_DA_TELA_A_SER_TESTADA"
         // <Stack.Screen name = "NOME_DA_TELA_A_SER_TESTADA" component = {ComponenteDaTela(Arquivo .js)} />
         
-        initialRouteName = "CadastroIMovel"
+        initialRouteName = "ConfigUsuario"
             screenOptions ={{
             
             headerShown:false

@@ -102,10 +102,9 @@ export default function ImoveisNoMapa() {
 <View style = {{zIndex:2,width:100,height:40,position:'absolute',left:1}} 
 onPress= {()=>{
 
-  console.log("cu");
 }}>
 
-<TouchableOpacity style = {{borderWidth:1,borderRadius:20}}>
+<TouchableOpacity style = {{borderWidth:1,borderRadius:20}} onPress= {loadListMovel}>
 <Text stlye={{justifyContent:'justify',padding:5}}>
 Carregar mais imóveis
 </Text>

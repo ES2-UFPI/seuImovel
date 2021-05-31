@@ -22,7 +22,9 @@ return (
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
           <ScrollView style = {{flex:.6,paddingRight:10,borderRight:1,height:70}}>
+
             <TouchableOpacity onPress = {() => {onReqClose(); navigateToDescricao(imovel)}}>
+
             <Text style={styles.modalText}>{descricao.substring(0,80)}...</Text>
             </TouchableOpacity>
            </ScrollView>

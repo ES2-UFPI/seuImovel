@@ -23,6 +23,7 @@ export default function ImoveisNoMapa() {
   const [imagem, setImage] = React.useState('')
   const [loading, setLoading] = React.useState(false)
   const [page, setPage] = React.useState(1)
+  const [dataImovel, setDataImovel] = React.useState()
 
   const navigation = useNavigation()
 
@@ -30,6 +31,8 @@ export default function ImoveisNoMapa() {
     function navigateToListagem(){
         navigation.navigate('ListagemDeImoveis')
     }
+
+    
 
 
   async function loadListMovel() {
@@ -93,9 +96,10 @@ export default function ImoveisNoMapa() {
                 key={data.id}
                 onPress={() => {
                   setVisible(true);
-                  ;
                   setDescricao(data.descricao);
+                  console.log(data)
                   setImage(data.imagens[0]);
+                  setDataImovel(data)
 
                 }}
                 coordinate={{
@@ -133,9 +137,12 @@ export default function ImoveisNoMapa() {
           <View></View>
 
       }
-      <View style={styles.modalImovel}>
-        <ModalImovel isVibile={isVibile} onReqClose={() => setVisible(false)} descricao={descricao} imagem={imagem} />
-      </View>
+      <TouchableOpacity>
+        <View style={styles.modalImovel}>
+          <ModalImovel isVibile={isVibile} onReqClose={() => setVisible(false)} descricao={descricao} imagem={imagem} data={dataImovel}/>
+        </View>
+      </TouchableOpacity>
+      
       <Feather onPress={() => navigateToListagem()} name="map" size={30} style={styles.icon}/>
     </View>
   );

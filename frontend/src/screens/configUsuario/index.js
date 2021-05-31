@@ -20,6 +20,14 @@ export default function ConfigUsuario(){
         setIsEnabled(usuarioConfig.notificacoes)
     }
 
+
+    function actionNotification(){
+        if(isEnabled === false){
+            setIsEnabled(true)
+            console.log('aqui')
+        }else setIsEnabled(false)
+    }
+
     useEffect(() => {
         loadUsuarioConfig()
     }, []);

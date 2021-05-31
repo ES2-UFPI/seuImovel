@@ -66,15 +66,13 @@ export default function ImoveisNoMapa() {
     loadListMovel();
 
 
-
-}}>
-
+}, []);
 <TouchableOpacity style = {{borderWidth:1,borderRadius:20}} onPress= {loadListMovel}>
 <Text stlye={{justifyContent:'justify',padding:5}}>
 Carregar mais imóveis
 </Text>
-
-  }, []);
+</TouchableOpacity>
+  
 
 
 

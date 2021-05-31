@@ -22,14 +22,18 @@ return (
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
           <ScrollView style = {{flex:.6,paddingRight:10,borderRight:1,height:70}}>
-            <TouchableOpacity onPress = {() => navigateToDescricao(imovel)}>
+            <TouchableOpacity onPress = {() => {onReqClose(); navigateToDescricao(imovel)}}>
             <Text style={styles.modalText}>{descricao.substring(0,80)}...</Text>
             </TouchableOpacity>
            </ScrollView>
             <View style = {styles.imageContainer}>
                 <Image  style = {styles.image} source={{uri:url}}/>
             </View>
+            <TouchableOpacity style={{marginLeft:5,paddingLeft:5,borderLeftWidth:2}} onPress = {onReqClose}>
+            <Text>Fechar</Text>
+          </TouchableOpacity>
           </View>
+    
       
         </View>
       </Modal>

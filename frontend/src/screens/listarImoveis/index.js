@@ -19,6 +19,10 @@ export default function ListarImoveis() {
     function navigateToDescricao(imovel){
         navigation.navigate('DescricaoImovel', { imovel })
     }
+    
+    function navigateToImoveis(){
+        navigation.goBack('ImoveisNoMapa')
+    }
 
     //conexão de api
     async function loadListMovel(){
@@ -72,7 +76,7 @@ export default function ListarImoveis() {
                 )}}        
             >
             </FlatList>
-            <Feather name="map" size={30} style={styles.icon}/>
+            <Feather onPress={() => navigateToImoveis()} name="map" size={30} style={styles.icon}/>
         </View>
     )
 }

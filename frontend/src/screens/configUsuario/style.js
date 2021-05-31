@@ -15,11 +15,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    secondContainer:{
-        width: '100%',
-        height: '100%',
-        flexDirection: 'column',
-    },
     imageUser:{
         marginBottom: 20,
         width: 150,
@@ -38,8 +33,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 50,
-        borderColor: 'grey',
         borderWidth: 1,
+        borderColor: 'grey',
     },
     firstText:{
         width: '30%',

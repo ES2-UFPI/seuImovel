@@ -20,6 +20,7 @@ module.exports = {
         .then((snapshot=>{
             snapshot.forEach(doc =>{
                 imoveis.push({
+                    id : doc.id,
                     descricao : doc.data().descricao,
                     numero : doc.data().numero,
                     banheiros : doc.data().banheiros,
@@ -44,7 +45,7 @@ module.exports = {
         })
     },
 
-    async post(req, res){
+    async create(req, res){
         const docRef = db.collection('houses')
         //#var storageRef = firebase.storage().ref()
         const {

@@ -22,10 +22,11 @@ export default function ConfigUsuario(){
         setIsEnabled(usuarioConfig.notificacoes)
     }
 
+
     async function changeUsuario(){
         console.log(plano,descricaoPlano,usuarioConfig.notificacoes,usuarioConfig.raioNotificacoes);
 
-        const response = await api.post('/usuarioConfig/41789623615',{
+        const response = await api.put('/usuarioConfig/41789623615',{
             plano:plano,
             descricaoPlano:descricaoPlano,
             notificacoes:usuarioConfig.notificacoes,
@@ -34,6 +35,15 @@ export default function ConfigUsuario(){
         })
     }
 
+
+
+
+    function actionNotification(){
+        if(isEnabled === false){
+            setIsEnabled(true)
+            console.log('aqui')
+        }else setIsEnabled(false)
+    }
 
 
     useEffect(() => {

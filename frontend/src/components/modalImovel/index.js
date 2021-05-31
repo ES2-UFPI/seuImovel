@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View,Image,TouchableOpacity,ScrollView } from "react-native";
+import {useNavigation, useRoute} from '@react-navigation/native'
 
-export default({isVibile,onReqClose,descricao,imagem})=>{
+export default({isVibile,onReqClose,descricao,imagem, data})=>{
     const url = imagem;
+    const navigation = useNavigation()
+    const imovel = data;
+
+    function navigateToDescricao(imovel){
+      navigation.navigate('DescricaoImovel', { imovel })
+    }
 return (
+  
     <View style={styles.centeredView}>
       <Modal
         animationType="slide"
@@ -12,19 +20,16 @@ return (
         onRequestClose={onReqClose}
       >
         <View style={styles.centeredView}>
-                        <Image  style = {styles.image} source={url}/>
-
           <View style={styles.modalView}>
           <ScrollView style = {{flex:.6,paddingRight:10,borderRight:1,height:70}}>
-            <Text style={styles.modalText}>{descricao.substring(0,130)}...</Text>
+            <TouchableOpacity onPress = {() => navigateToDescricao(imovel)}>
+            <Text style={styles.modalText}>{descricao.substring(0,80)}...</Text>
+            </TouchableOpacity>
            </ScrollView>
             <View style = {styles.imageContainer}>
                 <Image  style = {styles.image} source={{uri:url}}/>
             </View>
           </View>
-          <TouchableOpacity onPress = {onReqClose}>
-            <Text>Fechar</Text>
-          </TouchableOpacity>
       
         </View>
       </Modal>

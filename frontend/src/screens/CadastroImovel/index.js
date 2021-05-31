@@ -2,7 +2,9 @@ import React,{useEffect, useState} from 'react'
 import { ScrollView } from 'react-native'
 import {View,Text,StyleSheet,StatusBar,Image} from 'react-native'
 import Formulario from '../../components/formulario/index'
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import { Inter_900Black } from '@expo-google-fonts/inter';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
 import { TouchableOpacity } from 'react-native';
 import api from '../../services/api'
 import * as ImagePicker from 'expo-image-picker'
@@ -16,7 +18,15 @@ export default()=>{
 
     const [imageUri,setImageUri] = useState('');
     const [imageUri2,setImageUri2] = useState('');
+    const [dataLoaded,setDataLoaded] = useState(false);
 
+
+    const linkImagem = (nomeDaImagemNoStorage) => {//retorna o link da imagem no storage
+                
+        const Initial =  'https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imagens%2F'
+        const Final = '?alt=media'
+        return Initial+nomeDaImagemNoStorage+Final
+    }
 
  
     const uploadImagem = async (url) => {
@@ -45,20 +55,23 @@ export default()=>{
           }, function() {
             // Handle successful uploads on complete
 
+            uploadTask.then((snapshot) => {
+                snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    enviarBD(fileName, downloadURL)
+                });
+            });
+            
+            /*
             uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
              enviarBD(fileName, downloadURL)
             var firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com"  + "/o/";
                    
 
-            });
+            });*/
           });
     }
 const enviarBD = (fileName, downloadURL) => {
         let refDB = firebase.firestore();
-        console.log(downloadURL)
-        console.log(downloadURL)
-        console.log(downloadURL)
-        console.log(downloadURL)
         setImageUri(downloadURL);
         setImageUri2(downloadURL)
         refDB.collection('imagens').doc(fileName).set({
@@ -115,12 +128,18 @@ const enviarBD = (fileName, downloadURL) => {
     })
 
     const sendPost = async ()=>{
-        
-            const r =  await firebase.initializeApp(firebaseConfig)
-            console.log("ooooooo")
+        try{//faz a inicializacao da conexao com o firebase
+            await firebase.initializeApp(firebaseConfig)
+        }
+        catch{//se der erro é pq a inicializacao já foi feita
+
+        }
         
         uploadImagem(imageUri)
         uploadImagem(imageUri2)
+        setImageUri(fileName)
+        setImageUri2(fileName)
+
 
         const response = await api.post('/cadastrarImovel',{
 
@@ -143,11 +162,25 @@ const enviarBD = (fileName, downloadURL) => {
         console.log(imovel)
     }
 
-    let [fontsLoaded] = useFonts({
-        Inter_900Black,
-      });
+    /* CARREGANDO FONTE */
+    const fetchFonts = () => {
+        return Font.loadAsync({
+            Inter_900Black: Inter_900Black,
+        });
+        };
+    
     
    
+    if(!dataLoaded){
+        return(
+          <AppLoading
+              startAsync={fetchFonts}
+              onFinish={()=>setDataLoaded(true)}
+              onError={console.warn}
+            />
+        );
+      }
+
     return (
         <View style = {styles.screenContainer}>        
             <ScrollView style = {styles.container}>
@@ -162,6 +195,7 @@ const enviarBD = (fileName, downloadURL) => {
                 </Formulario>
 
                 <Formulario formPlaceHolder = {'Banheiros'}
+                keyboardType = {"numeric"}
                             setValue = {value=>setImovel({...imovel,banheiros:value})}
                 > </Formulario>
 
@@ -172,6 +206,7 @@ const enviarBD = (fileName, downloadURL) => {
                 ></Formulario>
 
                 <Formulario formPlaceHolder = {'Dimensão'}
+                keyboardType = {"numeric"}
                     setValue = {value=>setImovel({...imovel,dimensao:value})}>
                 </Formulario>
                 
@@ -204,20 +239,25 @@ const enviarBD = (fileName, downloadURL) => {
                 </View>  
 
                 <Formulario formPlaceHolder = {'Latitude'}
+                    keyboardType = {"numeric"}
                     setValue = {value=>setImovel({...imovel,latitude:value})}
                 ></Formulario>
 
                 <Formulario formPlaceHolder = {'Longitude'}
+                    keyboardType = {"numeric"}
                     setValue = {value=>setImovel({...imovel,longitude:value})}
 
                 ></Formulario>
+                
 
                 <Formulario formPlaceHolder = {'Numero'}
+                keyboardType = {"numeric"}
                     setValue = {value=>setImovel({...imovel,numero:value})}
 
                 ></Formulario>
                 
                 <Formulario formPlaceHolder = {'Quartos'}
+                keyboardType = {"numeric"}
                     setValue = {value=>setImovel({...imovel,quartos:value})}
 
                 ></Formulario>
@@ -226,6 +266,8 @@ const enviarBD = (fileName, downloadURL) => {
                     setValue = {value=>setImovel({...imovel,tipo:value})}
                 ></Formulario>
                 <Formulario formPlaceHolder = {'Valor'}
+                    
+                    keyboardType = {"numeric"}
                 setValue = {value=>setImovel({...imovel,valor:value})}
 
                 ></Formulario>
@@ -270,6 +312,7 @@ const styles = StyleSheet.create({
         width:'100%',
     },
     cadastrarBtn:{
+        backgroundColor:'green',
         justifyContent:'center',
         alignItems:'center',
         width:'100%',

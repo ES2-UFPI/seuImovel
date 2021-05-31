@@ -1,12 +1,17 @@
 import React from 'react'
 import {TextInput,View,Text,StyleSheet} from 'react-native'
 
-export default({formPlaceHolder,setValue})=>{
+export default({keyboardType,formPlaceHolder,setValue})=>{
     return (
         <View style = {styles.formContainer}>
             <View style = {styles.containerText}>
                 <Text style = {styles.firstText}>{formPlaceHolder}</Text>
-                <TextInput onChangeText= {setValue} style = {styles.secondText} placeholder = {formPlaceHolder}></TextInput>
+                <TextInput
+                keyboardType = {keyboardType}
+                onChangeText= {setValue} 
+                style = {styles.secondText} 
+                placeholder = {formPlaceHolder}
+                ></TextInput>
             </View>
         </View>
     )
@@ -28,7 +33,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         borderRightWidth: 1,
-        paddingRight:2
+        paddingRight:2,
+        
+        
     },
     secondText:{
         width: '85%',
@@ -36,6 +43,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: 'bold',
         color: 'black',
+        
     },
     containerText:{
         flexDirection: 'row',
@@ -45,6 +53,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 50,
         borderColor: 'grey',
-        borderWidth: 1,
+        borderWidth: 1 
+        
     },
 })

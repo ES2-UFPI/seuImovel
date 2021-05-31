@@ -4,10 +4,10 @@ import Constants from 'expo-constants'
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         paddingTop: Constants.statusBarHeight + 10,
     },
     contextHomes:{
+        height: 120,
         flexDirection: 'row',
         backgroundColor: '#fff',
         marginVertical: 10,

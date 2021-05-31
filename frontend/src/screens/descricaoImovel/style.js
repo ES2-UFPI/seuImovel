@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native'
 import Constants from 'expo-constants'
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -9,31 +8,20 @@ const styles = StyleSheet.create({
         paddingTop: Constants.statusBarHeight + 10,
     },
     firstContainer:{
-        width: '100%',
-        height: '100%',
+        flex: 1,
+        backgroundColor: '#fff',
         flexDirection: 'column',
         alignItems: 'center',
     },
-    imageUser:{
-        marginBottom: 20,
-        width: 150,
-        height: 150,
-        borderRadius: 80, //alterar depois 
-    },
-    notificationText:{
-        fontSize: 13,
-        fontWeight: 'bold',
-        color: '#1E90FF' 
-    },
     containerText:{
+        alignItems: 'center',
         flexDirection: 'row',
-        width: '90%',
+        borderBottomWidth: 1,
+        borderColor: 'grey',
         marginVertical: 5,
         paddingHorizontal: 20,
         paddingVertical: 10,
-        borderRadius: 50,
-        borderWidth: 1,
-        borderColor: 'grey',
+        width: '90%',
     },
     firstText:{
         width: '30%',
@@ -49,13 +37,27 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
     },
-    upgradeText:{
-        marginTop: 20,
-        fontSize: 13,
+    thirdText:{
+        fontSize: 18,
         fontWeight: 'bold',
-        color: '#7FFF00' 
+        color: 'green',
     },
-
+    containerShare:{
+        backgroundColor: '#90EE90',
+        alignItems: 'center',
+        flexDirection: 'column',
+        borderRadius: 50,
+        paddingVertical: 10,
+        marginTop: 10,
+        width: '70%',
+    },
+    imageHome:{
+        width: "80%",
+        height: "80%",
+    },
+    swipe:{  
+        height: '40%', 
+    }
 })
 
 export default styles

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import Constants from 'expo-constants'
+import color from 'color'
 
 
 const styles = StyleSheet.create({
@@ -55,6 +56,24 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#7FFF00' 
     },
+    modalContainer:{
+        alignSelf:'center',
+        bottom:1,
+        position:'absolute',
+        backgroundColor:'red',
+        width:'70%',
+
+    },  
+    modalContent:{
+        width:'70%',
+        justifyContent:'center',
+        alignSelf:'center',
+        borderRadius:20,
+        backgroundColor:'rgba(50,50,50,255)',
+        marginTop:'50%',
+        borderWidth:2,
+        paddingLeft:15,
+    }
 
 })
 

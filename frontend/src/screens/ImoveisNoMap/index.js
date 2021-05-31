@@ -67,7 +67,15 @@ export default function ImoveisNoMapa() {
 
 
 
+}}>
+
+<TouchableOpacity style = {{borderWidth:1,borderRadius:20}} onPress= {loadListMovel}>
+<Text stlye={{justifyContent:'justify',padding:5}}>
+Carregar mais imóveis
+</Text>
+
   }, []);
+
 
 
   return (

@@ -27,6 +27,9 @@ module.exports = {
     },
 
 
+    async update(request,response){
+
+
     /*A rota relacionada a função setPlano
     muda as configurações relacionadas ao plano do usuário
     basta passar o cpf na rota e no body envia os dados que devem ser modificados!

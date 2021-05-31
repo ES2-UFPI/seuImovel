@@ -66,15 +66,14 @@ export default function ImoveisNoMapa() {
     loadListMovel();
 
 
-
-}}>
+  }, []);
 
 <TouchableOpacity style = {{borderWidth:1,borderRadius:20}} onPress= {loadListMovel}>
 <Text stlye={{justifyContent:'justify',padding:5}}>
 Carregar mais imóveis
 </Text>
+</TouchableOpacity>
 
-  }, []);
 
 
 
@@ -145,11 +144,13 @@ Carregar mais imóveis
           <View></View>
 
       }
-      <TouchableOpacity>
+
         <View style={styles.modalImovel}>
+
           <ModalImovel isVibile={isVibile} onReqClose={() => setVisible(false)} descricao={descricao} imagem={imagem} data={dataImovel}/>
+         
         </View>
-      </TouchableOpacity>
+
       
       <Feather onPress={() => navigateToListagem()} name="map" size={30} style={styles.icon}/>
     </View>

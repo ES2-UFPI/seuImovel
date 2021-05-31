@@ -24,7 +24,7 @@ export default () =>{
         // <Stack.Screen name = "NOME_DA_TELA_A_SER_TESTADA" component = {ComponenteDaTela(Arquivo .js)} />
         
 
-        initialRouteName = "ListagemDeImoveis"
+        initialRouteName = "ImoveisNoMapa"
 
             screenOptions ={{
             

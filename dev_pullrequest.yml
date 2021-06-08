@@ -1,0 +1,29 @@
+name: DEV (pullrequest) - Build
+on:
+ pull_request:
+   branches:
+     - dev
+before_script:
+  - cd backend && cd functions
+jobs:
+ build:
+   name: Build
+   runs-on: ubuntu-latest
+   strategy:
+     matrix:
+       node-version: [10.x]
+   steps:
+   - uses: actions/checkout@v2
+   - name: Use Node.js ${{ matrix.node-version }}
+     uses: actions/setup-node@v1
+     with:
+       node-version: ${{ matrix.node-version }}
+   - name: Install Packages
+     run: npm install   
+   - name: Build project
+     run: npm build
+   - name: Upload production-ready build files
+     uses: actions/upload-artifact@v2
+     with:
+       name: production-files
+       path: ./build

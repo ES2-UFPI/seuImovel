@@ -10,6 +10,7 @@ jobs:
    strategy:
      matrix:
        node-version: [10.x]
+       dir: ['./backend/functions','./frontend']
    steps:
    - uses: actions/checkout@v2
    - name: Use Node.js ${{ matrix.node-version }}
@@ -18,10 +19,10 @@ jobs:
        node-version: ${{ matrix.node-version }}
    - name: Install Packages
      run: npm install
-     working-directory: ./backend/functions
+     working-directory: ${{ matrix.dir }}
    - name: Build project
      run: npm build
-     working-directory: ./backend/functions
+     working-directory: ${{ matrix.dir }}
    - name: Upload production-ready build files
      uses: actions/upload-artifact@v2
      with:

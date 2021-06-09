@@ -24,7 +24,7 @@ jobs:
      run: npm build
      working-directory: ${{ matrix.dir[0] }}
    - name: Build project Front
-     run: npm start
+     run: npm run build
      working-directory: ${{ matrix.dir[1] }}
    - name: Upload production-ready build files
      uses: actions/upload-artifact@v2

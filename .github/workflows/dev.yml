@@ -22,11 +22,11 @@ jobs:
      working-directory: ${{ matrix.dir }}
      
    - name: Build project Back
-     run: npm build
+     run: npm run build
      working-directory: './backend/functions'
      
    - name: Build project Front
-     run: npm run build
+     run: npm build
      working-directory: './frontend'
      
    - name: Upload production-ready build files

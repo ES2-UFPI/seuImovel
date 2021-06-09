@@ -20,9 +20,12 @@ jobs:
    - name: Install Packages
      run: npm install
      working-directory: ${{ matrix.dir }}
-   - name: Build project
+   - name: Build project Back
      run: npm build
-     working-directory: ${{ matrix.dir }}
+     working-directory: ${{ matrix.dir[0] }}
+   - name: Build project Front
+     run: npm start
+     working-directory: ${{ matrix.dir[1] }}
    - name: Upload production-ready build files
      uses: actions/upload-artifact@v2
      with:

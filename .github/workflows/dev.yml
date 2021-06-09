@@ -28,4 +28,3 @@ jobs:
      with:
        name: production-files
        path: ./build
-     working-directory: ${{ matrix.dir }}

@@ -1,4 +1,4 @@
-name: DEV - Build & Deploy
+name: DEV - Build
 on:
  push:
    branches:
@@ -28,21 +28,3 @@ jobs:
      with:
        name: production-files
        path: ./build
- deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@main
-      - name: Download artifact
-        uses: actions/download-artifact@main
-        with:
-          name: dist
-          path: dist
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@dev
-        with:
-          args: deploy --only functions
-        env: 
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

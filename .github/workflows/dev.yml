@@ -17,16 +17,24 @@ jobs:
      uses: actions/setup-node@v1
      with:
        node-version: ${{ matrix.node-version }}
+       
+   - uses: expo/expo-github-action@v5
+     with:
+       expo-version: 4.x
+       expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
+       expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
+       expo-cache: true
+       
    - name: Install Packages
      run: npm install
      working-directory: ${{ matrix.dir }}
      
-   - name: Build project Back
+   - name: Build project backend
      run: npm run build
      working-directory: './backend/functions'
      
-   - name: Build project Front
-     run: npm build
+   - name: Build project frontend
+   - run: expo publish --release-channel production
      working-directory: './frontend'
      
    - name: Upload production-ready build files

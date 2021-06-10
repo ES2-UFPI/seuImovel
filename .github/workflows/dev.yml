@@ -29,10 +29,6 @@ jobs:
    - name: Install Packages
      run: npm install
      working-directory: ${{ matrix.dir }}
-   
-   - name: Install Expo
-     run: npm install --global expo-cli
-     working-directory: './frontend'
      
    - name: Build project backend
      run: npm run build

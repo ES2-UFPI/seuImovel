@@ -1,15 +1,18 @@
-name: DEV - Build
+name: Expo - DEV(pullrequest) - Build
 on:
- push:
+ pull_request:
    branches:
      - dev
+     
+defaults:
+  run:
+    working-directory: ./frontend
 jobs:
  build:
    name: Build
    runs-on: ubuntu-latest
    strategy:
      matrix: 
-       dir: ['./backend/functions','./frontend']
        node-version: [14.x]
    steps:
    - uses: actions/checkout@v2
@@ -18,23 +21,17 @@ jobs:
      uses: actions/setup-node@v2
      with:
        node-version: ${{ matrix.node-version }}
-       
+     
    - uses: expo/expo-github-action@v5
      with:
+       expo-version: 4.x
        expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
        expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
        expo-cache: true
        
-   - name: Install Packages
-     run: npm install
-     working-directory: ${{ matrix.dir }}
-     
-   - name: Build project backend
-     run: npm run build
-     working-directory: './backend/functions'
-     
+   - run: npm install
+       
    - run: expo publish --release-channel production
-     working-directory: './frontend'
      
    - name: Upload production-ready build files
      uses: actions/upload-artifact@v2

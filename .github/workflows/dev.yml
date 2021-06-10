@@ -19,16 +19,13 @@ jobs:
      with:
        node-version: ${{ matrix.node-version }}
        
-   - uses: expo/expo-github-action@v5
-     with:
-       expo-version: 4.x
-       expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
-       expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
-       expo-cache: true
-       
    - name: Install Packages
      run: npm install
      working-directory: ${{ matrix.dir }}
+   
+   - name: Install Expo
+     run: npm install --global expo-cli
+     working-directory: './frontend'
      
    - name: Build project backend
      run: npm run build

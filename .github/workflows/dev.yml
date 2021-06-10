@@ -21,7 +21,6 @@ jobs:
        
    - uses: expo/expo-github-action@v5
      with:
-       expo-version: 4.x
        expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
        expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
        expo-cache: true
@@ -34,8 +33,9 @@ jobs:
      run: npm run build
      working-directory: './backend/functions'
      
-   - name: Build project frontend
-     run: expo publish --release-channel production
+   - run: npm install
+     working-directory: './frontend'
+   - run: expo publish --release-channel production
      working-directory: './frontend'
      
    - name: Upload production-ready build files

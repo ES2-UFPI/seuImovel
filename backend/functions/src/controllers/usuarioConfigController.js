@@ -1,5 +1,5 @@
 const db = require('../database/db')
-const ConfigUsuario = require('../classes/usuario')
+const ConfigUsuario = require('../classes/ConfigUsuario')
 
 module.exports = {
     /*A rota relacionada a função Index

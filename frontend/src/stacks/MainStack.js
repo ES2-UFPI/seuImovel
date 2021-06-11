@@ -133,6 +133,5 @@ export default () => {
 
         </Drawer.Navigator>
 
-
     )
 }

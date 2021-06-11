@@ -14,4 +14,5 @@ routes.get('/usuarioConfig/:cpf',usuarioConfigController.index)
 //Alterei aqui - mike
 routes.put('/usuarioConfig/:cpf',usuarioConfigController.update)
 
+//Testando yml
 module.exports = routes

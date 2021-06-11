@@ -1,4 +1,5 @@
 const db = require('../database/db')
+const ConfigUsuario = require('../classes/usuario')
 
 module.exports = {
     /*A rota relacionada a função Index
@@ -39,7 +40,9 @@ module.exports = {
         const { cpf } = request.params
         const { plano, descricaoPlano, notificacoes, raioNotificacoes } = request.body
 
-        if (plano != "premium" && plano != "gratis") {//deve ser passado uma string como o nome premium ou gratis
+        configUsuario = new ConfigUsuario(plano, descricaoPlano, notificacoes, raioNotificacoes)
+
+        if (configUsuario.plano != "premium" && configUsuario.plano != "gratis") {//deve ser passado uma string como o nome premium ou gratis
             response.status(404).send()
             return
         }

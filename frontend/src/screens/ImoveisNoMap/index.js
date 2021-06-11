@@ -1,6 +1,6 @@
 import * as React from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions, Image, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Image, StatusBar, Pressable } from 'react-native';
 import { useEffect } from 'react';
 import api from '../../services/api'
 import SearchBar from '../../components/searchBar/index'
@@ -18,7 +18,10 @@ export default function ImoveisNoMapa() {
   const [listaImoveis, setListaImoveis] = React.useState([])
   const [totalImoveis, setTotalImoveis] = React.useState(0)
   const [searchValue, setSearchValue] = React.useState('')
+
   const [isVibile, setVisible] = React.useState(false)
+  
+  
   const [descricao, setDescricao] = React.useState('')
   const [imagem, setImage] = React.useState('')
   const [loading, setLoading] = React.useState(false)
@@ -84,7 +87,7 @@ Carregar mais imóveis
       <StatusBar></StatusBar>
       
       <View style={{ alignItems: 'center', paddingTop: 30 }} >
-        <SearchBar></SearchBar>
+        <SearchBar/>
 
       </View>
       
@@ -114,7 +117,7 @@ Carregar mais imóveis
                   latitude: data.latitude,
                   longitude: data.longitude,
                 }}
-                title={data.descricao}
+                // title={data.descricao}
                 description={''}
               >
 
@@ -146,13 +149,13 @@ Carregar mais imóveis
 
       }
 
+
         <View style={styles.modalImovel}>
 
           <ModalImovel isVibile={isVibile} onReqClose={() => setVisible(false)} descricao={descricao} imagem={imagem} data={dataImovel}/>
          
         </View>
 
-      
       <Feather onPress={() => navigateToListagem()} name="map" size={30} style={styles.icon}/>
     </View>
   );

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 
     searchBarContainer:{
         flexDirection: 'row',
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         borderColor: '#000',
         paddingBottom: 10,
         position:'absolute',
@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
         paddingTop:10,
         paddingRight:20,
         alignItems:'center',
-        
+        borderRadius: 10,
+        margin: 10        
     },
     textInput:{
      flex: 1,

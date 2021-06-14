@@ -150,11 +150,6 @@ Carregar mais imóveis
       }
 
 
-        <View style={styles.modalImovel}>
-
-          <ModalImovel isVibile={isVibile} onReqClose={() => setVisible(false)} descricao={descricao} imagem={imagem} data={dataImovel}/>
-         
-        </View>
 
       <Feather onPress={() => navigateToListagem()} name="map" size={30} style={styles.icon}/>
     </View>

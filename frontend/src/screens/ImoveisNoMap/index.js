@@ -21,6 +21,7 @@ export default function ImoveisNoMapa() {
 
  // michael =================================================
   const [location, setLocation] = React.useState()
+  const [imoveis, setImoveis] = React.useState(null)
  //fim michael ==============================================
 
 
@@ -83,6 +84,14 @@ Carregar mais imóveis
 </Text>
 </TouchableOpacity> */}
 
+  const obterImoveis = async () => {
+    const res = await api.get('/listaImoveis')
+    
+    const {data} = await res 
+
+    setImoveis(data)
+
+  }
 
   const obterLocalizacao = async () => {
     const {granted} = await Location.requestForegroundPermissionsAsync()
@@ -92,10 +101,14 @@ Carregar mais imóveis
     setLocation({latitude, longitude})
   }
 
+
+
+
     useEffect(() => {
-      obterLocalizacao()
+        obterLocalizacao()
+        obterImoveis()
     // loadListMovel();
-  }, []);
+    }, []);
 
 
 
@@ -122,8 +135,17 @@ Carregar mais imóveis
           longitudeDelta: 0.014
         }}
       >
-         
-        {
+         {
+           imoveis.map(imovel => <Marker
+            key={imovel.id}
+            coordinate={{
+              latitude: imovel.latitude,
+              longitude: imovel.longitude,
+            }}
+           />
+            )
+         }
+        {/* {
           listaImoveis.map((data, i) => {
             return (
               <Marker
@@ -150,7 +172,7 @@ Carregar mais imóveis
             )
           })
 
-        }
+        } */}
       </MapView>}
 
       {

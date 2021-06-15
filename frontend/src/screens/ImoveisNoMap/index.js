@@ -11,9 +11,21 @@ import { Feather } from '@expo/vector-icons';
 import {useNavigation, useRoute} from '@react-navigation/native'
 import { ListItem } from 'react-native-elements/dist/list/ListItem';
 
+// Michael 
+import * as Location from 'expo-location'
 
 
 export default function ImoveisNoMapa() {
+
+
+
+ // michael =================================================
+  const [location, setLocation] = React.useState()
+  const [imoveis, setImoveis] = React.useState(null)
+ //fim michael ==============================================
+
+
+
 
   const [listaImoveis, setListaImoveis] = React.useState([])
   const [totalImoveis, setTotalImoveis] = React.useState(0)
@@ -64,19 +76,39 @@ export default function ImoveisNoMapa() {
   }
 
 
-  useEffect(() => {
-
-    loadListMovel();
 
 
-
-}, []);
-
-<TouchableOpacity style = {{borderWidth:1,borderRadius:20}} onPress= {loadListMovel}>
+{/* <TouchableOpacity style = {{borderWidth:1,borderRadius:20}} onPress= {loadListMovel}>
 <Text stlye={{justifyContent:'justify',padding:5}}>
 Carregar mais imóveis
 </Text>
-</TouchableOpacity>
+</TouchableOpacity> */}
+
+  const obterImoveis = async () => {
+    const res = await api.get('/listaImoveis')
+    
+    const {data} = await res 
+
+    setImoveis(data)
+
+  }
+
+  const obterLocalizacao = async () => {
+    const {granted} = await Location.requestForegroundPermissionsAsync()
+    
+    if(!granted) return 
+    const {coords : {latitude, longitude}} = await Location.getCurrentPositionAsync()
+    setLocation({latitude, longitude})
+  }
+
+
+
+
+    useEffect(() => {
+        obterLocalizacao()
+        obterImoveis()
+    // loadListMovel();
+    }, []);
 
 
 
@@ -91,16 +123,29 @@ Carregar mais imóveis
 
       </View>
       
-      <MapView
+     { location && <MapView
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        loadingEnabled={true}
         style={styles.map}
         initialRegion={{
-          latitude: -5.0896403,
-          longitude: -42.809588,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitude: location.latitude, 
+          longitude: location.longitude,
+          latitudeDelta: 0.014,
+          longitudeDelta: 0.014
         }}
       >
-        {
+         {
+           imoveis.map(imovel => <Marker
+            key={imovel.id}
+            coordinate={{
+              latitude: imovel.latitude,
+              longitude: imovel.longitude,
+            }}
+           />
+            )
+         }
+        {/* {
           listaImoveis.map((data, i) => {
             return (
               <Marker
@@ -127,8 +172,8 @@ Carregar mais imóveis
             )
           })
 
-        }
-      </MapView>
+        } */}
+      </MapView>}
 
       {
         totalImoveis > listaImoveis.length ?

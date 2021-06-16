@@ -50,6 +50,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
     },
+    editPerfil:{
+        fontSize: 13,  
+        color: 'black', 
+        fontWeight: 'bold',
+        paddingLeft: 80,
+        paddingRight: 65        
+    },
     upgradeText:{
         marginTop: 20,
         fontSize: 13,
@@ -66,10 +73,11 @@ const styles = StyleSheet.create({
     },  
     modalContent:{
         width:'70%',
+        height: '50%',
         justifyContent:'center',
         alignSelf:'center',
         borderRadius:20,
-        backgroundColor:'rgba(50,50,50,255)',
+        backgroundColor:'#FFFAFA',
         marginTop:'50%',
         borderWidth:2,
         paddingLeft:15,

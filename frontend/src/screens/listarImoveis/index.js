@@ -3,11 +3,13 @@ import {FlatList, Text, View, TouchableOpacity, Image, StatusBar,} from 'react-n
 import styles from './style'
 import api from '../../services/api'
 import { Feather } from '@expo/vector-icons';
-import {useNavigation, useRoute} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native'
 
 
 
 export default function ListarImoveis() {
+
+
 
     const [listaImoveis, setListaImoveis] = useState([])
     const [totalImoveis,setTotalImoveis] = useState(0)

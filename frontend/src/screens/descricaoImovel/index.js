@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {ScrollView, Linking, Text, View, TouchableOpacity, Image, StatusBar, Share, ImageBackground, TouchableHighlight,} from 'react-native'
 import styles from './style'
-import api from '../../services/api'
 import { FontAwesome } from '@expo/vector-icons';
-import {useNavigation, useRoute} from '@react-navigation/native'
+import { useRoute} from '@react-navigation/native'
 import { SliderBox } from "react-native-image-slider-box"
 
 

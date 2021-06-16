@@ -1,252 +1,155 @@
-import * as React from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions, Image, StatusBar, Pressable } from 'react-native';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
+import styles from './style'
 import api from '../../services/api'
-import SearchBar from '../../components/searchBar/index'
-import ModalImovel from '../../components/modalImovel/index'
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import { TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import {useNavigation, useRoute} from '@react-navigation/native'
-import { ListItem } from 'react-native-elements/dist/list/ListItem';
-
-// Michael 
+import MapView, { Marker, Callout } from 'react-native-maps';
 import * as Location from 'expo-location'
+import { Ionicons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'; 
+import { WebView } from 'react-native-webview';
+import { Platform } from 'react-native';
 
 
-export default function ImoveisNoMapa() {
+export default function ImoveisNoMapa({navigation}) {
+
+  let totalImoveis = 0;
+  let listaImoveis = []
+
+  const [listaImoveis2, setListaImoveis2] = useState([])//vetor de imóveis
+  //const [totalImoveis, setTotalImoveis] = useState(0)//total de imóveis da api
+  const [region, setRegion] = useState({//Região inicial -Antes de carregar a localizacao do usuario - Centro de Teresina
+    latitude: -5.0903678,
+    longitude: -42.8105988,
+    latitudeDelta: 0.014,
+    longitudeDelta: 0.014
+  })
 
 
 
- // michael =================================================
-  const [location, setLocation] = React.useState()
-  const [imoveis, setImoveis] = React.useState(null)
- //fim michael ==============================================
-
-
-
-
-  const [listaImoveis, setListaImoveis] = React.useState([])
-  const [totalImoveis, setTotalImoveis] = React.useState(0)
-  const [searchValue, setSearchValue] = React.useState('')
-
-  const [isVibile, setVisible] = React.useState(false)
-  
-  
-  const [descricao, setDescricao] = React.useState('')
-  const [imagem, setImage] = React.useState('')
-  const [loading, setLoading] = React.useState(false)
-  const [page, setPage] = React.useState(1)
-  const [dataImovel, setDataImovel] = React.useState()
-
-  const navigation = useNavigation()
-
-
-    function navigateToListagem(){
-        navigation.navigate('ListagemDeImoveis')
-    }
-
-    
-
-
-  async function loadListMovel() {
-    console.log("hited")
-
-    if (loading) {
-      console.log("IsLoading")
-      return;
-    }
-
-    if (totalImoveis > 0 && listaImoveis.length >= totalImoveis) {
-      console.log("NOPE")
-
-      return;
-
-    }
-
-    setLoading(true);
-    console.log(listaImoveis.length + "PAGE : " + page)
-    const response = await api.get(`/listaImoveis/?page=${page}`)
-    setTotalImoveis(response.headers['x-total-count'])
-    setListaImoveis([...listaImoveis, ...response.data])
-    setPage(page + 1)
-    setLoading(false)
-
+  function navigateToListagem() {//vai para a tela de listagem de imóveis
+    navigation.navigate('ListagemDeImoveis')
   }
 
-
-
-
-{/* <TouchableOpacity style = {{borderWidth:1,borderRadius:20}} onPress= {loadListMovel}>
-<Text stlye={{justifyContent:'justify',padding:5}}>
-Carregar mais imóveis
-</Text>
-</TouchableOpacity> */}
-
-  const obterImoveis = async () => {
-    const res = await api.get('/listaImoveis')
-    
-    const {data} = await res 
-
-    setImoveis(data)
-
+  function navigateToDescricaoImovel(imovel){//imovel selecionado
+    navigation.navigate('DescricaoImovel',{imovel})
   }
+
+  function openMenu(){
+    navigation.openDrawer();
+}
+  
 
   const obterLocalizacao = async () => {
-    const {granted} = await Location.requestForegroundPermissionsAsync()
-    
-    if(!granted) return 
-    const {coords : {latitude, longitude}} = await Location.getCurrentPositionAsync()
-    setLocation({latitude, longitude})
+    const { granted } = await Location.requestForegroundPermissionsAsync()
+
+    if (!granted) return
+    const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({
+      timeout:2000,
+      enableHighAccuracy:true,
+      maximumAge:1000
+    })
+    setRegion({ latitude, longitude, latitudeDelta: 0.014, longitudeDelta: 0.014 })
+
+  }
+
+  //conexão de api
+  async function loadListMovel() {
+    if ((totalImoveis > 0 && listaImoveis.length >= totalImoveis)) {//se todos imóveis já tiverem sidos carregados
+      return
+    }
+    else {//se não tiver recebido todos imóveis da api
+      let page = 1
+      while (true) {
+        if (totalImoveis > 0 && listaImoveis.length >= totalImoveis) {//quando receber todos imóveis
+          setListaImoveis2(listaImoveis)
+          return
+        }
+
+        await api.get(`/listaImoveis/?page=${page}`)
+          .then((response) => {
+            listaImoveis = listaImoveis.concat(response.data)
+            totalImoveis = response.headers['x-total-count']
+            page = page + 1
+          })
+
+      }
+    }
   }
 
 
 
+  useEffect(() => {
+    obterLocalizacao()
+  }, []);
 
-    useEffect(() => {
-        obterLocalizacao()
-        obterImoveis()
-    // loadListMovel();
-    }, []);
-
+  useEffect(() => {
+    loadListMovel()
+  }, [])
 
 
 
   return (
-    
     <View style={styles.container}>
-      <StatusBar></StatusBar>
-      
-      <View style={{ alignItems: 'center', paddingTop: 30 }} >
-        <SearchBar/>
+      <View style={styles.mapContainer}>
+        <MapView
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+          showsCompass={false}
+          loadingEnabled={true}
+          style={styles.map}
+          region={region}
+        >
+          {
+            listaImoveis2.map(imovel => (
+              <Marker
+                key={imovel.id}
+                coordinate={{
+                  latitude: imovel.latitude,
+                  longitude: imovel.longitude,
+
+                }}
+                image={require('../../../assets/map_marker.png')}
+              >
+                <Callout tooltip onPress = {()=>navigateToDescricaoImovel(imovel)}>
+                  <>
+                    <View style={styles.bubble}>
+                      <Text style={styles.titulo}>{imovel.tipo} {"\n"} R$ {imovel.valor}</Text>
+                      <Text>{imovel.descricao.substring(0, 35) + '...'}</Text>
+                      {Platform.OS === 'ios' ?
+                        <Image
+                          style={styles.image}
+                          source={{ uri: imovel.imagens[0] }}
+                        /> :
+                        <WebView
+                          style={styles.image}
+                          source={{ uri: imovel.imagens[0] }}
+                        />
+                      }
+                    </View>
+                    <View style={styles.arrowBorder} />
+                    <View style={styles.arrow} />
+                  </>
+
+
+                </Callout>
+              </Marker>
+            ))
+          }
+
+
+        </MapView>
+
+        <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
+        <Entypo name="menu" size={40} color="green" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigateToListagem()} style={styles.iconeLista}>
+          <Ionicons name="md-list-circle-outline" size={60} color="green" />
+        </TouchableOpacity>
 
       </View>
-      
-     { location && <MapView
-        showsUserLocation={true}
-        showsMyLocationButton={true}
-        loadingEnabled={true}
-        style={styles.map}
-        initialRegion={{
-          latitude: location.latitude, 
-          longitude: location.longitude,
-          latitudeDelta: 0.014,
-          longitudeDelta: 0.014
-        }}
-      >
-         {
-           imoveis.map(imovel => <Marker
-            key={imovel.id}
-            coordinate={{
-              latitude: imovel.latitude,
-              longitude: imovel.longitude,
-            }}
-           />
-            )
-         }
-        {/* {
-          listaImoveis.map((data, i) => {
-            return (
-              <Marker
-                key={data.id}
-                onPress={() => {
-                  setVisible(true);
-                  setDescricao(data.descricao);
-                  console.log(data)
-                  setImage(data.imagens[0]);
-                  setDataImovel(data)
-
-                }}
-                coordinate={{
-                  latitude: data.latitude,
-                  longitude: data.longitude,
-                }}
-                // title={data.descricao}
-                description={''}
-              >
-
-
-
-              </Marker>
-            )
-          })
-
-        } */}
-      </MapView>}
-
-      {
-        totalImoveis > listaImoveis.length ?
-          <View style={{ zIndex: 2, width: 100, height: 40, position: 'absolute', left: 1 }}
-            onPress={() => {
-
-            }}>
-
-            <TouchableOpacity style={{ borderWidth: 1, borderRadius: 20 }}>
-              <Text stlye={{ justifyContent: 'justify', padding: 5 }}>
-                Carregar mais imóveis
-              </Text>
-
-            </TouchableOpacity>
-          </View>
-          :
-          <View></View>
-
-      }
-
-
-
-      <Feather onPress={() => navigateToListagem()} name="map" size={30} style={styles.icon}/>
     </View>
-  );
+
+
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  map: {
-
-    flex: 1,
-    width: '98%',
-    borderWidth: 20,
-    borderRadius: 30,
-    borderColor: 'green',
-    borderWidth: 2.,
-    borderRadius: 40,
-    borderColor: 'green',
-    height: '100%',
-
-
-  },
-  tituloContainer: {
-    width: '100%',
-    zIndex: 2,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    position: 'absolute',
-    top: 1
-
-  },
-  title: {
-    fontSize: 16,
-    color: '#0a0538',
-    zIndex: 2,
-    position: 'absolute'
-
-  },
-  modalImovel: {
-    position: 'absolute',
-    top: 0.5,
-    zIndex: 2
-  },
-  icon:{
-    color: 'green',
-    position: 'absolute',
-    right: 20,
-    bottom: 20,   
-}
-})

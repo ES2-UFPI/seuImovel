@@ -38,7 +38,8 @@
     "react-native-swipe-image": "^1.1.0",
     "react-native-swipeable": "^0.6.0",
     "react-native-vector-icons": "^8.1.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "react-native-webview": "^11.6.4"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

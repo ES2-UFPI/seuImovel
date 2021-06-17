@@ -10,9 +10,17 @@ const usuarioPerfilController = require('./controllers/usuarioPerfilController')
 
 const usuarioTokenController = require('./controllers/UsuarioTokenController')
 
+const imovelFavoritacaoController = require('./controllers/imovelFavoritacaoController')
+
 //Imovel
 routes.get('/listaImoveis',imovelController.index)
+
 routes.post('/cadastrarImovel',imovelController.create)
+
+routes.get('/imovelFavoritacao/:cpf',imovelFavoritacaoController.index)
+
+routes.post('/imovelFavoritacao',imovelFavoritacaoController.createAndDelete)
+
 //Usuario 
 routes.get('/usuarioConfig/:cpf',usuarioConfigController.index)
 //Alterei aqui - mike

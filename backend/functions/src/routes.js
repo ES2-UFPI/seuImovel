@@ -8,7 +8,7 @@ const usuarioConfigController = require('./controllers/usuarioConfigController')
 
 const usuarioPerfilController = require('./controllers/usuarioPerfilController')
 
-const usuarioTokenController = require('./controllers/usuarioTokenController')
+const usuarioTokenController = require('./controllers/UsuarioTokenController')
 
 const imovelFavoritacaoController = require('./controllers/imovelFavoritacaoController')
 

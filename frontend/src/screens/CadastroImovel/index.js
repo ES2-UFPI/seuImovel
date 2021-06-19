@@ -1,19 +1,21 @@
 import React,{useEffect, useState} from 'react'
 import { ScrollView } from 'react-native'
-import {View,Text,StyleSheet,StatusBar,Image, SafeAreaView} from 'react-native'
+import {View,Text,StyleSheet,StatusBar,Image, SafeAreaView, Alert} from 'react-native'
 import Formulario from '../../components/formulario/index'
 import { Inter_900Black } from '@expo-google-fonts/inter';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import { TouchableOpacity } from 'react-native';
 import api from '../../services/api'
 import * as ImagePicker from 'expo-image-picker'
 import {firebaseConfig }  from '../../../config/config'
 import * as firebase from 'firebase'
 import 'firebase/firestore'
+
 import Constants from 'expo-constants'
 import Input from '../../components/Input';
 import { RadioButton, Button} from 'react-native-paper'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
 
 
 
@@ -184,13 +186,25 @@ export default()=>{
         );
       }
 
+      const montarImovel = () => {
+         if(!checked){
+             Alert.alert('Defina o tipo', 'Imóvel para vender ou alugar')
+         }else{
+             setImovel({...imovel, tipo: checked})
+         }
+      }
+
     return (
         <SafeAreaView style = {styles.screenContainer}>        
             <ScrollView>
-                <Text>Cadastro de Imóvel</Text>
+                <View style={{alignSelf: 'center', marginTop: 10}}>
+                    <Text style={{fontWeight: 'bold'}}>Cadastro de Imóvel</Text>
+                </View>
+
+ 
 
                 {/* Radios - venda ou aluguel */}
-                <View style={{flexDirection:'row', borderWidth: 1, height: 40, marginHorizontal:5, marginVertical: 20, justifyContent: 'space-around'}}>
+                <View style={{flexDirection:'row', borderWidth: 1, height: 40, marginHorizontal:5, marginVertical: 15, justifyContent: 'space-around'}}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <RadioButton value='vender' color='green'
                          status={ checked === 'vender' ? 'checked' : 'unchecked' }
@@ -206,6 +220,18 @@ export default()=>{
                     </View>
                 </View>
 
+                {/* Carregar Imagens */}
+                <View style={{ marginRight: 5, margin: 5 , flexDirection: 'row', 
+                borderWidth: 1,
+                justifyContent: 'space-between',
+                alignItems: 'center'}}> 
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Carregar Imagens</Text>
+
+                    <TouchableOpacity style={{width: 100, alignItems: 'center'}}>
+                      <MaterialCommunityIcons  name="plus" size={30} color="green"/>
+                    </TouchableOpacity>
+                </View>
+
                 <View style={{borderWidth: 1}}>
                     <Text>{imovel.descricao}</Text>
 
@@ -213,18 +239,39 @@ export default()=>{
                     onChangeText={text => setImovel({...imovel,descricao:text})}
                     containerStyle={{height: 70, marginBottom: 10}}/>
 
-                    <Input placeholder="Banheiros" keyboardType='numeric'/>
-                    <Input placeholder="Quartos" keyboardType='numeric'/>
-                    <Input placeholder="Complemento"/>
-                    <Input placeholder="Dimensão" keyboardType='numeric'/>
-                    <Input placeholder="Número" keyboardType='numeric'/>
-                    <Input placeholder="Latitude" keyboardType='numeric'/>
-                    <Input placeholder="Longitude" keyboardType='numeric'/>                    
+                    <Input placeholder="Banheiros"
+                     onChangeText={text => setImovel({...imovel,banheiros:text})}
+                    keyboardType='numeric'/>
+
+                    <Input placeholder="Quartos" 
+                     onChangeText={text => setImovel({...imovel,quartos:text})}
+                    keyboardType='numeric'/>
+
+                    <Input placeholder="Complemento"
+                     onChangeText={text => setImovel({...imovel,complemento:text})}
+                    />
+
+                    <Input placeholder="Dimensão"
+                     onChangeText={text => setImovel({...imovel,dimensao:text})}
+                    keyboardType='numeric'
+                    />
+                    <Input placeholder="Número" 
+                     onChangeText={text => setImovel({...imovel,numero:text})}
+                    keyboardType='numeric'/>
+
+
+                    <Input placeholder="Latitude" 
+                     onChangeText={text => setImovel({...imovel,latitude:text})}
+                    keyboardType='numeric'/>
+
+                    <Input placeholder="Longitude" 
+                     onChangeText={text => setImovel({...imovel,longitude:text})}
+                     keyboardType='numeric'/>                    
                 </View>
 
                 {/* FOOTER */}
                 <View style={{marginTop: 10}}>
-                    <Button onPress={() => console.log("descricao = ", imovel.descricao)} mode='outlined' color='green'>Enviar</Button>
+                    <Button onPress={() => montarImovel()} mode='outlined' color='green'>Enviar</Button>
                 </View>
  
                 

@@ -10,11 +10,15 @@ import { WebView } from 'react-native-webview';
 import { Platform } from 'react-native';
 import Search from '../../components/Search/index'
 
+import  Constants  from 'expo-constants';
+import * as Permissions from 'expo-permissions'
+import * as Notifications from 'expo-notifications';
 
 export default function ImoveisNoMapa({navigation}) {
 
   let totalImoveis = 0;
   let listaImoveis = []
+  let cpf = '41789623615'//cpf do usuario ficticio
 
 
   const [listaImoveis2, setListaImoveis2] = useState([])//vetor de imóveis
@@ -25,6 +29,58 @@ export default function ImoveisNoMapa({navigation}) {
     latitudeDelta: 0.014,
     longitudeDelta: 0.014
   })
+
+  const [expoPushToken, setExpoPushToken] = useState(null);//Guardará o token do celular do usuário
+
+  async function registerForPushNotificationsAsync () {//Regista o token do usuário
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {//Falha ao obter o token do usuario
+        console.log('Falha ao obter permissão de notificações!');
+        return;
+      }
+      const token = (await Notifications.getExpoPushTokenAsync()).data;
+      setExpoPushToken(token)//muda o token para o token do aparelho do usuario
+      //this.setState({ expoPushToken: token });
+    } else {
+      //console.log('Notificações não funcionam em emulador!\nPrecisa ser um dispositivo físico!');
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+    };
+
+    async function registraToken(cpf){//Salva o token do usuario no bd do firebase
+        await api.post('/usuarioToken', {
+          cpf: cpf,
+          token: expoPushToken,
+        })
+        .then(()=>{})//()=>console.log("Token foi add no bd!"))
+        .catch(()=>{})//()=>console.log("Token já foi adicionado antes no bd!"))
+    } 
+
+
+  useEffect(()=>{
+    registerForPushNotificationsAsync()
+  },[])
+
+  useEffect(()=>{
+    if (expoPushToken !== null){
+      registraToken(cpf)
+    }
+  },[expoPushToken])
+
 
 
 

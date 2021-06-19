@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import { ScrollView } from 'react-native'
-import {View,Text,StyleSheet,StatusBar,Image} from 'react-native'
+import {View,Text,StyleSheet,StatusBar,Image, SafeAreaView} from 'react-native'
 import Formulario from '../../components/formulario/index'
 import { Inter_900Black } from '@expo-google-fonts/inter';
 import * as Font from 'expo-font';
@@ -11,6 +11,9 @@ import * as ImagePicker from 'expo-image-picker'
 import {firebaseConfig }  from '../../../config/config'
 import * as firebase from 'firebase'
 import 'firebase/firestore'
+import Constants from 'expo-constants'
+import Input from '../../components/Input';
+import { RadioButton, Button} from 'react-native-paper'
 
 
 
@@ -19,7 +22,9 @@ export default()=>{
     const [imageUri,setImageUri] = useState('');
     const [imageUri2,setImageUri2] = useState('');
     const [dataLoaded,setDataLoaded] = useState(false);
-
+    
+    const fotosPlano = 3; 
+    const [checked, setChecked] = React.useState(null);
 
     const linkImagem = (nomeDaImagemNoStorage) => {//retorna o link da imagem no storage
                 
@@ -70,7 +75,7 @@ export default()=>{
             });*/
           });
     }
-const enviarBD = (fileName, downloadURL) => {
+    const enviarBD = (fileName, downloadURL) => {
         let refDB = firebase.firestore();
         setImageUri(downloadURL);
         setImageUri2(downloadURL)
@@ -104,8 +109,6 @@ const enviarBD = (fileName, downloadURL) => {
     }
      
     useEffect(()=>{
-
-
             getPermission()
 
     },[])
@@ -182,9 +185,50 @@ const enviarBD = (fileName, downloadURL) => {
       }
 
     return (
-        <View style = {styles.screenContainer}>        
-            <ScrollView style = {styles.container}>
-                <StatusBar></StatusBar>
+        <SafeAreaView style = {styles.screenContainer}>        
+            <ScrollView>
+                <Text>Cadastro de Imóvel</Text>
+
+                {/* Radios - venda ou aluguel */}
+                <View style={{flexDirection:'row', borderWidth: 1, height: 40, marginHorizontal:5, marginVertical: 20, justifyContent: 'space-around'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <RadioButton value='vender' color='green'
+                         status={ checked === 'vender' ? 'checked' : 'unchecked' }
+                         onPress={() => setChecked('vender')}/>
+                        <Text style={{fontWeight: 'bold'}}>Vender</Text>
+                    </View>
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <RadioButton value='alugar' color='green'
+                         status={ checked === 'alugar' ? 'checked' : 'unchecked' }
+                         onPress={() => setChecked('alugar')}/>
+                        <Text style={{fontWeight: 'bold'}}>Alugar</Text>
+                    </View>
+                </View>
+
+                <View style={{borderWidth: 1}}>
+                    <Text>{imovel.descricao}</Text>
+
+                    <Input placeholder="Descrição" 
+                    onChangeText={text => setImovel({...imovel,descricao:text})}
+                    containerStyle={{height: 70, marginBottom: 10}}/>
+
+                    <Input placeholder="Banheiros" keyboardType='numeric'/>
+                    <Input placeholder="Quartos" keyboardType='numeric'/>
+                    <Input placeholder="Complemento"/>
+                    <Input placeholder="Dimensão" keyboardType='numeric'/>
+                    <Input placeholder="Número" keyboardType='numeric'/>
+                    <Input placeholder="Latitude" keyboardType='numeric'/>
+                    <Input placeholder="Longitude" keyboardType='numeric'/>                    
+                </View>
+
+                {/* FOOTER */}
+                <View style={{marginTop: 10}}>
+                    <Button onPress={() => console.log("descricao = ", imovel.descricao)} mode='outlined' color='green'>Enviar</Button>
+                </View>
+ 
+                
+                {/* <StatusBar></StatusBar>
                 <View style = {styles.titleContainer}>
                     <Text style = {styles.title} >Cadastro de Imóvel</Text>
                 </View>
@@ -276,26 +320,17 @@ const enviarBD = (fileName, downloadURL) => {
                     <View style = {styles.cadastrarBtn}>
                         <Text stlye = {styles.cadastrarText}>CADASTRAR</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </ScrollView>
 
-        </View>
+        </SafeAreaView>
 
     )
 }
 const styles = StyleSheet.create({
     screenContainer:{
         flex:1,
-        alignItems:'center'  ,
-        justifyContent:'center',
-        width:'100%'
-    },
-    container:{
-        flex:1,
-        width:'100%',
-        borderWidth:1,
-        borderColor:'green',
-        borderRadius:20
+        marginTop: Constants.statusBarHeight
     },
     title:{
         fontSize:18,

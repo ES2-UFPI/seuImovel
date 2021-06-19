@@ -21,6 +21,8 @@ routes.get('/imovelFavoritacao/:cpf',imovelFavoritacaoController.index)
 
 routes.post('/imovelFavoritacao',imovelFavoritacaoController.createAndDelete)
 
+routes.get('/imovelFavoritacaoUnica',imovelFavoritacaoController.oneIndex)
+
 //Usuario 
 routes.get('/usuarioConfig/:cpf',usuarioConfigController.index)
 //Alterei aqui - mike

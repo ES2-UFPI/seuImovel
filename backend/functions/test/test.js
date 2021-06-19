@@ -37,15 +37,15 @@ describe("Testes da Configuração",()=>{//dentro do decribe que serão colocado
     })
 
     it("Conferindo se a quantidade máxima de imagens está correta", () => {
-        assert.strictEqual(configUsuario.quantImagens,false)
+        assert.strictEqual(configUsuario.quantImagens,7)
     })
 
     it("Conferindo se a quantidade máxima de imóveis está correta", () => {
-        assert.strictEqual(configUsuario.quantImoveis,false)
+        assert.strictEqual(configUsuario.quantImoveis,7)
     })
 
     it("Conferindo se a quantidade atual de imóveis está correta", () => {
-        assert.strictEqual(configUsuario.quantAtualImoveis,false)
+        assert.strictEqual(configUsuario.quantAtualImoveis,6)
     })
 
 

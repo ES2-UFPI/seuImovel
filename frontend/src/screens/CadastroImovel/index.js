@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import { ScrollView } from 'react-native'
-import {View,Text,StyleSheet,StatusBar,Image, SafeAreaView, Alert} from 'react-native'
+import {View,Text,StyleSheet,StatusBar,Image, SafeAreaView, Alert, Modal} from 'react-native'
 import Formulario from '../../components/formulario/index'
 import { Inter_900Black } from '@expo-google-fonts/inter';
 import * as Font from 'expo-font';
@@ -16,6 +16,7 @@ import Input from '../../components/Input';
 import { RadioButton, Button} from 'react-native-paper'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
+import CarregarFotos from '../../components/CarregarFotos';
 
 
 
@@ -27,6 +28,7 @@ export default()=>{
     
     const fotosPlano = 3; 
     const [checked, setChecked] = React.useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const linkImagem = (nomeDaImagemNoStorage) => {//retorna o link da imagem no storage
                 
@@ -93,7 +95,7 @@ export default()=>{
     const getPermission = async ()=>{
         const {granted}  = await ImagePicker.requestCameraPermissionsAsync()
         if(!granted){
-            alert('Permissão negada')
+            Alert.alert('Permissão negada', 'Precisamos da sua permissão para carregar imagens.')
         }
     }
 
@@ -227,10 +229,16 @@ export default()=>{
                 alignItems: 'center'}}> 
                     <Text style={{fontSize: 16, fontWeight: 'bold'}}>Carregar Imagens</Text>
 
-                    <TouchableOpacity style={{width: 100, alignItems: 'center'}}>
-                      <MaterialCommunityIcons  name="plus" size={30} color="green"/>
+                    <TouchableOpacity style={{width: 100, alignItems: 'center'}}
+                    onPress={() => setModalVisible(true)}
+                    >
+                      <MaterialCommunityIcons  name="plus" size={30} color="green" />
                     </TouchableOpacity>
-                </View>
+                   
+                </View> 
+                
+                {/* Carregar fotos MODAL */}
+                <CarregarFotos modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={fotosPlano}/>
 
                 <View style={{borderWidth: 1}}>
                     <Text>{imovel.descricao}</Text>

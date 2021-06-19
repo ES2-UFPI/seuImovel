@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { Foundation } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from "react-native";
 import * as imagePicker from 'expo-image-picker'
 
@@ -9,11 +10,11 @@ import * as imagePicker from 'expo-image-picker'
 
 const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos}) => {
     
-    const [imageUri1, setImageUri1] = React.useState(null)
+    const [imageUri, setImageUri] = React.useState([])
 
-    const obterImagem = async (imageUri, setImageUri) => {
-      
-        if(!imageUri){
+    const obterImagem = async (imageuri, index) => {
+        console.log(index)
+        if(!imageuri){
         let result = await imagePicker.launchImageLibraryAsync({
           mediaTypes: imagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
@@ -21,23 +22,39 @@ const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos}) => {
           quality: 1,
         });
     
-       
-    
         if (!result.cancelled) {
-          setImageUri(result.uri);
+             setImageUri([...imageUri, result.uri]);
         }
       }else{
-        Alert.alert('Deletar','Tem certeza que deseja cancelar o envio?', [
-          {text: 'Não'}, 
-          {text: 'Sim', onPress: () => setImageUri(null)}, 
-           
-       ])
+        if(imageUri[index]){
+            Alert.alert('Deletar','Tem certeza que deseja cancelar o envio?', [
+                {text: 'Não'}, 
+                {text: 'Sim', onPress: () => setImageUri(null)}, 
+                 
+             ])
+        }
       }
       };
 
 
+    const renderizaItens = (numeroDeFotos) => {
+        let views = []
+
+        for(var i = 0; i < numeroDeFotos; i++){          
+         views.push(
+         <View>
+            <Text style={{fontSize: 16}}>Imagem {i+1} </Text>
+        </View>)
+        
+        }
+
+        return views; 
+    }
+
   return (
+    
     <View style={styles.centeredView}>
+        {console.log(imageUri)}
       <Modal
         animationType="slide"
         transparent={true}
@@ -63,12 +80,14 @@ const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos}) => {
 
             <View style={{flex: 1, marginVertical: 20, width: '100%'}}>
 
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', width: 250, borderWidth: 1, padding: 5}}>
-                    <Text style={{fontSize: 16}}>Imagem 1 </Text>
-                    <TouchableOpacity onPress={() => obterImagem(imageUri1, setImageUri1)}>
-                        <Foundation name="photo" size={24} color="black" />
+               { 
+                renderizaItens(numeroDeFotos).map((i, index) => <View key={index} style={{flexDirection: 'row', justifyContent: 'space-between', width: 250, borderWidth: 1, padding: 5}}>
+                    {i}
+                    <TouchableOpacity onPress={() => obterImagem(imageUri[i], index)}>
+                    { imageUri[index] ? <AntDesign name="check" size={24} color="green" /> : <Foundation name="photo" size={24} color="black" />}
                     </TouchableOpacity>
-                </View>
+                </View>)
+               }
 
             </View>
   

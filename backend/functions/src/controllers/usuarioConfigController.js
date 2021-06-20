@@ -16,11 +16,13 @@ module.exports = {
                 }
                 snapshot.forEach(doc => {
                     plano = doc.data().plano,
-                        descricaoPlano = doc.data().descricaoPlano
+                    descricaoPlano = doc.data().descricaoPlano
                     notificacoes = doc.data().notificacoes
-                    raioNotificacoes = doc.data().raioNotificacoes
+                    quantImagens = doc.data().quantImagens
+                    quantImoveis = doc.data().quantImoveis
+                    quantAtualImoveis = doc.data().quantAtualImoveis
                 });
-                response.json({ plano, descricaoPlano, notificacoes, raioNotificacoes })
+                response.json({ plano, descricaoPlano, notificacoes, quantImagens, quantImoveis, quantAtualImoveis})
             })
             .catch(() => {//erro ao fazer requisição do banco de dados
                 response.status(404).send()
@@ -38,11 +40,11 @@ module.exports = {
 
         const docRef = db.collection('users')
         const { cpf } = request.params
-        const { plano, descricaoPlano, notificacoes, raioNotificacoes } = request.body
+        const { plano, descricaoPlano,quantImagens,quantImoveis, notificacoes } = request.body
 
-        configUsuario = new ConfigUsuario(plano, descricaoPlano, notificacoes, raioNotificacoes)
+        configUsuario = new ConfigUsuario(plano, descricaoPlano, notificacoes,quantImagens,quantImoveis)
 
-        if (configUsuario.plano != "premium" && configUsuario.plano != "gratis") {//deve ser passado uma string como o nome premium ou gratis
+        if (configUsuario.plano.toLowerCase().search("premium") === -1 && configUsuario.plano.toLowerCase() != "gratis" && configUsuario.plano.toLowerCase() != "grátis") {//deve ser passado uma string como o nome premium ou gratis
             response.status(404).send()
             return
         }
@@ -54,10 +56,11 @@ module.exports = {
 
                 snapshot.forEach(doc => {
                     db.collection('users').doc(doc.id).update({//muda o tipo do plano e a descricao do plano no banco de dados
-                        plano: String(plano),
-                        descricaoPlano: String(descricaoPlano),
-                        notificacoes: Boolean(notificacoes),
-                        raioNotificacoes: Number(raioNotificacoes)
+                        plano: configUsuario.plano,
+                        descricaoPlano: configUsuario.descricaoPlano,
+                        quantImagens: configUsuario.quantImagens,
+                        quantImoveis: configUsuario.quantImoveis,
+                        notificacoes: configUsuario.notificacoes
                     })
                     response.status(200).send()
                 });
@@ -65,9 +68,5 @@ module.exports = {
             .catch(() => {
                 response.status(404).send()
             })
-
-
     }
-
-
 }

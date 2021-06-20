@@ -26,7 +26,7 @@ export default()=>{
     const [imageUri2,setImageUri2] = useState('');
     const [dataLoaded,setDataLoaded] = useState(false);
     
-    const fotosPlano = 2; 
+    const [usuario, setUsuario] = React.useState({nome: 'John Doe', cpf: '41789623615', numeroDeFotos: 3}) 
     const [checked, setChecked] = React.useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -119,7 +119,7 @@ export default()=>{
 
     const [imovel,setImovel] = useState({
         descricao:'',
-        proprietario:'',
+        proprietario: usuario.nome,
         banheiros:'',
         dimensao:'',
         complemento:'',
@@ -192,6 +192,9 @@ export default()=>{
          if(!imovel.tipo){
              Alert.alert('Defina o tipo', 'Imóvel para vender ou alugar')
          }else{
+            if(imovel.imagens.length === 0){
+                Alert.alert('Imagens', 'Cadastre as fotos do imóvel')
+            }
             console.log(imovel);
             //  setImovel({...imovel,tipo:checked})
 
@@ -240,14 +243,25 @@ export default()=>{
                    
                 </View> 
                 {/* Carregar fotos MODAL */}
-                <CarregarFotos setImovel={setImovel} imovel={imovel} modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={fotosPlano}/>
+                <CarregarFotos setImovel={setImovel} imovel={imovel} modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={usuario.numeroDeFotos}/>
 
                 <View style={{borderWidth: 1}}>
                     <Text>{checked}</Text>
 
+                    <Input
+                    inputStyle={{height: 20, borderWidth: 0, color: 'black', fontWeight: 'bold', backgroundColor: '#bfbfbf'}}
+                    value={usuario.nome}
+                    editable={false} 
+                    containerStyle={{marginBottom: 10}}/>
+
                     <Input placeholder="Descrição" 
                     onChangeText={text => setImovel({...imovel,descricao:text})}
                     containerStyle={{height: 70, marginBottom: 10}}/>
+
+                    <Input placeholder="Valor" 
+                    inputStyle={{height: 20}}
+                    onChangeText={val => setImovel({...imovel,valor:val})}
+                    containerStyle={{marginBottom: 10}}/>
 
                     <Input placeholder="Banheiros"
                      onChangeText={text => setImovel({...imovel,banheiros:text})}

@@ -6,7 +6,7 @@ const Input = ({containerStyle, inputStyle, placeholder, ...outrasProps}) => {
         <View style={[styles.caixa, {...containerStyle}]}>
             <TextInput {...outrasProps} 
             placeholder={placeholder}
-            style={[{...inputStyle}, styles.entrada]}
+            style={[ styles.entrada, {...inputStyle}]}
             />
         </View>
     )

@@ -26,7 +26,7 @@ export default()=>{
     const [imageUri2,setImageUri2] = useState('');
     const [dataLoaded,setDataLoaded] = useState(false);
     
-    const fotosPlano = 3; 
+    const fotosPlano = 2; 
     const [checked, setChecked] = React.useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 

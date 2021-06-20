@@ -11,10 +11,13 @@ import * as imagePicker from 'expo-image-picker'
 const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos}) => {
     
     const [imageUri, setImageUri] = React.useState([])
+    const [numeroFotos, setNumeroFotos] = React.useState(0)
+   
+    const obterImagem = async () => {
 
-    const obterImagem = async (imageuri, index) => {
-        console.log(index)
-        if(!imageuri){
+        // console.log(imageuri, index);
+
+        if(numeroFotos < numeroDeFotos){
         let result = await imagePicker.launchImageLibraryAsync({
           mediaTypes: imagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
@@ -24,37 +27,36 @@ const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos}) => {
     
         if (!result.cancelled) {
              setImageUri([...imageUri, result.uri]);
+             setNumeroFotos(i => i+1)
         }
       }else{
-        if(imageUri[index]){
-            Alert.alert('Deletar','Tem certeza que deseja cancelar o envio?', [
-                {text: 'Não'}, 
-                {text: 'Sim', onPress: () => setImageUri(null)}, 
-                 
-             ])
-        }
+        Alert.alert('Limite', "Você atingiu o numero de fotos do plano")
       }
       };
 
 
-    const renderizaItens = (numeroDeFotos) => {
-        let views = []
 
-        for(var i = 0; i < numeroDeFotos; i++){          
-         views.push(
-         <View>
-            <Text style={{fontSize: 16}}>Imagem {i+1} </Text>
-        </View>)
-        
-        }
+    // const criaObjetos = () => {
+    //   let arr = []
+     
+    //   for(let i = 0; i < numeroDeFotos; i++){
+    //    let uri = ""
+    //    arr.push(uri)
+    //   }
+    //   setImageUri(arr)
+    // }
 
-        return views; 
-    }
+    // React.useEffect(() => {
+    //   criaObjetos()
+    // },[])
+
+  
+
 
   return (
     
     <View style={styles.centeredView}>
-        {console.log(imageUri)}
+        
       <Modal
         animationType="slide"
         transparent={true}
@@ -76,19 +78,19 @@ const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos}) => {
                <FontAwesome name="close" size={28} color="green" />
                 </Pressable>
             </View>
-
-
+        
             <View style={{flex: 1, marginVertical: 20, width: '100%'}}>
-
-               { 
-                renderizaItens(numeroDeFotos).map((i, index) => <View key={index} style={{flexDirection: 'row', justifyContent: 'space-between', width: 250, borderWidth: 1, padding: 5}}>
-                    {i}
-                    <TouchableOpacity onPress={() => obterImagem(imageUri[i], index)}>
-                    { imageUri[index] ? <AntDesign name="check" size={24} color="green" /> : <Foundation name="photo" size={24} color="black" />}
+              <Text>Numero de fotos = {numeroFotos}</Text>
+              {
+              // <AntDesign name="check" size={24} color="black" />
+                <View  style={{flexDirection: 'row', justifyContent: 'space-between', width: 250, borderWidth: 1, padding: 5}}>
+                    <Text>Imagem</Text>
+                    <TouchableOpacity onPress={() => obterImagem()}>
+                       <Foundation name="photo" size={24} color="black" />
                     </TouchableOpacity>
-                </View>)
-               }
-
+                </View>
+              
+              }
             </View>
   
 

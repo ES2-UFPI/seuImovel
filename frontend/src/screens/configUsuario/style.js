@@ -81,6 +81,12 @@ const styles = StyleSheet.create({
         marginTop:'50%',
         borderWidth:2,
         paddingLeft:15,
+    },
+    textPlano:{
+        fontSize: 14, 
+        textAlign: 'left', 
+        color: 'black', 
+        textAlign: 'left'
     }
 
 })

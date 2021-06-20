@@ -14,8 +14,11 @@ export default function ConfigUsuario() {
     const toggleSwitch = () => setIsEnabled(previousState => !previousState)
     const [modalVisible, setModalVisible] = useState(false)
     const [usuarioConfig, setusuarioConfig] = useState([])
-    const [plano, setPlano] = useState('');
-    const [descricaoPlano, setDescricaoPlano] = useState('');
+    const [plano, setPlano] = useState()
+    const [descricaoPlano, setDescricaoPlano] = useState()
+    const [quantImagens, setQuantImagens] = useState()
+    const [quantImoveis, setQuantImoveis] = useState()
+    const [notificacoes, setNotificacoes] = useState()
     const navigation = useNavigation()
 
     //conexão de api
@@ -27,14 +30,13 @@ export default function ConfigUsuario() {
 
 
     async function changeUsuario() {
-        console.log(plano, descricaoPlano, usuarioConfig.notificacoes, usuarioConfig.raioNotificacoes);
-
+        console.log(usuarioConfig)
         const response = await api.put('/usuarioConfig/41789623615', {
-            plano: plano,
-            descricaoPlano: descricaoPlano,
+            plano: usuarioConfig.plano,
+            descricaoPlano: usuarioConfig.descricaoPlano,
+            quantImagens: usuarioConfig.quantImagens,
+            quantImoveis: usuarioConfig.quantImoveis,
             notificacoes: usuarioConfig.notificacoes,
-            raioNotificacoes: Number(usuarioConfig.raioNotificacoes)
-
         })
     }
 
@@ -55,6 +57,10 @@ export default function ConfigUsuario() {
         loadUsuarioConfig()
     }, []);
 
+    useEffect(() => {
+        changeUsuario()
+    }, []);
+
     return (
         <View style={styles.container}>
             <View style={styles.firstContainer}>
@@ -70,6 +76,7 @@ export default function ConfigUsuario() {
                     ios_backgroundColor='#3e3e3e'
                     onValueChange={toggleSwitch}
                     value={isEnabled}
+                    onPress={actionNotification}
                 />
                 <View style={styles.containerText}>
                     <Text style={styles.editPerfil}>Editar informações do perfil</Text>
@@ -85,13 +92,10 @@ export default function ConfigUsuario() {
                     <Text style={styles.firstText}>Descrição</Text>
                     <Text style={styles.secondText}>{usuarioConfig.descricaoPlano}</Text>
                 </View>
-                <View style={styles.containerText}>
-                    <Text style={styles.firstText}>Raio de Notificações</Text>
-                    <Text style={styles.secondText}>{usuarioConfig.raioNotificacoes}</Text>
-                </View>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
-                    <Text style={styles.upgradeText}>{usuarioConfig.plano === 'dpremium' ? '' : 'MUDAR PLANO'}</Text>
+                    <Text style={styles.upgradeText}>{'MUDAR PLANO'}</Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={changeUsuario}><Text style={styles.upgradeText}>Salvar Mudança</Text></TouchableOpacity>
 
             </View>
 
@@ -106,63 +110,83 @@ export default function ConfigUsuario() {
                     <ScrollView>
                         <View style={{ flexDirection: 'column', justifyContent: 'flex-start', borderBottomWidth: 2, borderColor: '#1E90FF', marginRight: 15 }}>
                             <TouchableOpacity onPress={() => {
-                                alert("Plano alterado para Gold com sucesso!");
+                                alert("Plano alterado para Plano Premium 1 com sucesso!");
                                 setModalVisible(false);
-                                setPlano("Premium")
-                                setDescricaoPlano("Até 7 imóveis , 7 imagens por imóvel venda/aluguel");
-                                changeUsuario();
+                                setusuarioConfig({
+                                    plano: 'premium 1',
+                                    descricaoPlano: 'Até 7 imóveis , 7 imagens por imóvel venda/aluguel',
+                                    quantImagens: 7,
+                                    quantImoveis: 7,
+                                    notificacoes: true,
+                                })
+
                             }}><Text style={{ fontSize: 19, textAlign: 'left', color: '#1E90FF', textAlign: 'left', fontStyle: 'italic' }}>Plano Premium 1</Text></TouchableOpacity>
                         </View>
                         <View style={{ paddingTop: 10 }}>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     Até 7 imóveis</Text>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     7 Imagens por imóvel </Text>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     Venda/Aluguel </Text>
+                            <Text style={styles.textPlano}>*     Até 7 imóveis</Text>
+                            <Text style={styles.textPlano}>*     7 Imagens por imóvel </Text>
+                            <Text style={styles.textPlano}>*     Venda/Aluguel </Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', justifyContent: 'flex-start', borderBottomWidth: 2, borderColor: '#1E90FF', marginRight: 15 }}>
                             <TouchableOpacity onPress={() => {
-                                alert("Plano alterado para Gold com sucesso!");
+                                alert("Plano alterado para Plano Premium 2 com sucesso!");
                                 setModalVisible(false);
-                                setPlano("Premium")
-                                setDescricaoPlano("Até 10 imóveis , 10 imagens por imóvel venda/aluguel");
-                                changeUsuario();
+                                setusuarioConfig({
+                                    plano: 'premium 2',
+                                    descricaoPlano: 'Até 10 imóveis , 10 imagens por imóvel venda/aluguel',
+                                    quantImagens: 10,
+                                    quantImoveis: 10,
+                                    notificacoes: true,
+                                })
+
                             }}><Text style={{ fontSize: 19, textAlign: 'left', color: '#1E90FF', textAlign: 'left', fontStyle: 'italic' }}>Plano Premium 2</Text></TouchableOpacity>
                         </View>
                         <View style={{ paddingTop: 10 }}>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     Até 10 imóveis</Text>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     10 Imagens por imóvel </Text>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     Venda/Aluguel </Text>
+                            <Text style={styles.textPlano}>*     Até 10 imóveis</Text>
+                            <Text style={styles.textPlano}>*     10 Imagens por imóvel </Text>
+                            <Text style={styles.textPlano}>*     Venda/Aluguel </Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', justifyContent: 'flex-start', borderBottomWidth: 2, borderColor: '#1E90FF', marginRight: 15 }}>
                             <TouchableOpacity onPress={() => {
-                                alert("Plano alterado para Gold com sucesso!");
+                                alert("Plano alterado para Plano Premium 3 com sucesso!");
                                 setModalVisible(false);
-                                setPlano("Premium")
-                                setDescricaoPlano("Até 15 imóveis , 15 imagens por imóvel venda/aluguel");
-                                changeUsuario();
+                                setusuarioConfig({
+                                    plano: 'premium 3',
+                                    descricaoPlano: 'Até 15 imóveis , 15 imagens por imóvel venda/aluguel',
+                                    quantImagens: 15,
+                                    quantImoveis: 15,
+                                    notificacoes: true,
+                                })
+
                             }}><Text style={{ fontSize: 19, textAlign: 'left', color: '#1E90FF', textAlign: 'left', fontStyle: 'italic' }}>Plano Premium 3</Text></TouchableOpacity>
                         </View>
                         <View style={{ paddingTop: 10 }}>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     Até 15 imóveis</Text>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     15 Imagens por imóvel </Text>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     Venda/Aluguel </Text>
+                            <Text style={styles.textPlano}>*     Até 15 imóveis</Text>
+                            <Text style={styles.textPlano}>*     15 Imagens por imóvel </Text>
+                            <Text style={styles.textPlano}>*     Venda/Aluguel </Text>
                         </View>
 
-                        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', borderBottomWidth: 2, borderColor: '#1E90FF', marginTop: 30, marginRight: 15 }}>
+                        <View style={{ flexDirection: 'column', justifyContent: 'flex-start', borderBottomWidth: 2, borderColor: '#1E90FF', marginRight: 15 }}>
                             <TouchableOpacity onPress={() => {
-                                alert("Plano alterado para Premium Gold com sucesso!");
+                                alert("Plano alterado para Premium 4 com sucesso!");
                                 setModalVisible(false);
-                                setPlano("Premium Gold")
-                                setDescricaoPlano("Até 20 imóveis , 20 imagens por imóvel venda/alugle");
-                                changeUsuario();
+                                setusuarioConfig({
+                                    plano: 'premium 4',
+                                    descricaoPlano: 'Até 20 imóveis , 20 imagens por imóvel venda/aluguel',
+                                    quantImagens: 20,
+                                    quantImoveis: 20,
+                                    notificacoes: true,
+                                })
 
-                            }}><Text style={{ fontSize: 19, textAlign: 'left', color: '#1E90FF', textAlign: 'left', fontStyle: 'italic' }}>Plano Premium Gold</Text></TouchableOpacity>
+
+                            }}><Text style={{ fontSize: 19, textAlign: 'left', color: '#1E90FF', textAlign: 'left', fontStyle: 'italic' }}>Plano Premium 4</Text></TouchableOpacity>
                         </View>
                         <View style={{ paddingTop: 10 }}>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     Até 20 imóveis</Text>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     20 Imagens por imóvel </Text>
-                            <Text style={{ fontSize: 14, textAlign: 'left', color: 'black', textAlign: 'left' }}>*     Venda/Aluguel </Text>
+                            <Text style={styles.textPlano}>*     Até 20 imóveis</Text>
+                            <Text style={styles.textPlano}>*     20 Imagens por imóvel </Text>
+                            <Text style={styles.textPlano}>*     Venda/Aluguel </Text>
                         </View>
                     </ScrollView>
 
@@ -172,6 +196,7 @@ export default function ConfigUsuario() {
 
                 </View>
             </Modal>
+
         </View>
     )
 }

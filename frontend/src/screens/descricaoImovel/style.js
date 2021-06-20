@@ -42,6 +42,16 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'green',
     },
+    favoriteText:{
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'red', 
+    },
+    unFavoriteText:{
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'grey', 
+    },
     containerShare:{
         backgroundColor: '#90EE90',
         alignItems: 'center',
@@ -50,6 +60,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         marginTop: 10,
         width: '70%',
+    },
+    containerFavorite:{
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '25%',
     },
     imageHome:{
         width: "80%",

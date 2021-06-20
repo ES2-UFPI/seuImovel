@@ -113,7 +113,7 @@ export default()=>{
     }
      
     useEffect(()=>{
-            getPermission()
+        getPermission()
 
     },[])
 
@@ -189,10 +189,13 @@ export default()=>{
       }
 
       const montarImovel = () => {
-         if(!checked){
+         if(!imovel.tipo){
              Alert.alert('Defina o tipo', 'Imóvel para vender ou alugar')
          }else{
-             setImovel({...imovel, tipo: checked})
+            console.log(imovel);
+            //  setImovel({...imovel,tipo:checked})
+
+             
          }
       }
 
@@ -209,15 +212,15 @@ export default()=>{
                 <View style={{flexDirection:'row', borderWidth: 1, height: 40, marginHorizontal:5, marginVertical: 15, justifyContent: 'space-around'}}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <RadioButton value='vender' color='green'
-                         status={ checked === 'vender' ? 'checked' : 'unchecked' }
-                         onPress={() => setChecked('vender')}/>
+                         status={ imovel.tipo === 'vender' ? 'checked' : 'unchecked' }
+                         onPress={() => setImovel({...imovel,tipo:"vender"})}/>
                         <Text style={{fontWeight: 'bold'}}>Vender</Text>
                     </View>
 
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                         <RadioButton value='alugar' color='green'
-                         status={ checked === 'alugar' ? 'checked' : 'unchecked' }
-                         onPress={() => setChecked('alugar')}/>
+                         status={ imovel.tipo === 'alugar' ? 'checked' : 'unchecked' }
+                         onPress={() => setImovel({...imovel,tipo:"alugar"})}/>
                         <Text style={{fontWeight: 'bold'}}>Alugar</Text>
                     </View>
                 </View>
@@ -236,12 +239,11 @@ export default()=>{
                     </TouchableOpacity>
                    
                 </View> 
-                
                 {/* Carregar fotos MODAL */}
-                <CarregarFotos modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={fotosPlano}/>
+                <CarregarFotos setImovel={setImovel} imovel={imovel} modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={fotosPlano}/>
 
                 <View style={{borderWidth: 1}}>
-                    <Text>{imovel.descricao}</Text>
+                    <Text>{checked}</Text>
 
                     <Input placeholder="Descrição" 
                     onChangeText={text => setImovel({...imovel,descricao:text})}

@@ -7,7 +7,7 @@ import { TouchableOpacity } from "react-native";
 import * as imagePicker from 'expo-image-picker'
 import {Button} from 'react-native-paper'
 
-const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos, setImovel, imovel}) => {
+const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos, setImovel, imovel, arrLinksImagens, setArrLinks}) => {
     
     const [imageUri, setImageUri] = React.useState([])
     const [numeroFotos, setNumeroFotos] = React.useState(0)
@@ -23,6 +23,13 @@ const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos, setImovel,
 
       return result
     }
+
+    const linkImagem = (nomeDaImagemNoStorage, nomePasta) => {//retorna o link da imagem no storage
+      //                https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imoveis%2F72becbe3-cdc8-4974-a7e6-57f9f668e106.jpg?alt=media
+      const Initial =  `https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/${nomePasta}%2F`
+      const Final = '?alt=media'
+      return Initial+nomeDaImagemNoStorage+Final
+  }
 
 
     const obterImagem = async () => {
@@ -47,25 +54,22 @@ const CarregarFotos = ({modalVisible, setModalVisible, numeroDeFotos, setImovel,
     }
 
 const envioParaImovel = () => {
-  setImovel({...imovel, imagens: imageUri})
-}
+  setArrLinks([...arrLinksImagens, ...imageUri])
+  // setImovel({...imovel, imagens: imageUri})
 
-    // const criaObjetos = () => {
-    //   let arr = []
-     
-    //   for(let i = 0; i < numeroDeFotos; i++){
-    //    let uri = ""
-    //    arr.push(uri)
-    //   }
-    //   setImageUri(arr)
-    // }
+  let arr = []
+  imageUri.map(uri => {
+    // https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imoveis%2F72becbe3-cdc8-4974-a7e6-57f9f668e106.jpg?alt=media
+    let fileName = null;
+    fileName = uri.split('ImagePicker/').pop()
+    let link = linkImagem(fileName,"imoveis")
+    arr.push(link)
+  })
 
-    // React.useEffect(() => {
-
-    // },[])
-
+  setImovel({...imovel, imagens: arr})
   
-
+  
+}
 
   return (
     <View style={styles.centeredView}>    

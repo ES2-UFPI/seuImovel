@@ -26,7 +26,7 @@ const Search = ({callBackFuntion})=>{
             styles ={{
                 container:{
                     position:'absolute',
-                    top : Platform.select({ios:40,android:20}),
+                    top : Platform.select({ios:20,android:20}),
                     width:'75%',
                     marginLeft:'20%',
                     opacity:.9,

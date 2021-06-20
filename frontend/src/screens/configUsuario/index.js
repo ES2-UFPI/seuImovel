@@ -5,6 +5,7 @@ import api from '../../services/api'
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { ScrollView } from 'react-native';
+import { Entypo } from '@expo/vector-icons'; 
 
 
 
@@ -28,10 +29,13 @@ export default function ConfigUsuario() {
         setIsEnabled(usuarioConfig.notificacoes)
     }
 
+    function openMenu() {
+        navigation.openDrawer();
+    }
 
     async function changeUsuario() {
         console.log(usuarioConfig)
-            await api.put('/usuarioConfig/41789623615', {
+        await api.put('/usuarioConfig/41789623615', {
             plano: usuarioConfig.plano,
             descricaoPlano: usuarioConfig.descricaoPlano,
             quantImagens: usuarioConfig.quantImagens,
@@ -193,6 +197,9 @@ export default function ConfigUsuario() {
 
                 </View>
             </Modal>
+            <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
+                <Entypo name="menu" size={40} color="green" />
+            </TouchableOpacity>
 
         </View>
     )

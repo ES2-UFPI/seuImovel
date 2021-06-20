@@ -9,24 +9,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingTop: Constants.statusBarHeight + 10,
     },
-    firstContainer:{
+    firstContainer: {
         width: '100%',
         height: '100%',
         flexDirection: 'column',
         alignItems: 'center',
     },
-    imageUser:{
+    imageUser: {
         marginBottom: 20,
         width: 150,
         height: 150,
         borderRadius: 80, //alterar depois 
     },
-    notificationText:{
+    notificationText: {
         fontSize: 13,
         fontWeight: 'bold',
-        color: '#1E90FF' 
+        color: '#1E90FF'
     },
-    containerText:{
+    containerText: {
         flexDirection: 'row',
         width: '90%',
         marginVertical: 5,
@@ -36,58 +36,63 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'grey',
     },
-    firstText:{
+    firstText: {
         width: '30%',
         fontSize: 13,
         fontWeight: 'bold',
         color: 'black',
         borderRightWidth: 1,
     },
-    secondText:{
+    secondText: {
         width: '65%',
         paddingLeft: 20,
         fontSize: 13,
         fontWeight: 'bold',
         color: 'black',
     },
-    editPerfil:{
-        fontSize: 13,  
-        color: 'black', 
+    editPerfil: {
+        fontSize: 13,
+        color: 'black',
         fontWeight: 'bold',
         paddingLeft: 80,
-        paddingRight: 65        
+        paddingRight: 65
     },
-    upgradeText:{
+    upgradeText: {
         marginTop: 20,
         fontSize: 13,
         fontWeight: 'bold',
-        color: '#7FFF00' 
+        color: '#7FFF00'
     },
-    modalContainer:{
-        alignSelf:'center',
-        bottom:1,
-        position:'absolute',
-        backgroundColor:'red',
-        width:'70%',
+    modalContainer: {
+        alignSelf: 'center',
+        bottom: 1,
+        position: 'absolute',
+        backgroundColor: 'red',
+        width: '70%',
 
-    },  
-    modalContent:{
-        width:'70%',
-        height: '50%',
-        justifyContent:'center',
-        alignSelf:'center',
-        borderRadius:20,
-        backgroundColor:'#FFFAFA',
-        marginTop:'50%',
-        borderWidth:2,
-        paddingLeft:15,
     },
-    textPlano:{
-        fontSize: 14, 
-        textAlign: 'left', 
-        color: 'black', 
+    modalContent: {
+        width: '70%',
+        height: '50%',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderRadius: 20,
+        backgroundColor: '#FFFAFA',
+        marginTop: '50%',
+        borderWidth: 2,
+        paddingLeft: 15,
+    },
+    textPlano: {
+        fontSize: 14,
+        textAlign: 'left',
+        color: 'black',
         textAlign: 'left'
-    }
+    },
+    iconeMenu: {
+        position: 'absolute',
+        top: 20,
+        left: 20,
+    },
 
 })
 

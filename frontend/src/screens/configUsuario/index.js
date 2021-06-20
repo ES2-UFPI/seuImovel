@@ -31,7 +31,7 @@ export default function ConfigUsuario() {
 
     async function changeUsuario() {
         console.log(usuarioConfig)
-        const response = await api.put('/usuarioConfig/41789623615', {
+            await api.put('/usuarioConfig/41789623615', {
             plano: usuarioConfig.plano,
             descricaoPlano: usuarioConfig.descricaoPlano,
             quantImagens: usuarioConfig.quantImagens,
@@ -57,9 +57,6 @@ export default function ConfigUsuario() {
         loadUsuarioConfig()
     }, []);
 
-    useEffect(() => {
-        changeUsuario()
-    }, []);
 
     return (
         <View style={styles.container}>

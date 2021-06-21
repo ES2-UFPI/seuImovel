@@ -19,7 +19,7 @@ export default function App() {
 
     //Bloco principal de navegação. Todas as telas ficaram dentro dele
     <NavigationContainer>
-      <MainStack></MainStack>
+      <MainStack/>
     </NavigationContainer>
   );
 }

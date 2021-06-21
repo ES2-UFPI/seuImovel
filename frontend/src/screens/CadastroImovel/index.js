@@ -33,12 +33,7 @@ export default()=>{
     const [checked, setChecked] = React.useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
-    const linkImagem = (nomeDaImagemNoStorage, nomePasta) => {//retorna o link da imagem no storage
-                
-        const Initial =  `https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/${nomePasta}%2F`
-        const Final = '?alt=media'
-        return Initial+nomeDaImagemNoStorage+Final
-    }
+
 
  
   
@@ -85,19 +80,21 @@ export default()=>{
 
     },[])
 
+    // -5.0945523
+    // -42.8345395
     const [imovel,setImovel] = useState({
         cpf: usuario.cpf,
-        descricao:'Imovel barato e bem feito',
+        descricao:'',
         proprietario: usuario.nome,
-        banheiros:2,
-        dimensao:11,
-        complemento:'Entre as ruas 69 e 100',
-        latitude:-5.0945523,
-        longitude:-42.8345395,
-        quartos:2,
-        tipo:'alugar',
-        valor:375,
-        numero:1,
+        banheiros:'',
+        dimensao:'',
+        complemento:'',
+        latitude:'',
+        longitude:'',
+        quartos:'',
+        tipo:'',
+        valor:'',
+        numero:'',
         imagens:[]
 
 
@@ -142,9 +139,7 @@ export default()=>{
             upload(uploadTask)
     
     }
-    //https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imoveis%2F44cdeada-4c8e-4034-aad4-b3a8a0795c24.jpg?alt=media&token=62dc2ee4-c9c2-4039-82f8-30ce8376bfb1
-    // https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imoveis%2F44cdeada-4c8e-4034-aad4-b3a8a0795c24.jpg
-    // https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imagens%2F44cdeada-4c8e-4034-aad4-b3a8a0795c24.jpg?alt=media
+   
     const uploadImagem = async (produto) => {
         // console.log(produto);
         
@@ -157,32 +152,27 @@ export default()=>{
             
         })
 
-        // Alert.alert('Deletar','Tem certeza que deseja cancelar o envio?', [
-        //     {text: 'Não'}, 
-        //     {text: 'Sim', onPress: () => enviarBD(imovel.imagens)}, 
-             
-        //  ])
-         console.log(imovel);
+        //  console.log(imovel);
         // console.log(arrLinksImagens);
-        // sendPost()
+         sendPost()
        
      }
 
 
     const sendPost = async ()=>{
-        // try{//faz a inicializacao da conexao com o firebase
-        //     await firebase.initializeApp(firebaseConfig)
-        //     console.log(imovel)
+        try{
            
             const response = await api.post('/cadastrarImovel', imovel)
             
-            console.log(response.status);
-    
-            // console.log(imovel)
-        // }
-        // catch(error){//se der erro é pq a inicializacao já foi feita
-        //     console.log(error)
-        // }
+            if(response){
+                console.log(response.status);
+                Alert.alert('Imóvel Cadastrado', 'Seu imóvel foi cadastrado com sucesso!')
+            }
+
+        }
+        catch(error){//se der erro é pq a inicializacao já foi feita
+            console.log(error)
+        }
         
    
     }

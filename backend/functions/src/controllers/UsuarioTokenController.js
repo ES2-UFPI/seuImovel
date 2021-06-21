@@ -54,10 +54,12 @@ module.exports = {
                         })
                 }
                 snapshot.forEach(async doc =>{//se entrar aqui é porque outro usuário entrou no mesmo dispositivo ou o mesmo usuario solicitou fazer um novo token
+                    if(doc.data().cpf != cpf){//Condição caso já exista cpf nao faz update
                     await docRef.doc(doc.id).update({
                         cpf : String(cpf),//se outro usuario estiver entrado no mesmo dispositivo atualiza o cpf
                         mudanca: new Date().toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})
                     })
+                }
                 })
 
                 res.status(200).send()//Não foi possível cadastrar o token porque ele já existe no banco de dados

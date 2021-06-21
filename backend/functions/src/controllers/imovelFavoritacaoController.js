@@ -8,11 +8,13 @@ module.exports = {
         const docRef2 = db.collection('houses')
         const imoveisFavoritos = []//Lista de imóveis favoritos
         const imoveisIds = []
-        const { cpf } = request.params
+        const { cpf } = request.query;
+        const { page = 1 } = request.query;
+        const qtd_imoveisListados = 5;
 
         const quantTotalImoveisFavoritos = (await docRef.where('cpf', "==", String(cpf)).get()).size //quantidade total de imóveis
 
-        await docRef.where('cpf', "==", String(cpf)).get()
+        await docRef.where('cpf', "==", String(cpf)).limit(qtd_imoveisListados).offset((page - 1) * qtd_imoveisListados).get()
             .then(snapshot => {
                 if (snapshot.empty) {//se não possui nenhum imóvel favorito.. retorna uma lista vazia
                     response.json(imoveisFavoritos)

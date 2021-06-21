@@ -228,6 +228,7 @@ export default({navigation})=>{
                 justifyContent: 'space-between',
                 alignItems: 'center'}}>
 
+                    {/* Touch */}
                     <Text style={{fontSize: 16, fontWeight: 'bold'}} >Localizar Imóvel</Text> 
                     <TouchableOpacity style={{width: 100, alignItems: 'center'}}
                     onPress={() => {console.log("Localizar imóvel")

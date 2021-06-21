@@ -14,6 +14,8 @@ import  Constants  from 'expo-constants';
 import * as Permissions from 'expo-permissions'
 import * as Notifications from 'expo-notifications';
 
+import {DadosContext} from '../../DadosContext'
+
 export default function ImoveisNoMapa({navigation}) {
 
   let totalImoveis = 0;
@@ -31,6 +33,8 @@ export default function ImoveisNoMapa({navigation}) {
   })
 
   const [expoPushToken, setExpoPushToken] = useState(null);//Guardará o token do celular do usuário
+  const {cadastrando, setCadastrando, setRegiao} = React.useContext(DadosContext)
+
 
   async function registerForPushNotificationsAsync () {//Regista o token do usuário
     if (Constants.isDevice) {
@@ -97,7 +101,7 @@ export default function ImoveisNoMapa({navigation}) {
     navigation.openDrawer();
 }
   
-
+  console.log(cadastrando);
 
   const obterLocalizacao = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync()
@@ -160,11 +164,19 @@ export default function ImoveisNoMapa({navigation}) {
           loadingEnabled={true}
           style={styles.map}
           region={region}
+          onPress={e => {
+            if(cadastrando === true){
+              setRegiao(e.nativeEvent.coordinate)
+              setCadastrando(false)
+              navigation.navigate("CadastroImovel")
+            }
+          }}
         >
           {
             listaImoveis2.map(imovel => (
               <Marker
                 key={imovel.id}
+                
                 coordinate={{
                   latitude: imovel.latitude,
                   longitude: imovel.longitude,

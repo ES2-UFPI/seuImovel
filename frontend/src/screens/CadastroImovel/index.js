@@ -22,12 +22,11 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import CarregarFotos from '../../components/CarregarFotos';
 
-
+import {DadosContext} from '../../DadosContext'
 
 export default({navigation})=>{
 
-    const [imageUri,setImageUri] = useState('');
-    const [imageUri2,setImageUri2] = useState('');
+  
     const [dataLoaded,setDataLoaded] = useState(false);
     
     const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3}) 
@@ -36,6 +35,9 @@ export default({navigation})=>{
 
     const [checked, setChecked] = React.useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+
+
+    const {regiao, setRegiao,setCadastrando} = React.useContext(DadosContext)
 
     const getPermission = async ()=>{
         const {granted}  = await ImagePicker.requestCameraPermissionsAsync()
@@ -231,7 +233,8 @@ export default({navigation})=>{
                     {/* Touch */}
                     <Text style={{fontSize: 16, fontWeight: 'bold'}} >Localizar Imóvel</Text> 
                     <TouchableOpacity style={{width: 100, alignItems: 'center'}}
-                    onPress={() => {console.log("Localizar imóvel")
+                    onPress={() => {
+                    setCadastrando(true)
                     navigation.navigate("Mapa")}}
                     >
                       <FontAwesome5 name="map-marker-alt" size={24} color="green" />
@@ -280,12 +283,15 @@ export default({navigation})=>{
                      onChangeText={text => setImovel({...imovel,numero:text})}
                     keyboardType='numeric'/>
 
+                    {console.log("regiao clicada = ",regiao)}
 
                     <Input placeholder="Latitude" 
+                     value={regiao && String(regiao.latitude)}
                      onChangeText={text => setImovel({...imovel,latitude:text})}
                     keyboardType='numeric'/>
 
                     <Input placeholder="Longitude" 
+                     value={regiao && String(regiao.longitude)}
                      onChangeText={text => setImovel({...imovel,longitude:text})}
                      keyboardType='numeric'/>                    
                 </View>

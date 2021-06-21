@@ -10,6 +10,7 @@ import ConfigUsuario from '../screens/configUsuario/index'
 import styles from '../styles/global'
 
 import DescricaoImovel from '../screens/descricaoImovel'
+import GerenciarPerfil  from '../screens/gerenciarPerfil';
 
 
 import CadastroImovel from '../screens/CadastroImovel/index'
@@ -58,6 +59,13 @@ function configuracaoStack() {//Stack 2 -> telas : configuração do Usuário
             <AppStack2.Screen name="ConfigUsuario" component={ConfigUsuario}
                 options={{
                     title: 'Configurações',
+                    //headerStyle:styles.headerStyle,
+                    //headerTitleStyle:styles.headerTitleStyle  
+                }}
+            />
+             <AppStack2.Screen name="GerenciarPerfil" component={GerenciarPerfil}
+                options={{
+                    title: 'Gerenciar Perfil',
                     //headerStyle:styles.headerStyle,
                     //headerTitleStyle:styles.headerTitleStyle  
                 }}

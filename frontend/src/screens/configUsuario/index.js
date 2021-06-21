@@ -46,14 +46,22 @@ export default function ConfigUsuario() {
 
     //falta criar a tela de editar perfil
     function navigateToEditProfile() {
-        navigation.navigate('ListagemDeImoveis')
+        navigation.navigate('GerenciarPerfil')
     }
 
     function actionNotification() {
         if (isEnabled === false) {
             setIsEnabled(true)
             console.log('aqui')
-        } else setIsEnabled(false)
+            setusuarioConfig({
+                notificacoes:true
+            })
+        } else {
+            setIsEnabled(false)
+            setusuarioConfig({
+                notificacoes:false
+            })
+        }
     }
 
 

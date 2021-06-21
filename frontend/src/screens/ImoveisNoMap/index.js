@@ -46,6 +46,7 @@ export default function ImoveisNoMapa({navigation}) {
       }
       const token = (await Notifications.getExpoPushTokenAsync()).data;
       setExpoPushToken(token)//muda o token para o token do aparelho do usuario
+      //console.log(token)
       //this.setState({ expoPushToken: token });
     } else {
       //console.log('Notificações não funcionam em emulador!\nPrecisa ser um dispositivo físico!');

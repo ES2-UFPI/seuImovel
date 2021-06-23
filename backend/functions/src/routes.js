@@ -17,7 +17,7 @@ routes.get('/listaImoveis',imovelController.index)
 
 routes.post('/cadastrarImovel',imovelController.create)
 
-routes.put('/cadastrarImovel',imovelController.update)
+routes.put('/cadastrarImovel/:cpfUsuario',imovelController.update)
 
 routes.get('/imovelFavoritacao',imovelFavoritacaoController.index)
 

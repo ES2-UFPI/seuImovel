@@ -43,6 +43,20 @@ export default function DescricaoImovel() {
             .catch(() => { })
     }
 
+    //teste
+    async function loadPostFavorite2() {
+
+        await api.post(`/imovelFavoritacao`, {
+            'cpf': cpf,
+            'page': 1,
+        }).then(() => {
+            if (favorite === true) {
+                setFavorite(false)
+            } else setFavorite(true)
+        })
+            .catch(() => { })
+    }
+
     useEffect(() => {
         loadFavorite()
     }, []);

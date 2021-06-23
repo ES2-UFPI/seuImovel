@@ -13,9 +13,9 @@ import 'firebase/firestore'
 
 import Constants from 'expo-constants'
 import Input from '../../components/Input';
-import { RadioButton, Button} from 'react-native-paper'
 
-// Icones
+import { RadioButton, Button, TextInput} from 'react-native-paper'
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -245,25 +245,97 @@ export default({navigation})=>{
                 {/* Carregar fotos MODAL */}
                 <CarregarFotos arrLinksImagens={arrLinksImagens} setArrLinks={setArrLinks} setImovel={setImovel} imovel={imovel} modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={usuario.numeroDeFotos}/>
 
-                <View style={{borderWidth: 1}}>
-                    <Text>{checked}</Text>
+                <View style={{justifyContent: 'space-around', height:460}}>
+                    {/* <Text>{checked}</Text> */}
 
-                    <Input
+            
+                    <TextInput
+                      outlineColor='green'
+                      mode='outlined'
+                      style={{height: 40}}
+                      value={usuario.nome}
+                      editable={false} 
+                    />
+                    {/* <Input
+                
                     inputStyle={{height: 20, borderWidth: 0, color: 'black', fontWeight: 'bold', backgroundColor: '#bfbfbf'}}
                     value={usuario.nome}
                     editable={false} 
-                    containerStyle={{marginBottom: 10}}/>
+                    containerStyle={{marginBottom: 10}}/> */}
 
-                    <Input placeholder="Descrição" 
+                    <TextInput
+                    
+                    mode='flat'
+                    placeholder="Descrição" 
+                    style={{height: 40}}
                     onChangeText={text => setImovel({...imovel,descricao:text})}
-                    containerStyle={{height: 70, marginBottom: 10}}/>
+                    />
 
-                    <Input placeholder="Valor" 
+                    {/* <Input placeholder="Descrição" 
+                    onChangeText={text => setImovel({...imovel,descricao:text})}
+                    containerStyle={{height: 70, marginBottom: 10}}/> */}
+
+                    <TextInput
+                    placeholder="Valor" 
+                    style={{height: 40}}
+                    onChangeText={val => setImovel({...imovel,valor:val})}
+                    />
+
+                    <TextInput
+                    placeholder="Banheiros"
+                    style={{height: 40}}
+                    onChangeText={text => setImovel({...imovel,banheiros:text})}
+                    keyboardType='numeric'
+                    />
+                    
+                    <TextInput
+                    placeholder="Quartos" 
+                    style={{height: 40}}
+                    onChangeText={text => setImovel({...imovel,quartos:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    placeholder="Quartos" 
+                    style={{height: 40}}
+                    placeholder="Complemento"
+                    onChangeText={text => setImovel({...imovel,complemento:text})}
+                    />
+
+                    <TextInput
+                    style={{height: 40}}
+                    placeholder="Dimensão ex: 11m"
+                    onChangeText={text => setImovel({...imovel,dimensao:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 30}}
+                    placeholder="Número" 
+                    onChangeText={text => setImovel({...imovel,numero:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 30}}
+                    placeholder="Latitude" 
+                    onChangeText={text => setImovel({...imovel,latitude:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 30}}
+                    placeholder="Longitude" 
+                    onChangeText={text => setImovel({...imovel,longitude:text})}
+                    keyboardType='numeric'
+                    />
+
+                    {/* <Input placeholder="Valor" 
                     inputStyle={{height: 20}}
                     onChangeText={val => setImovel({...imovel,valor:val})}
-                    containerStyle={{marginBottom: 10}}/>
+                    containerStyle={{marginBottom: 10}}/> */}
 
-                    <Input placeholder="Banheiros"
+                    {/* <Input placeholder="Banheiros"
                      onChangeText={text => setImovel({...imovel,banheiros:text})}
                     keyboardType='numeric'/>
 
@@ -293,7 +365,7 @@ export default({navigation})=>{
                     <Input placeholder="Longitude" 
                      value={regiao && String(regiao.longitude)}
                      onChangeText={text => setImovel({...imovel,longitude:text})}
-                     keyboardType='numeric'/>                    
+                     keyboardType='numeric'/>                     */}
                 </View>
 
                 {/* FOOTER */}

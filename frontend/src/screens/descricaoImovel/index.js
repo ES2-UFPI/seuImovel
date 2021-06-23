@@ -30,32 +30,43 @@ export default function DescricaoImovel() {
             .catch(() => { setFavorite(false) })
     }
 
-    async function loadPostFavorite() {
+
+    function postOrDelete() {
+        if (favorite === true) {
+            setFavorite(false)
+            deleteFavorite()
+        }
+        else {
+            setFavorite(true)
+            postFavorite()
+        }
+    }
+
+    async function postFavorite() {
 
         await api.post(`/imovelFavoritacao`, {
             'cpf': cpf,
             'imovelID': imovel.id,
         }).then(() => {
-            if (favorite === true) {
-                setFavorite(false)
-            } else setFavorite(true)
+
         })
             .catch(() => { })
     }
 
-    //teste para atualizar estados
-    async function loadPostFavorite2() {
-
-        await api.post(`/imovelFavoritacao`, {
-            'cpf': cpf,
-            'page': 1,
-        }).then(() => {
-            if (favorite === true) {
-                setFavorite(false)
-            } else setFavorite(true)
-        })
+    async function deleteFavorite() {
+        await api.delete('/imovelFavoritacao', {
+            data: {
+                'cpf': String(cpf),
+                'imovelID': String(imovel.id),
+            }
+        }).then(
+            () => { }
+        )
             .catch(() => { })
+
     }
+
+
 
     useEffect(() => {
         loadFavorite()
@@ -98,9 +109,9 @@ export default function DescricaoImovel() {
                     </View>
 
 
-                    <TouchableOpacity onPress={loadPostFavorite} style={styles.containerFavorite}>
+                    <TouchableOpacity onPress={postOrDelete} style={styles.containerFavorite}>
 
-                        <Text style={styles.favoriteText}>Favoritar</Text> 
+                        <Text style={styles.favoriteText}>Favoritar</Text>
 
                         {favorite ?
                             <MaterialIcons name="favorite" size={24} color="red" style={{ paddingLeft: 10 }} /> :

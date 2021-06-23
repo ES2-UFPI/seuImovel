@@ -43,7 +43,7 @@ export default function DescricaoImovel() {
             .catch(() => { })
     }
 
-    //teste
+    //teste para atualizar estados
     async function loadPostFavorite2() {
 
         await api.post(`/imovelFavoritacao`, {

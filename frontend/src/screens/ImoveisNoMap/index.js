@@ -8,15 +8,20 @@ import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons'; 
 import { WebView } from 'react-native-webview';
 import { Platform } from 'react-native';
+import Search from '../../components/Search/index'
+
 import  Constants  from 'expo-constants';
 import * as Permissions from 'expo-permissions'
 import * as Notifications from 'expo-notifications';
+
+import {DadosContext} from '../../DadosContext'
 
 export default function ImoveisNoMapa({navigation}) {
 
   let totalImoveis = 0;
   let listaImoveis = []
   let cpf = '41789623615'//cpf do usuario ficticio
+
 
   const [listaImoveis2, setListaImoveis2] = useState([])//vetor de imóveis
   //const [totalImoveis, setTotalImoveis] = useState(0)//total de imóveis da api
@@ -28,6 +33,8 @@ export default function ImoveisNoMapa({navigation}) {
   })
 
   const [expoPushToken, setExpoPushToken] = useState(null);//Guardará o token do celular do usuário
+  const {cadastrando, setCadastrando, setRegiao} = React.useContext(DadosContext)
+
 
   async function registerForPushNotificationsAsync () {//Regista o token do usuário
     if (Constants.isDevice) {
@@ -43,9 +50,10 @@ export default function ImoveisNoMapa({navigation}) {
       }
       const token = (await Notifications.getExpoPushTokenAsync()).data;
       setExpoPushToken(token)//muda o token para o token do aparelho do usuario
+      //console.log(token)
       //this.setState({ expoPushToken: token });
     } else {
-      console.log('Notifições não funcionam em emulador!\nPrecisa ser um dispositivo físico!');
+      //console.log('Notificações não funcionam em emulador!\nPrecisa ser um dispositivo físico!');
     }
   
     if (Platform.OS === 'android') {
@@ -93,6 +101,7 @@ export default function ImoveisNoMapa({navigation}) {
     navigation.openDrawer();
 }
   
+  console.log(cadastrando);
 
   const obterLocalizacao = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync()
@@ -109,12 +118,13 @@ export default function ImoveisNoMapa({navigation}) {
 
   //conexão de api
   async function loadListMovel() {
+    
     if ((totalImoveis > 0 && listaImoveis.length >= totalImoveis)) {//se todos imóveis já tiverem sidos carregados
       return
     }
     else {//se não tiver recebido todos imóveis da api
       let page = 1
-      while (true) {
+      while(true){
         if (totalImoveis > 0 && listaImoveis.length >= totalImoveis) {//quando receber todos imóveis
           setListaImoveis2(listaImoveis)
           return
@@ -126,7 +136,6 @@ export default function ImoveisNoMapa({navigation}) {
             totalImoveis = response.headers['x-total-count']
             page = page + 1
           })
-
       }
     }
   }
@@ -146,6 +155,8 @@ export default function ImoveisNoMapa({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
+
+
         <MapView
           showsUserLocation={true}
           showsMyLocationButton={true}
@@ -153,11 +164,19 @@ export default function ImoveisNoMapa({navigation}) {
           loadingEnabled={true}
           style={styles.map}
           region={region}
+          onPress={e => {
+            if(cadastrando === true){
+              setRegiao(e.nativeEvent.coordinate)
+              setCadastrando(false)
+              navigation.navigate("CadastroImovel")
+            }
+          }}
         >
           {
             listaImoveis2.map(imovel => (
               <Marker
                 key={imovel.id}
+                
                 coordinate={{
                   latitude: imovel.latitude,
                   longitude: imovel.longitude,
@@ -193,7 +212,13 @@ export default function ImoveisNoMapa({navigation}) {
 
 
         </MapView>
+        <Search callBackFuntion = {(data,details)=>{
+             const loc = details.geometry.location
+             let lat = Number(loc.lat);
+             let long = Number(loc.lng);
+             setRegion({ latitude:lat, longitude:long, latitudeDelta: 0.014, longitudeDelta: 0.014 })
 
+        }}/>
         <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
         <Entypo name="menu" size={40} color="green" />
         </TouchableOpacity>
@@ -204,7 +229,5 @@ export default function ImoveisNoMapa({navigation}) {
 
       </View>
     </View>
-
-
   )
 }

@@ -50,6 +50,7 @@ module.exports = {
     async create(req, res) {
         const docRef = db.collection('houses')
         //#var storageRef = firebase.storage().ref()
+
         const {
             cpf,
             descricao,
@@ -83,13 +84,51 @@ module.exports = {
             valor: imovel.valor
         }
 
-        await docRef.add(imovelJS)
-            .then(
-                res.status(200).send()
-            )
-            .catch(() => {
-                res.status(400).send()
+        const docRef2 = db.collection('users')
+        const docRef3 = db.collection('houses')
+        let idDocUsuario//id do documento do usuário
+        let quantImoveis//quantidade de imoveis que o plano permite
+        let quantAtualImoveis//quantidade atual de imoveis que o usuario possui
+
+        //quantAtualImoveis = (await docRef3.where('cpf', '==', imovel.cpf).get()).size
+
+
+        await docRef2.where('cpf', '==', imovel.cpf).get()
+            .then(async snapshot => {
+                if (snapshot.empty) {//Usuario não existe, usuário precisa ser cadastrado primeiro antes do cadastro de imovel
+                    res.status(404).send()//Retorna erro
+                }
+                else {
+                    snapshot.forEach(doc => {
+                        idDocUsuario = doc.id
+                        quantImoveis = doc.data().quantImoveis
+                        quantAtualImoveis = doc.data().quantAtualImoveis
+                    })
+                    if (quantAtualImoveis + 1 > quantImoveis) {//requisicao para cadastrar numero de imoveis maior que o plano pode permitir, erro
+                        res.status(404).send()
+                    }
+
+                }
             })
+            .catch(() => {//erro ao obter informações do database
+                res.status(404).send()
+            })
+
+        if (quantAtualImoveis + 1 <= quantImoveis) {
+            await docRef.add(imovelJS)
+                .then(
+                    res.status(200).send()
+                )
+                .catch(() => {
+                    res.status(400).send()
+                })
+
+
+
+            await docRef2.doc(idDocUsuario).update({
+                quantAtualImoveis: quantAtualImoveis + 1
+            })
+        }
     }
 
 }

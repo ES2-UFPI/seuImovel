@@ -67,6 +67,7 @@ export default function DescricaoImovel() {
     }
 
 
+
     useEffect(() => {
         loadFavorite()
     }, []);

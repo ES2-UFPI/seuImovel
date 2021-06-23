@@ -14,16 +14,19 @@ import 'firebase/firestore'
 import Constants from 'expo-constants'
 import Input from '../../components/Input';
 import { RadioButton, Button} from 'react-native-paper'
+
+// Icones
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+
 import { TouchableOpacity } from 'react-native';
 import CarregarFotos from '../../components/CarregarFotos';
 
+import {DadosContext} from '../../DadosContext'
 
+export default({navigation})=>{
 
-export default()=>{
-
-    const [imageUri,setImageUri] = useState('');
-    const [imageUri2,setImageUri2] = useState('');
+  
     const [dataLoaded,setDataLoaded] = useState(false);
     
     const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3}) 
@@ -33,32 +36,8 @@ export default()=>{
     const [checked, setChecked] = React.useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
-    const linkImagem = (nomeDaImagemNoStorage, nomePasta) => {//retorna o link da imagem no storage
-                
-        const Initial =  `https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/${nomePasta}%2F`
-        const Final = '?alt=media'
-        return Initial+nomeDaImagemNoStorage+Final
-    }
 
- 
-  
-    const enviarBD = (array) => {
-        let arr = []
-        array.map(uri => {
-          let fileName = null;
-          fileName = uri.split('ImagePicker/').pop()   
-          arr.push(uri)
-        })
-
-        setImovel({...imovel, imagens: arr})
-       
-        console.log(imovel);
-
-        
-    }
-
-    
-
+    const {regiao, setRegiao,setCadastrando} = React.useContext(DadosContext)
 
     const getPermission = async ()=>{
         const {granted}  = await ImagePicker.requestCameraPermissionsAsync()
@@ -67,37 +46,26 @@ export default()=>{
         }
     }
 
-    const getImage = async(image_op)=>{
-
-        const result = await ImagePicker.launchImageLibraryAsync();
-        if(!result.cancelled){
-            if(image_op===1){
-            setImageUri(result.uri)
-            }
-            else if(image_op===2){
-                setImageUri2(result.uri)
-            }
-        }
-    }
-     
     useEffect(()=>{
         getPermission()
 
     },[])
 
+    // -5.0945523
+    // -42.8345395
     const [imovel,setImovel] = useState({
         cpf: usuario.cpf,
-        descricao:'Imovel barato e bem feito',
+        descricao:'',
         proprietario: usuario.nome,
-        banheiros:2,
-        dimensao:11,
-        complemento:'Entre as ruas 69 e 100',
-        latitude:-5.0945523,
-        longitude:-42.8345395,
-        quartos:2,
-        tipo:'alugar',
-        valor:375,
-        numero:1,
+        banheiros:'',
+        dimensao:'',
+        complemento:'',
+        latitude:'',
+        longitude:'',
+        quartos:'',
+        tipo:'',
+        valor:'',
+        numero:'',
         imagens:[]
 
 
@@ -142,9 +110,7 @@ export default()=>{
             upload(uploadTask)
     
     }
-    //https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imoveis%2F44cdeada-4c8e-4034-aad4-b3a8a0795c24.jpg?alt=media&token=62dc2ee4-c9c2-4039-82f8-30ce8376bfb1
-    // https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imoveis%2F44cdeada-4c8e-4034-aad4-b3a8a0795c24.jpg
-    // https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imagens%2F44cdeada-4c8e-4034-aad4-b3a8a0795c24.jpg?alt=media
+   
     const uploadImagem = async (produto) => {
         // console.log(produto);
         
@@ -157,32 +123,27 @@ export default()=>{
             
         })
 
-        // Alert.alert('Deletar','Tem certeza que deseja cancelar o envio?', [
-        //     {text: 'Não'}, 
-        //     {text: 'Sim', onPress: () => enviarBD(imovel.imagens)}, 
-             
-        //  ])
-         console.log(imovel);
+        //  console.log(imovel);
         // console.log(arrLinksImagens);
-        // sendPost()
+         sendPost()
        
      }
 
 
     const sendPost = async ()=>{
-        // try{//faz a inicializacao da conexao com o firebase
-        //     await firebase.initializeApp(firebaseConfig)
-        //     console.log(imovel)
+        try{
            
             const response = await api.post('/cadastrarImovel', imovel)
             
-            console.log(response.status);
-    
-            // console.log(imovel)
-        // }
-        // catch(error){//se der erro é pq a inicializacao já foi feita
-        //     console.log(error)
-        // }
+            if(response){
+                console.log(response.status);
+                Alert.alert('Imóvel Cadastrado', 'Seu imóvel foi cadastrado com sucesso!')
+            }
+
+        }
+        catch(error){//se der erro é pq a inicializacao já foi feita
+            console.log(error)
+        }
         
    
     }
@@ -214,12 +175,8 @@ export default()=>{
                 Alert.alert('Imagens', 'Cadastre as fotos do imóvel')
             }
 
-            // sendPost()
              uploadImagem(arrLinksImagens)
-            // console.log(imovel);
-            //  setImovel({...imovel,tipo:checked})
-
-             
+          
          }
       }
 
@@ -261,8 +218,30 @@ export default()=>{
                     >
                       <MaterialCommunityIcons  name="plus" size={30} color="green" />
                     </TouchableOpacity>
-                   
+
                 </View> 
+
+                                   
+                {/* Colocar Localização no mapa */}
+
+
+                <View style={{ height: 35, marginRight: 5, margin: 5 , flexDirection: 'row', 
+                borderWidth: 1,
+                justifyContent: 'space-between',
+                alignItems: 'center'}}>
+
+                    {/* Touch */}
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}} >Localizar Imóvel</Text> 
+                    <TouchableOpacity style={{width: 100, alignItems: 'center'}}
+                    onPress={() => {
+                    setCadastrando(true)
+                    navigation.navigate("Mapa")}}
+                    >
+                      <FontAwesome5 name="map-marker-alt" size={24} color="green" />
+                    </TouchableOpacity>
+                </View>
+
+
                 {/* Carregar fotos MODAL */}
                 <CarregarFotos arrLinksImagens={arrLinksImagens} setArrLinks={setArrLinks} setImovel={setImovel} imovel={imovel} modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={usuario.numeroDeFotos}/>
 
@@ -304,12 +283,15 @@ export default()=>{
                      onChangeText={text => setImovel({...imovel,numero:text})}
                     keyboardType='numeric'/>
 
+                    {console.log("regiao clicada = ",regiao)}
 
                     <Input placeholder="Latitude" 
+                     value={regiao && String(regiao.latitude)}
                      onChangeText={text => setImovel({...imovel,latitude:text})}
                     keyboardType='numeric'/>
 
                     <Input placeholder="Longitude" 
+                     value={regiao && String(regiao.longitude)}
                      onChangeText={text => setImovel({...imovel,longitude:text})}
                      keyboardType='numeric'/>                    
                 </View>

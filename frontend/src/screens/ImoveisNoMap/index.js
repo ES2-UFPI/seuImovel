@@ -101,7 +101,9 @@ export default function ImoveisNoMapa({navigation}) {
     navigation.openDrawer();
 }
   
+
   //console.log(cadastrando);
+
 
   const obterLocalizacao = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync()

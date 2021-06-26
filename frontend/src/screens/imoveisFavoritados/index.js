@@ -20,8 +20,10 @@ export default function ImoveisFavoritados() {
     var cpf = '41789623615'
 
 
-    function navigateToDescricao(imovel){
+    const navigateToDescricao = (imovel)=>{
         navigation.navigate('DescricaoImovel', { imovel })
+        //console.log(page,listaImoveis,totalImoveis)
+        
     }
     
     function openMenu() {
@@ -49,9 +51,24 @@ export default function ImoveisFavoritados() {
     }
 
 
-    useEffect(() => {
-        loadListMovel()
-    }, []);
+    useEffect(()=>{
+        loadListMovel();
+    })
+
+    useEffect(()=>{
+        const unsubscribe = navigation.addListener('focus', () => {
+            setPage(1)
+            setListaImoveis([])
+            setTotalImoveis(0)
+          });
+
+
+        return () => {
+      // Unsubscribe for the focus Listener
+      unsubscribe;
+      loadListMovel();
+    };
+    },[navigation])
 
 
     return (
@@ -64,7 +81,9 @@ export default function ImoveisFavoritados() {
                 keyExtractor={item => String(item.id)}
                 renderItem={({item}) =>{
                     return(
-                        <TouchableOpacity onPress={() => navigateToDescricao(item)}>
+                        <TouchableOpacity onPress={() => {
+                            navigateToDescricao(item)
+                        }}>
                             <View style={styles.contextHomes}>
                                 <Text style={styles.contextText}>
                                     <Text style={styles.title}>{'Casa - '+ item.tipo+ ' (R$' + item.valor+')\n'}</Text> 

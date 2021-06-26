@@ -12,8 +12,7 @@ import styles from '../styles/global'
 import DescricaoImovel from '../screens/descricaoImovel'
 import GerenciarPerfil from '../screens/gerenciarPerfil'
 import ImoveisFavoritados from '../screens/imoveisFavoritados'
-
-
+import GerenciarImovel  from '../screens/GerenciarImovel';
 import CadastroImovel from '../screens/CadastroImovel/index'
 
 
@@ -49,6 +48,14 @@ function mapaStack() {//Stack 1 -> telas: mapa + listagem + descrição
                     //headerTitleStyle:styles.headerTitleStyle  
                 }}
             />
+
+            <AppStack.Screen name="GerenciarImovel" component={GerenciarImovel}
+            options={{
+                title: 'Editar Imóvel',
+                //headerStyle:styles.headerStyle,
+                //headerTitleStyle:styles.headerTitleStyle  
+            }}
+        />
 
         </AppStack.Navigator>
     )

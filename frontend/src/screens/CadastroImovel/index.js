@@ -369,7 +369,7 @@ export default({navigation})=>{
                     <Input placeholder="Longitude" 
                      value={regiao && String(regiao.longitude.toFixed(4))}
                      onChangeText={text => setImovel({...imovel,longitude:text})}
-                     keyboardType='numeric'/>                     */}
+                     keyboardType='numeric'/>                     
                 </View>
 
                 {/* FOOTER */}

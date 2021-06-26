@@ -6,6 +6,7 @@ import { useRoute } from '@react-navigation/native'
 import { SliderBox } from "react-native-image-slider-box"
 import { MaterialIcons } from '@expo/vector-icons';
 import api from '../../services/api'
+import { useNavigation } from '@react-navigation/native'
 
 
 
@@ -18,6 +19,7 @@ export default function DescricaoImovel() {
     const [favorite, setFavorite] = useState()
     const message = 'Olá, tenho interesse no imóvel'
 
+    const navigation = useNavigation()
 
 
     function sendWhatsapp() {
@@ -75,6 +77,9 @@ export default function DescricaoImovel() {
     return (
         <View style={styles.container}>
             <ScrollView>
+            <TouchableOpacity style  = {{marginLeft:'90%'}} onPress={() => navigation.navigate("GerenciarImovel",{imovel})}>
+                <FontAwesome name="pencil-square-o" size={24} color="black" />
+            </TouchableOpacity>
                 <View style={styles.firstContainer}>
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Título</Text>

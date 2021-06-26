@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Keyboard,KeyboardAvoidingView, Text, View, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, Pressable,ScrollView ,useContext} from 'react-native'
+import { Keyboard, Text, View, TouchableOpacity, TextInput, Modal, Pressable,ScrollView} from 'react-native'
 import styles from './style';
 import api from '../../services/api'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import {DadosContext} from '../../DadosContext'
 import MapView, { Marker, Callout } from 'react-native-maps';
 import Search from '../../components/Search'
-import send from 'send';
 
 export default function GerenciarImovel() {
 

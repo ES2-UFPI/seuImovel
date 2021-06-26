@@ -26,7 +26,7 @@ export default()=>{
     const [imageUri2,setImageUri2] = useState('');
     const [dataLoaded,setDataLoaded] = useState(false);
     
-    const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3}) 
+    const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3, espacoDisponivel: 1}) 
     
     const [arrLinksImagens, setArrLinks] = React.useState([])
 
@@ -247,7 +247,13 @@ export default()=>{
                     <Text style={{fontSize: 16, fontWeight: 'bold'}}>Carregar Imagens</Text>
 
                     <TouchableOpacity style={{width: 100, alignItems: 'center'}}
-                    onPress={() => setModalVisible(true)}
+                    onPress={() => {
+                        if(usuario.espacoDisponivel > 0){
+                            setModalVisible(true)
+                        }else{
+                            Alert.alert('Limite', 'Você já atingiu o limite de imagens do plano!!')
+                        }
+                    }}
                     >
                       <MaterialCommunityIcons  name="plus" size={30} color="green" />
                     </TouchableOpacity>

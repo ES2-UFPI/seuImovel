@@ -135,7 +135,6 @@ module.exports = {
         const { cpfUsuario } = request.params
         const {
             imovelID,
-            cpf,
             descricao,
             numero,
             banheiros,
@@ -144,42 +143,34 @@ module.exports = {
             imagens,
             latitude,
             longitude,
-            proprietario,
             quartos,
             tipo,
             valor } = request.body
 
-        imovel = new Imovel(cpf, descricao, numero, banheiros, complemento, dimensao, imagens, latitude, longitude, proprietario, quartos, tipo, valor)
+        //imovel = new Imovel(cpf, descricao, numero, banheiros, complemento, dimensao, imagens, latitude, longitude, proprietario, quartos, tipo, valor)
 
         const imovelJS = {//imovel json
-            cpf: imovel.cpf,
-            descricao: imovel.descricao,
-            numero: imovel.numero,
-            banheiros: imovel.banheiros,
-            complemento: imovel.complemento,
-            dimensao: imovel.dimensao,
-            imagens: imovel.imagens,
-            latitude: imovel.latitude,
-            longitude: imovel.longitude,
-            proprietario: imovel.proprietario,
-            quartos: imovel.quartos,
-            tipo: imovel.tipo,
-            valor: imovel.valor
+            descricao,
+            numero,
+            banheiros,
+            complemento,
+            dimensao,
+            imagens,
+            latitude,
+            longitude,
+            quartos,
+            tipo,
+            valor
         }
 
         const docRef = db.collection('houses')
 
-        if (cpfUsuario == imovelJS.cpf) {
-            docRef.doc(imovelID).update(
-                imovelJS
-            )
-                .then(() => response.status(200).send())
-                .catch(() => response.status(404).send())
-        }
-        else {
-            response.status(404).send()
-        }
 
+        docRef.doc(imovelID).update(
+            imovelJS
+        )
+            .then(() => response.status(200).send())
+            .catch(() => response.status(404).send())
     }
 
 }

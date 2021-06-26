@@ -29,7 +29,7 @@ export default({navigation})=>{
   
     const [dataLoaded,setDataLoaded] = useState(false);
     
-    const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3, espacoDisponivel: 1}) 
+    const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3, espacoDisponivel: 0}) 
     
     const [arrLinksImagens, setArrLinks] = React.useState([])
 

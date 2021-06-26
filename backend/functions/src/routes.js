@@ -17,9 +17,11 @@ routes.get('/listaImoveis',imovelController.index)
 
 routes.post('/cadastrarImovel',imovelController.create)
 
-routes.get('/imovelFavoritacao/:cpf',imovelFavoritacaoController.index)
+routes.get('/imovelFavoritacao',imovelFavoritacaoController.index)
 
-routes.post('/imovelFavoritacao',imovelFavoritacaoController.createAndDelete)
+routes.post('/imovelFavoritacao',imovelFavoritacaoController.create)
+
+routes.delete('/imovelFavoritacao',imovelFavoritacaoController.delete)
 
 routes.get('/imovelFavoritacaoUnica',imovelFavoritacaoController.oneIndex)
 

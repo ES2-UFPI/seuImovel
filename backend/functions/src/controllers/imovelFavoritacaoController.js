@@ -8,11 +8,13 @@ module.exports = {
         const docRef2 = db.collection('houses')
         const imoveisFavoritos = []//Lista de imóveis favoritos
         const imoveisIds = []
-        const { cpf } = request.params
+        const { cpf } = request.query;
+        const { page = 1 } = request.query;
+        const qtd_imoveisListados = 5;
 
         const quantTotalImoveisFavoritos = (await docRef.where('cpf', "==", String(cpf)).get()).size //quantidade total de imóveis
 
-        await docRef.where('cpf', "==", String(cpf)).get()
+        await docRef.where('cpf', "==", String(cpf)).limit(qtd_imoveisListados).offset((page - 1) * qtd_imoveisListados).get()
             .then(snapshot => {
                 if (snapshot.empty) {//se não possui nenhum imóvel favorito.. retorna uma lista vazia
                     response.json(imoveisFavoritos)
@@ -56,7 +58,7 @@ module.exports = {
     },
 
 
-    async createAndDelete(req, res) {//relaciona o id do imóvel favorito com o usuário que favoritou
+    async create(req, res) {//relaciona o id do imóvel favorito com o usuário que favoritou
         const docRef = db.collection('favorites')
         const {
             cpf,
@@ -85,14 +87,36 @@ module.exports = {
                     docID = doc.id
                 })
 
-                await docRef.doc(docID).delete();//se já existir apaga do database
 
-
-                res.status(200).send()//Não foi possível cadastrar o token porque ele já existe no banco de dados
+                res.status(404).send()//Não foi possível favoritar o imóvel pois ele já foi favoritado
             })
             .catch(() => {//erro ao fazer requisição do banco de dados
                 res.status(404).send()
             })
+
+    },
+
+    async delete(request, response) {
+        const docRef = db.collection('favorites')
+        const {
+            cpf,
+            imovelID
+        } = request.body
+        let docID
+
+        await docRef.where('imovelID', "==", String(imovelID)).where('cpf', '==', String(cpf)).get()
+            .then(async snapshot => {
+                if (snapshot.empty) {//Imóvel deletado nao existe para esse usuario
+                    response.status(404).send()
+                }
+                snapshot.forEach(doc => {
+                    docID = doc.id
+                })
+                await docRef.doc(docID).delete();//se já existir apaga do database
+                response.status(200).send()
+            })
+
+
 
     }
 

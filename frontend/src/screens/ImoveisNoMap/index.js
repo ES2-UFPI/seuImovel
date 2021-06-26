@@ -33,7 +33,7 @@ export default function ImoveisNoMapa({navigation}) {
   })
 
   const [expoPushToken, setExpoPushToken] = useState(null);//Guardará o token do celular do usuário
-  const {cadastrando, setCadastrando, setRegiao} = React.useContext(DadosContext)
+  const {cadastrando, setCadastrando, setRegiao, regiao} = React.useContext(DadosContext)
 
 
   async function registerForPushNotificationsAsync () {//Regista o token do usuário
@@ -168,12 +168,15 @@ export default function ImoveisNoMapa({navigation}) {
           region={region}
           onPress={e => {
             if(cadastrando === true){
+
               setRegiao(e.nativeEvent.coordinate)
               setCadastrando(false)
               navigation.navigate("CadastroImovel")
             }
           }}
         >
+
+           { regiao && <Marker pinColor='green' coordinate={{...regiao, latitudeDelta: 0.014, longitudeDelta: 0.014  }}/>}
           {
             listaImoveis2.map(imovel => (
               <Marker

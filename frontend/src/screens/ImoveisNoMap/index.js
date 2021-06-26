@@ -224,6 +224,7 @@ export default function ImoveisNoMapa({navigation}) {
              setRegion({ latitude:lat, longitude:long, latitudeDelta: 0.014, longitudeDelta: 0.014 })
 
         }}/>
+        
         <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
         <Entypo name="menu" size={40} color="green" />
         </TouchableOpacity>

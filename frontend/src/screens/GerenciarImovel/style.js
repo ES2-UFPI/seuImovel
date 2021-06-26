@@ -6,9 +6,6 @@ import color from 'color'
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height:'100%',
-        backgroundColor: '#fff',
-        paddingTop: Constants.statusBarHeight + 10,
     },
     firstContainer: {
         width: '100%',
@@ -117,14 +114,11 @@ const styles = StyleSheet.create({
         marginTop: 22,
       },
       modalView: {
-        margin: 20,
-        backgroundColor: "white",
         borderRadius: 20,
-        padding: 35,
         alignItems: "center",
         shadowColor: "#000",
-        width:'90%',
-        height:'80%',
+        width:'100%',
+        height:'100%',
         shadowOffset: {
           width: 0,
           height: 2
@@ -135,7 +129,9 @@ const styles = StyleSheet.create({
       },
       button: {
         borderRadius: 20,
-        padding: 10,
+        padding:10,
+        position: "absolute",
+        bottom:"5%",
         elevation: 2
       },
       buttonOpen: {
@@ -152,6 +148,9 @@ const styles = StyleSheet.create({
       modalText: {
         marginBottom: 15,
         textAlign: "center"
+      },
+      contentWrap:{
+          flex:1,
       }
 
 })

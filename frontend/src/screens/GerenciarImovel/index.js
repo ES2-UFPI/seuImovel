@@ -4,7 +4,6 @@ import styles from './style';
 import api from '../../services/api'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import {DadosContext} from '../../DadosContext'
-import LocationPicker from '../../components/locationPicker';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import Search from '../../components/Search'
 import send from 'send';

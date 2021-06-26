@@ -15,7 +15,7 @@ export default function DescricaoImovel() {
     const route = useRoute()
     const imovel = route.params.imovel
     var contato = '5586995279594'
-    var cpf = '41789623615'
+    const [cpf,setCpf] = '41789623615'
     const [favorite, setFavorite] = useState()
     const message = 'Olá, tenho interesse no imóvel'
 
@@ -72,14 +72,18 @@ export default function DescricaoImovel() {
 
     useEffect(() => {
         loadFavorite()
+        console.log(imovel.id)
     }, []);
 
     return (
         <View style={styles.container}>
             <ScrollView>
-            <TouchableOpacity style  = {{marginLeft:'90%'}} onPress={() => navigation.navigate("GerenciarImovel",{imovel})}>
-                <FontAwesome name="pencil-square-o" size={24} color="black" />
-            </TouchableOpacity>
+                {
+                    (imovel.cpf === cpf) &&
+                        <TouchableOpacity style={{ marginLeft: '90%' }} onPress={() => navigation.navigate("GerenciarImovel", { imovel })}>
+                            <FontAwesome name="pencil-square-o" size={24} color="black" />
+                        </TouchableOpacity>
+                }
                 <View style={styles.firstContainer}>
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Título</Text>

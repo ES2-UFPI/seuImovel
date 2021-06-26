@@ -12,7 +12,7 @@ import styles from '../styles/global'
 import DescricaoImovel from '../screens/descricaoImovel'
 import GerenciarPerfil from '../screens/gerenciarPerfil'
 import ImoveisFavoritados from '../screens/imoveisFavoritados'
-import GerenciarImovel  from '../screens/GerenciarImovel';
+import GerenciarImovel from '../screens/GerenciarImovel';
 import CadastroImovel from '../screens/CadastroImovel/index'
 
 
@@ -50,12 +50,12 @@ function mapaStack() {//Stack 1 -> telas: mapa + listagem + descrição
             />
 
             <AppStack.Screen name="GerenciarImovel" component={GerenciarImovel}
-            options={{
-                title: 'Editar Imóvel',
-                //headerStyle:styles.headerStyle,
-                //headerTitleStyle:styles.headerTitleStyle  
-            }}
-        />
+                options={{
+                    title: 'Editar Imóvel',
+                    //headerStyle:styles.headerStyle,
+                    //headerTitleStyle:styles.headerTitleStyle  
+                }}
+            />
 
         </AppStack.Navigator>
     )
@@ -154,6 +154,20 @@ export default () => {
             />
 
 
+            <Drawer.Screen name="imoveisFavoritadosStack" component={imoveisFavoritadosStack}
+                options={{
+                    title: () => {
+                        return (
+                            <View style={styles.container}>
+                                <MaterialIcons name="favorite" size={24} color="black" />
+                                <Text style={styles.textDrawer}>Imóveis Favoritados</Text>
+                            </View>
+                        )
+                    }
+                }}
+            />
+
+
             <Drawer.Screen name="configuracaoStack" component={configuracaoStack}
                 options={{
                     title: () => {
@@ -167,18 +181,6 @@ export default () => {
                 }}
             />
 
-            <Drawer.Screen name="imoveisFavoritadosStack" component={imoveisFavoritadosStack}
-                options={{
-                    title: () => {
-                        return (
-                            <View style={styles.container}>
-                                <MaterialIcons name="favorite" size={24} color="black" />
-                                <Text style={styles.textDrawer}>Imóveis Favoritados</Text>
-                            </View>
-                        )
-                    }
-                }}
-            />
 
 
         </Drawer.Navigator>

@@ -10,6 +10,8 @@ import ConfigUsuario from '../screens/configUsuario/index'
 import styles from '../styles/global'
 
 import DescricaoImovel from '../screens/descricaoImovel'
+import GerenciarPerfil from '../screens/gerenciarPerfil'
+import ImoveisFavoritados from '../screens/imoveisFavoritados'
 
 
 import CadastroImovel from '../screens/CadastroImovel/index'
@@ -42,7 +44,7 @@ function mapaStack() {//Stack 1 -> telas: mapa + listagem + descrição
 
             <AppStack.Screen name="DescricaoImovel" component={DescricaoImovel}
                 options={{
-                    title: 'Listagem De Imóveis',
+                    title: 'Descrição do Imóvel',
                     //headerStyle:styles.headerStyle,
                     //headerTitleStyle:styles.headerTitleStyle  
                 }}
@@ -58,6 +60,13 @@ function configuracaoStack() {//Stack 2 -> telas : configuração do Usuário
             <AppStack2.Screen name="ConfigUsuario" component={ConfigUsuario}
                 options={{
                     title: 'Configurações',
+                    //headerStyle:styles.headerStyle,
+                    //headerTitleStyle:styles.headerTitleStyle  
+                }}
+            />
+            <AppStack2.Screen name="GerenciarPerfil" component={GerenciarPerfil}
+                options={{
+                    title: 'Gerenciar Perfil',
                     //headerStyle:styles.headerStyle,
                     //headerTitleStyle:styles.headerTitleStyle  
                 }}
@@ -82,6 +91,27 @@ function cadastroDeImovelStack() {
     )
 }
 
+function imoveisFavoritadosStack() {//Stack 3 -> telas : imoveis favoritados do Usuário
+    return (
+        <AppStack2.Navigator screenOptions={{ headerShown: true }}>{/*headershown titulo da parte de cima ativado*/}
+            <AppStack2.Screen name="ImoveisFavoritados" component={ImoveisFavoritados}
+                options={{
+                    headerShown: false,
+                    title: 'Imoveis Favoritados',
+                    //headerStyle:styles.headerStyle,
+                    //headerTitleStyle:styles.headerTitleStyle  
+                }}
+            />
+            <AppStack2.Screen name="DescricaoImovel" component={DescricaoImovel}
+                options={{
+                    title: 'Descrição Imovel',
+                    //headerStyle:styles.headerStyle,
+                    //headerTitleStyle:styles.headerTitleStyle  
+                }}
+            />
+        </AppStack2.Navigator>
+    )
+}
 
 
 export default () => {
@@ -124,6 +154,19 @@ export default () => {
                             <View style={styles.container}>
                                 <MaterialIcons style={styles.iconDrawer} name='settings' size={28} />
                                 <Text style={styles.textDrawer}>Configurações</Text>
+                            </View>
+                        )
+                    }
+                }}
+            />
+
+            <Drawer.Screen name="imoveisFavoritadosStack" component={imoveisFavoritadosStack}
+                options={{
+                    title: () => {
+                        return (
+                            <View style={styles.container}>
+                                <MaterialIcons name="favorite" size={24} color="black" />
+                                <Text style={styles.textDrawer}>Imóveis Favoritados</Text>
                             </View>
                         )
                     }

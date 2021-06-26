@@ -13,17 +13,20 @@ import 'firebase/firestore'
 
 import Constants from 'expo-constants'
 import Input from '../../components/Input';
+
 import { RadioButton, Button, TextInput} from 'react-native-paper'
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+
 import { TouchableOpacity } from 'react-native';
 import CarregarFotos from '../../components/CarregarFotos';
 
+import {DadosContext} from '../../DadosContext'
 
+export default({navigation})=>{
 
-export default()=>{
-
-    const [imageUri,setImageUri] = useState('');
-    const [imageUri2,setImageUri2] = useState('');
+  
     const [dataLoaded,setDataLoaded] = useState(false);
     
     const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3, espacoDisponivel: 1}) 
@@ -34,26 +37,7 @@ export default()=>{
     const [modalVisible, setModalVisible] = useState(false);
 
 
-
- 
-  
-    const enviarBD = (array) => {
-        let arr = []
-        array.map(uri => {
-          let fileName = null;
-          fileName = uri.split('ImagePicker/').pop()   
-          arr.push(uri)
-        })
-
-        setImovel({...imovel, imagens: arr})
-       
-        console.log(imovel);
-
-        
-    }
-
-    
-
+    const {regiao, setRegiao,setCadastrando} = React.useContext(DadosContext)
 
     const getPermission = async ()=>{
         const {granted}  = await ImagePicker.requestCameraPermissionsAsync()
@@ -62,19 +46,6 @@ export default()=>{
         }
     }
 
-    const getImage = async(image_op)=>{
-
-        const result = await ImagePicker.launchImageLibraryAsync();
-        if(!result.cancelled){
-            if(image_op===1){
-            setImageUri(result.uri)
-            }
-            else if(image_op===2){
-                setImageUri2(result.uri)
-            }
-        }
-    }
-     
     useEffect(()=>{
         getPermission()
 
@@ -204,12 +175,8 @@ export default()=>{
                 Alert.alert('Imagens', 'Cadastre as fotos do imóvel')
             }
 
-            // sendPost()
              uploadImagem(arrLinksImagens)
-            // console.log(imovel);
-            //  setImovel({...imovel,tipo:checked})
-
-             
+          
          }
       }
 
@@ -257,8 +224,30 @@ export default()=>{
                     >
                       <MaterialCommunityIcons  name="plus" size={30} color="green" />
                     </TouchableOpacity>
-                   
+
                 </View> 
+
+                                   
+                {/* Colocar Localização no mapa */}
+
+
+                <View style={{ height: 35, marginRight: 5, margin: 5 , flexDirection: 'row', 
+                borderWidth: 1,
+                justifyContent: 'space-between',
+                alignItems: 'center'}}>
+
+                    {/* Touch */}
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}} >Localizar Imóvel</Text> 
+                    <TouchableOpacity style={{width: 100, alignItems: 'center'}}
+                    onPress={() => {
+                    setCadastrando(true)
+                    navigation.navigate("Mapa")}}
+                    >
+                      <FontAwesome5 name="map-marker-alt" size={24} color="green" />
+                    </TouchableOpacity>
+                </View>
+
+
                 {/* Carregar fotos MODAL */}
                 <CarregarFotos arrLinksImagens={arrLinksImagens} setArrLinks={setArrLinks} setImovel={setImovel} imovel={imovel} modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={usuario.numeroDeFotos}/>
 
@@ -372,12 +361,15 @@ export default()=>{
                      onChangeText={text => setImovel({...imovel,numero:text})}
                     keyboardType='numeric'/>
 
+                    {console.log("regiao clicada = ",regiao)}
 
                     <Input placeholder="Latitude" 
+                     value={regiao && String(regiao.latitude)}
                      onChangeText={text => setImovel({...imovel,latitude:text})}
                     keyboardType='numeric'/>
 
                     <Input placeholder="Longitude" 
+                     value={regiao && String(regiao.longitude)}
                      onChangeText={text => setImovel({...imovel,longitude:text})}
                      keyboardType='numeric'/>                     */}
                 </View>

@@ -3,7 +3,7 @@ const Imovel = require('../src/classes/imovel')//classe imóvel
 const ConfigUsuario = require('../src/classes/ConfigUsuario')
 
 // plano, descricaoPlano, notificacoes, raioNotificacoes
-const configUsuario = new ConfigUsuario("premium","Plano de até 7 imóveis e até 7 fotos por imóvel",false,20)
+const configUsuario = new ConfigUsuario("premium","Plano de até 7 imóveis e até 7 fotos por imóvel",false,7,7,6)
 
 const imovel1 = new Imovel(
     '05458903201', 
@@ -32,13 +32,22 @@ describe("Testes da Configuração",()=>{//dentro do decribe que serão colocado
         assert.strictEqual(configUsuario.descricaoPlano,"Plano de até 7 imóveis e até 7 fotos por imóvel")
     })
 
-    it("Conferindo se a notificação está ativada", () => {
+    it("Conferindo se a notificação está desativada", () => {
         assert.strictEqual(configUsuario.notificacoes,false)
     })
 
-    it("Conferindo o raio da notificação", () => {
-        assert.strictEqual(configUsuario.raioNotificacoes,20)
+    it("Conferindo se a quantidade máxima de imagens está correta", () => {
+        assert.strictEqual(configUsuario.quantImagens,7)
     })
+
+    it("Conferindo se a quantidade máxima de imóveis está correta", () => {
+        assert.strictEqual(configUsuario.quantImoveis,7)
+    })
+
+    it("Conferindo se a quantidade atual de imóveis está correta", () => {
+        assert.strictEqual(configUsuario.quantAtualImoveis,6)
+    })
+
 
 })
 

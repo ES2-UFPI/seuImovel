@@ -16,14 +16,18 @@ export default function ListarImoveis() {
     const [loading,setLoading] = useState(false)
     const [page,setPage] = useState(1)
     const navigation = useNavigation()
-
+    const [state,setState] = useState('')
+    
+    function receivedValue(value){
+        setState(value)
+    }  
 
     function navigateToDescricao(imovel){
         navigation.navigate('DescricaoImovel', { imovel })
     }
     
     function navigateToImoveis(){
-        navigation.goBack('ImoveisNoMapa')
+        navigation.goBack()
     }
 
     //conexão de api

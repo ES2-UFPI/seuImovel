@@ -132,7 +132,6 @@ module.exports = {
     },
 
     async update(request, response) {
-        const { cpfUsuario } = request.params
         const {
             imovelID,
             descricao,
@@ -140,7 +139,6 @@ module.exports = {
             banheiros,
             complemento,
             dimensao,
-            imagens,
             latitude,
             longitude,
             quartos,
@@ -155,7 +153,6 @@ module.exports = {
             banheiros,
             complemento,
             dimensao,
-            imagens,
             latitude,
             longitude,
             quartos,

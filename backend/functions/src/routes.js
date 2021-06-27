@@ -12,14 +12,22 @@ const usuarioTokenController = require('./controllers/UsuarioTokenController')
 
 const imovelFavoritacaoController = require('./controllers/imovelFavoritacaoController')
 
+const imovelUserController = require('./controllers/imovelUserController')
+
 //Imovel
 routes.get('/listaImoveis',imovelController.index)
 
 routes.post('/cadastrarImovel',imovelController.create)
 
+routes.get('/listaImovel',imovelUserController.index)
+
+routes.put('/cadastrarImovel/:cpfUsuario',imovelController.update)
+
 routes.get('/imovelFavoritacao',imovelFavoritacaoController.index)
 
-routes.post('/imovelFavoritacao',imovelFavoritacaoController.createAndDelete)
+routes.post('/imovelFavoritacao',imovelFavoritacaoController.create)
+
+routes.delete('/imovelFavoritacao',imovelFavoritacaoController.delete)
 
 routes.get('/imovelFavoritacaoUnica',imovelFavoritacaoController.oneIndex)
 

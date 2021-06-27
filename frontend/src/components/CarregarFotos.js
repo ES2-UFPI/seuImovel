@@ -88,19 +88,20 @@ const envioParaImovel = () => {
               {/* Titulo + icone fechar */}
             <View style={{flexDirection:'row', alignItems: 'center', width: '100%', justifyContent: 'space-around'}}>
                 <Text style={styles.modalText}>Carregue suas fotos</Text>
+               
                 <Pressable
-                onPress={() => setModalVisible(!modalVisible)}
-                >
-               <FontAwesome name="close" size={28} color="green" />
+                  onPress={() => setModalVisible(!modalVisible)}
+                  >
+                <FontAwesome name="close" size={28} color="green" />
                 </Pressable>
             </View>
         
-            <View style={{flex: 1, marginVertical: 20, width: '100%'}}>
-              <Text>Numero de fotos = {numeroFotos} {imageUri.length}</Text>
+            <View style={{flex: 1, marginVertical: 20, width: '100%', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Text style={{fontSize: 16, color: numeroFotos === 3 ? 'red' : 'green'}} >Numero de fotos = {numeroFotos}</Text>
               {
               // <AntDesign name="check" size={24} color="black" />
-                <View  style={{flexDirection: 'row', justifyContent: 'space-between', width: 250, borderWidth: 1, padding: 5}}>
-                    <Text>Imagem</Text>
+                <View  style={{flexDirection: 'row', justifyContent: 'space-between', width: 250, borderWidth: 1, padding: 10, borderRadius: 10}}>
+                    <Text style={{color: 'green'}}>Imagem</Text>
                     <TouchableOpacity onPress={obterImagem}>
                        <Foundation name="photo" size={24} color="black" />
                     </TouchableOpacity>
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   modalText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold'
   }
 });

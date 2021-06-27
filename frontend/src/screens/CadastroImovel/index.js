@@ -13,9 +13,9 @@ import 'firebase/firestore'
 
 import Constants from 'expo-constants'
 import Input from '../../components/Input';
-import { RadioButton, Button} from 'react-native-paper'
 
-// Icones
+import { RadioButton, Button, TextInput} from 'react-native-paper'
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -29,7 +29,7 @@ export default({navigation})=>{
   
     const [dataLoaded,setDataLoaded] = useState(false);
     
-    const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3}) 
+    const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3, espacoDisponivel: 1}) 
     
     const [arrLinksImagens, setArrLinks] = React.useState([])
 
@@ -184,7 +184,7 @@ export default({navigation})=>{
         <SafeAreaView style = {styles.screenContainer}>        
             <ScrollView>
                 <View style={{alignSelf: 'center', marginTop: 10}}>
-                    <Text style={{fontWeight: 'bold'}}>Cadastro de Imóvel</Text>
+                    <Text style={{fontWeight: 'bold', fontSize: 18}}>Cadastro de Imóvel</Text>
                 </View>
 
  
@@ -209,12 +209,19 @@ export default({navigation})=>{
                 {/* Carregar Imagens */}
                 <View style={{ marginRight: 5, margin: 5 , flexDirection: 'row', 
                 borderWidth: 1,
+                paddingHorizontal: 5,
                 justifyContent: 'space-between',
                 alignItems: 'center'}}> 
                     <Text style={{fontSize: 16, fontWeight: 'bold'}}>Carregar Imagens</Text>
 
                     <TouchableOpacity style={{width: 100, alignItems: 'center'}}
-                    onPress={() => setModalVisible(true)}
+                    onPress={() => {
+                        if(usuario.espacoDisponivel > 0){
+                            setModalVisible(true)
+                        }else{
+                            Alert.alert('Limite', 'Você já atingiu o limite de imagens do plano!!')
+                        }
+                    }}
                     >
                       <MaterialCommunityIcons  name="plus" size={30} color="green" />
                     </TouchableOpacity>
@@ -227,6 +234,7 @@ export default({navigation})=>{
 
                 <View style={{ height: 35, marginRight: 5, margin: 5 , flexDirection: 'row', 
                 borderWidth: 1,
+                paddingHorizontal: 5, 
                 justifyContent: 'space-between',
                 alignItems: 'center'}}>
 
@@ -245,25 +253,99 @@ export default({navigation})=>{
                 {/* Carregar fotos MODAL */}
                 <CarregarFotos arrLinksImagens={arrLinksImagens} setArrLinks={setArrLinks} setImovel={setImovel} imovel={imovel} modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={usuario.numeroDeFotos}/>
 
-                <View style={{borderWidth: 1}}>
-                    <Text>{checked}</Text>
 
-                    <Input
+                <View style={{justifyContent: 'space-around', height:460}}>
+
+                    {/* <Text>{checked}</Text> */}
+
+            
+                    <TextInput
+                      outlineColor='green'
+                      mode='outlined'
+                      style={{height: 40}}
+                      value={usuario.nome}
+                      editable={false} 
+                    />
+                    {/* <Input
+                
                     inputStyle={{height: 20, borderWidth: 0, color: 'black', fontWeight: 'bold', backgroundColor: '#bfbfbf'}}
                     value={usuario.nome}
                     editable={false} 
-                    containerStyle={{marginBottom: 10}}/>
+                    containerStyle={{marginBottom: 10}}/> */}
 
-                    <Input placeholder="Descrição" 
+                    <TextInput
+                    
+                    mode='flat'
+                    placeholder="Descrição" 
+                    style={{height: 40}}
                     onChangeText={text => setImovel({...imovel,descricao:text})}
-                    containerStyle={{height: 70, marginBottom: 10}}/>
+                    />
 
-                    <Input placeholder="Valor" 
+                    {/* <Input placeholder="Descrição" 
+                    onChangeText={text => setImovel({...imovel,descricao:text})}
+                    containerStyle={{height: 70, marginBottom: 10}}/> */}
+
+                    <TextInput
+                    placeholder="Valor" 
+                    style={{height: 40}}
+                    onChangeText={val => setImovel({...imovel,valor:val})}
+                    />
+
+                    <TextInput
+                    placeholder="Banheiros"
+                    style={{height: 40}}
+                    onChangeText={text => setImovel({...imovel,banheiros:text})}
+                    keyboardType='numeric'
+                    />
+                    
+                    <TextInput
+                    placeholder="Quartos" 
+                    style={{height: 40}}
+                    onChangeText={text => setImovel({...imovel,quartos:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    placeholder="Quartos" 
+                    style={{height: 40}}
+                    placeholder="Complemento"
+                    onChangeText={text => setImovel({...imovel,complemento:text})}
+                    />
+
+                    <TextInput
+                    style={{height: 40}}
+                    placeholder="Dimensão ex: 11m"
+                    onChangeText={text => setImovel({...imovel,dimensao:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 30}}
+                    placeholder="Número" 
+                    onChangeText={text => setImovel({...imovel,numero:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 30}}
+                    placeholder="Latitude" 
+                    onChangeText={text => setImovel({...imovel,latitude:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 30}}
+                    placeholder="Longitude" 
+                    onChangeText={text => setImovel({...imovel,longitude:text})}
+                    keyboardType='numeric'
+                    />
+
+                    {/* <Input placeholder="Valor" 
                     inputStyle={{height: 20}}
                     onChangeText={val => setImovel({...imovel,valor:val})}
-                    containerStyle={{marginBottom: 10}}/>
+                    containerStyle={{marginBottom: 10}}/> */}
 
-                    <Input placeholder="Banheiros"
+                    {/* <Input placeholder="Banheiros"
                      onChangeText={text => setImovel({...imovel,banheiros:text})}
                     keyboardType='numeric'/>
 
@@ -283,22 +365,22 @@ export default({navigation})=>{
                      onChangeText={text => setImovel({...imovel,numero:text})}
                     keyboardType='numeric'/>
 
-                    {console.log("regiao clicada = ",regiao)}
+                    {/* {console.log("regiao clicada = ",regiao)} */}
 
                     <Input placeholder="Latitude" 
-                     value={regiao && String(regiao.latitude)}
+                     value={regiao && String(regiao.latitude.toFixed(4))}
                      onChangeText={text => setImovel({...imovel,latitude:text})}
-                    keyboardType='numeric'/>
+                     keyboardType='numeric'/>
 
                     <Input placeholder="Longitude" 
-                     value={regiao && String(regiao.longitude)}
+                     value={regiao && String(regiao.longitude.toFixed(4))}
                      onChangeText={text => setImovel({...imovel,longitude:text})}
-                     keyboardType='numeric'/>                    
+                     keyboardType='numeric'/>                     
                 </View>
 
                 {/* FOOTER */}
                 <View style={{marginTop: 10}}>
-                    <Button onPress={montarImovel} mode='outlined' color='green'>Enviar</Button>
+                    <Button onPress={montarImovel}  mode='outlined' color='green'>Enviar</Button>
                 </View>
  
                 

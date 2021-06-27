@@ -6,6 +6,7 @@ import { useRoute } from '@react-navigation/native'
 import { SliderBox } from "react-native-image-slider-box"
 import { MaterialIcons } from '@expo/vector-icons';
 import api from '../../services/api'
+import { useNavigation } from '@react-navigation/native'
 
 
 
@@ -14,14 +15,22 @@ export default function DescricaoImovel() {
     const route = useRoute()
     const imovel = route.params.imovel
     var contato = '5586995279594'
-    var cpf = '41789623615'
+    const [cpf, setCpf] = useState('41789623615')
+    const [imovelPertence, setImovelPertence] = useState(false)//verifica se imóvel pertence ou não ao usuário
     const [favorite, setFavorite] = useState()
     const message = 'Olá, tenho interesse no imóvel'
 
+    const navigation = useNavigation()
 
 
     function sendWhatsapp() {
         Linking.openURL(`whatsapp://send?phone=${contato}&text=${message}`)
+    }
+
+    async function verificaImovel() {//verifica se o imóvel foi cadastrado pelo usuário atual
+        await api.get(`/listaImovel?cpf=${cpf}&imovelID=${imovel.id}`)
+            .then(() => { setImovelPertence(true) })
+            .catch(() => { })
     }
 
     async function loadFavorite() {
@@ -30,28 +39,62 @@ export default function DescricaoImovel() {
             .catch(() => { setFavorite(false) })
     }
 
-    async function loadPostFavorite() {
+
+    function postOrDelete() {
+        if (favorite === true) {
+            setFavorite(false)
+            deleteFavorite()
+        }
+        else {
+            setFavorite(true)
+            postFavorite()
+        }
+    }
+
+    async function postFavorite() {
 
         await api.post(`/imovelFavoritacao`, {
             'cpf': cpf,
             'imovelID': imovel.id,
         }).then(() => {
-            if (favorite === true) {
-                setFavorite(false)
-            } else setFavorite(true)
+
         })
             .catch(() => { })
     }
 
-   
+
+    async function deleteFavorite() {
+        await api.delete('/imovelFavoritacao', {
+            data: {
+                'cpf': String(cpf),
+                'imovelID': String(imovel.id),
+            }
+        }).then(
+            () => { }
+        )
+            .catch(() => { })
+
+    }
+
+
 
     useEffect(() => {
         loadFavorite()
     }, []);
 
+    useEffect(() => {
+        verificaImovel()
+    }, []);
+
     return (
         <View style={styles.container}>
             <ScrollView>
+                {
+                    imovelPertence &&
+                    <TouchableOpacity style={{ marginLeft: '90%' }} onPress={() => navigation.navigate("GerenciarImovel", { imovel })}>
+                        <FontAwesome name="pencil-square-o" size={24} color="black" />
+                    </TouchableOpacity>
+                }
                 <View style={styles.firstContainer}>
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Título</Text>
@@ -86,9 +129,9 @@ export default function DescricaoImovel() {
                     </View>
 
 
-                    <TouchableOpacity onPress={loadPostFavorite} style={styles.containerFavorite}>
+                    <TouchableOpacity onPress={postOrDelete} style={styles.containerFavorite}>
 
-                        <Text style={styles.favoriteText}>Favoritar</Text> 
+                        <Text style={styles.favoriteText}>Favoritar</Text>
 
                         {favorite ?
                             <MaterialIcons name="favorite" size={24} color="red" style={{ paddingLeft: 10 }} /> :

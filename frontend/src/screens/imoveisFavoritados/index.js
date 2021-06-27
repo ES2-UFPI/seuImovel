@@ -51,7 +51,20 @@ export default function ImoveisFavoritados() {
 
     useEffect(() => {
         loadListMovel()
-    }, []);
+    })
+    
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setPage(1)
+            setListaImoveis([])
+            setTotalImoveis(0)
+        });
+
+        return () => {
+            unsubscribe
+            loadListMovel()
+        };
+    },[navigation])
 
 
     return (

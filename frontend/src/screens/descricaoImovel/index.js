@@ -14,7 +14,8 @@ export default function DescricaoImovel() {
 
     const route = useRoute()
     const imovel = route.params.imovel
-    var contato = '5586995279594'
+    //var contato = '5586995279594'
+    const [contato, setContato] = useState()
     const [cpf, setCpf] = useState('41789623615')
     const [imovelPertence, setImovelPertence] = useState(false)//verifica se imóvel pertence ou não ao usuário
     const [favorite, setFavorite] = useState()
@@ -22,9 +23,14 @@ export default function DescricaoImovel() {
 
     const navigation = useNavigation()
 
+    function ligacao(){
+        Linking.openURL(`tel:${contato}`)
+    }
 
     function sendWhatsapp() {
         Linking.openURL(`whatsapp://send?phone=${contato}&text=${message}`)
+        .then(() => {})
+        .catch(() => {ligacao()})
     }
 
     async function verificaImovel() {//verifica se o imóvel foi cadastrado pelo usuário atual
@@ -35,8 +41,15 @@ export default function DescricaoImovel() {
 
     async function loadFavorite() {
         await api.get(`/imovelFavoritacaoUnica?cpf=${cpf}&imovelID=${imovel.id}`)
-            .then(() => { setFavorite(true) })
+            .then(() => { setFavorite(true)})
             .catch(() => { setFavorite(false) })
+    }
+
+    async function loadUsuarioPerfil() {
+        await api.get(`/usuarioPerfil/${cpf}`)
+        .then((response) => {setContato("55"+response.data.telefone.toString())})
+        .catch(() => {})
+           
     }
 
 
@@ -83,6 +96,10 @@ export default function DescricaoImovel() {
     }, []);
 
     useEffect(() => {
+        loadUsuarioPerfil()
+    }, []);
+
+    useEffect(() => {
         verificaImovel()
     }, []);
 
@@ -103,6 +120,10 @@ export default function DescricaoImovel() {
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Endereço</Text>
                         <Text style={styles.secondText}>{imovel.complemento}</Text>
+                    </View>
+                    <View style={styles.containerText}>
+                        <Text style={styles.firstText}>N° Casa</Text>
+                        <Text style={styles.secondText}>{imovel.numero}</Text>
                     </View>
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Descrição</Text>

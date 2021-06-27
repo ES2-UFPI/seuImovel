@@ -5,14 +5,14 @@ import api from '../../services/api'
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { ScrollView } from 'react-native';
-import { Entypo } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';
+import { Picker } from '@react-native-picker/picker';
 
 
 
 export default function ConfigUsuario() {
 
-    const [isEnabled, setIsEnabled] = useState(false)
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState)
+    const [isEnabled, setIsEnabled] = useState()
     const [modalVisible, setModalVisible] = useState(false)
     const [usuarioConfig, setusuarioConfig] = useState([])
     const [plano, setPlano] = useState()
@@ -24,9 +24,11 @@ export default function ConfigUsuario() {
 
     //conexão de api
     async function loadUsuarioConfig() {
-        const response = await api.get('/usuarioConfig/41789623615')
-        setusuarioConfig(response.data)
-        setIsEnabled(usuarioConfig.notificacoes)
+        await api.get('/usuarioConfig/41789623615')
+            .then((response) => {
+                setusuarioConfig(response.data)
+            })
+
     }
 
     function openMenu() {
@@ -48,23 +50,23 @@ export default function ConfigUsuario() {
     function navigateToEditProfile() {
         navigation.navigate('GerenciarPerfil')
     }
-
-    function actionNotification() {
-        if (isEnabled === false) {
-            setIsEnabled(true)
-            console.log('aqui')
-            setusuarioConfig({
-                notificacoes:true
-            })
-        } else {
-            setIsEnabled(false)
-            setusuarioConfig({
-                notificacoes:false
-            })
+    /*
+        function actionNotification() {
+            if (isEnabled === false) {
+                setIsEnabled(true)
+                console.log('aqui')
+                setusuarioConfig({
+                    notificacoes: true
+                })
+            } else {
+                setIsEnabled(false)
+                setusuarioConfig({
+                    notificacoes: false
+                })
+            }
         }
-    }
-
-
+    
+    */
     useEffect(() => {
         loadUsuarioConfig()
     }, []);
@@ -76,16 +78,6 @@ export default function ConfigUsuario() {
                 <Image
                     style={styles.imageUser}
                     source={require('../../../assets/me.jpeg')}
-                />
-
-                <Text style={styles.notificationText}>{isEnabled ? 'Notificações ativadas' : 'Notificações desativadas'}</Text>
-                <Switch
-                    trackColor={{ false: '#767577', true: '#7FFF00' }}
-                    thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
-                    ios_backgroundColor='#3e3e3e'
-                    onValueChange={toggleSwitch}
-                    value={isEnabled}
-                    onPress={actionNotification}
                 />
                 <View style={styles.containerText}>
                     <Text style={styles.editPerfil}>Editar informações do perfil</Text>
@@ -101,6 +93,25 @@ export default function ConfigUsuario() {
                     <Text style={styles.firstText}>Descrição</Text>
                     <Text style={styles.secondText}>{usuarioConfig.descricaoPlano}</Text>
                 </View>
+                <View style={styles.containerText}>
+                    <Text style={styles.firstText}>Notificações</Text>
+                    <Picker
+                        style={styles.pickerText}
+                        selectedValue={usuarioConfig.notificacoes}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setusuarioConfig({
+                                plano: usuarioConfig.plano,
+                                descricaoPlano: usuarioConfig.descricaoPlano,
+                                quantImagens: usuarioConfig.quantImagens,
+                                quantImoveis: usuarioConfig.quantImoveis,
+                                notificacoes: itemValue
+                            })
+                        }>
+                        <Picker.Item label="Ativado" value={true} />
+                        <Picker.Item label="Desativado" value={false} />
+                    </Picker>
+                </View>
+
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <Text style={styles.upgradeText}>{'MUDAR PLANO'}</Text>
                 </TouchableOpacity>

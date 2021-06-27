@@ -6,12 +6,15 @@ import { Picker } from '@react-native-picker/picker';
 import { BlurView } from 'expo-blur';
 import MapView, { Marker } from 'react-native-maps';
 import Search from '../../components/Search'
+import api from '../../services/api'
 
 export default function GerenciarImovel() {
 
     const route = useRoute()
     const imovel = route.params.imovel
 
+    var cpf = 41789623615;
+    const [imovelID, setImovelID] = useState(imovel.id)
     const [titulo, setTitulo] = useState(imovel.descricao)
     const [Endereço, setEndereço] = useState(imovel.complemento)
     const [anunciante, setAnunciante] = useState(imovel.anunciante)
@@ -21,7 +24,7 @@ export default function GerenciarImovel() {
     const [quartos, setQuartos] = useState(imovel.quartos)
     const [modalVisible, setModalVisible] = React.useState(false);
     const [numero, setNumero] = useState(imovel.numero)
-    const [dimensao,setDimensao] = useState(imovel.dimensao)
+    const [dimensao, setDimensao] = useState(imovel.dimensao)
 
     const [latitude, setLatitude] = React.useState(imovel.latitude);
     const [longitude, setLongitude] = React.useState(imovel.longitude);
@@ -48,6 +51,19 @@ export default function GerenciarImovel() {
         //Longitude atualizada = longitude
         //  api.post()
 
+        await api.put(`cadastrarImovel/${cpf}`, {
+            imovelID: imovelID,
+            descricao: titulo,
+            numero: parseInt(numero),
+            banheiros: parseInt(banheiros),
+            complemento: Endereço,
+            dimensao: parseFloat(dimensao),
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude),
+            quartos: parseInt(quartos),
+            tipo: tipo,
+            valor: parseFloat(valor) 
+        })
 
     }
 
@@ -65,17 +81,17 @@ export default function GerenciarImovel() {
                         <Text style={styles.firstText}>Descrição</Text>
                         <TextInput
                             multiline={true}
-                            value={imovel.descricao}
+                            value={titulo}
                             style={styles.secondText}
-                            onChange={setTitulo}
+                            onChangeText={setTitulo}
                         />
                     </View>
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Complemento</Text>
                         <TextInput
-                            value={imovel.complemento}
+                            value={Endereço}
                             style={styles.secondText}
-                            onChange={setEndereço}
+                            onChangeText={setEndereço}
 
                         />
                     </View>
@@ -83,9 +99,9 @@ export default function GerenciarImovel() {
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Número</Text>
                         <TextInput
-                            value={String(imovel.numero)}
+                            value={String(numero)}
                             style={styles.secondText}
-                            onChange={setNumero}
+                            onChangeText={setNumero}
                             keyboardType='numeric'
                         />
                     </View>
@@ -93,9 +109,9 @@ export default function GerenciarImovel() {
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Dimensao</Text>
                         <TextInput
-                            value={String(imovel.dimensao)}
                             style={styles.secondText}
-                            onChange={setDimensao}
+                            value={String(dimensao)}
+                            onChangeText={setDimensao}
                             keyboardType='numeric'
                         />
                     </View>
@@ -105,8 +121,8 @@ export default function GerenciarImovel() {
                         <Text style={styles.firstText}>Banheiros</Text>
                         <TextInput
                             style={styles.secondText}
-                            value={String(imovel.banheiros)}
-                            onChange={setBanheiros}
+                            value={String(banheiros)}
+                            onChangeText={setBanheiros}
                             keyboardType='numeric'
                         />
                     </View>
@@ -125,13 +141,13 @@ export default function GerenciarImovel() {
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Tipo</Text>
                         <Picker
-                        style={styles.secondText}
+                            style={styles.secondText}
                             selectedValue={tipo}
                             onValueChange={(itemValue, itemIndex) =>
                                 setTipo(itemValue)
                             }>
-                            <Picker.Item label="Alugar" value="Alugar" />
-                        <Picker.Item label="Vender" value="Vender" />
+                            <Picker.Item label="Aluguel" value="Aluguel" />
+                            <Picker.Item label="Venda" value="Venda" />
                         </Picker>
                     </View>
 
@@ -140,7 +156,7 @@ export default function GerenciarImovel() {
                         <Text style={styles.firstText}>Valor</Text>
                         <TextInput
                             style={styles.secondText}
-                            value={String(imovel.valor)}
+                            value={String(valor)}
                             onChangeText={setValor}
                             keyboardType='numeric'
                         />
@@ -150,13 +166,13 @@ export default function GerenciarImovel() {
                         <Text style={styles.firstText}>Quartos</Text>
                         <TextInput
                             style={styles.secondText}
-                            value={String(imovel.quartos)}
+                            value={String(quartos)}
                             onChangeText={setQuartos}
                             keyboardType='numeric'
                         />
                     </View>
 
-                    <TouchableOpacity onPress={() => sendPost()} style={styles.buttonSalvar} ><Text style={styles.upgradeText}>Salvar Mudança</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={sendPost} style={styles.buttonSalvar} ><Text style={styles.upgradeText}>Salvar Mudança</Text></TouchableOpacity>
 
                 </ScrollView>
 

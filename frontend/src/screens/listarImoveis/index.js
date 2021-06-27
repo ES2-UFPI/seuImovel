@@ -24,7 +24,7 @@ export default function ListarImoveis() {
     }
     
     function navigateToImoveis(){
-        navigation.goBack('ImoveisNoMapa')
+        navigation.goBack()
     }
 
     //conexão de api

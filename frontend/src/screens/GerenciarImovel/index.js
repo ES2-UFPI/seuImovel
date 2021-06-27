@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Keyboard, Text, View, TouchableOpacity, TextInput, Modal, Pressable, ScrollView, StyleSheet,Alert} from 'react-native'
+import { Keyboard, Text, View, TouchableOpacity, TextInput, Modal, Pressable, ScrollView, StyleSheet, Alert } from 'react-native'
 import styles from './style';
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { Picker } from '@react-native-picker/picker';
 import { BlurView } from 'expo-blur';
 import MapView, { Marker } from 'react-native-maps';
 import Search from '../../components/Search'
@@ -19,6 +20,8 @@ export default function GerenciarImovel() {
     const [valor, setValor] = useState(imovel.valor)
     const [quartos, setQuartos] = useState(imovel.quartos)
     const [modalVisible, setModalVisible] = React.useState(false);
+    const [numero, setNumero] = useState(imovel.numero)
+    const [dimensao,setDimensao] = useState(imovel.dimensao)
 
     const [latitude, setLatitude] = React.useState(imovel.latitude);
     const [longitude, setLongitude] = React.useState(imovel.longitude);
@@ -59,7 +62,7 @@ export default function GerenciarImovel() {
                 <ScrollView style={styles.firstContainer}>
 
                     <View style={styles.containerText}>
-                        <Text style={styles.firstText}>Título</Text>
+                        <Text style={styles.firstText}>Descrição</Text>
                         <TextInput
                             multiline={true}
                             value={imovel.descricao}
@@ -68,12 +71,32 @@ export default function GerenciarImovel() {
                         />
                     </View>
                     <View style={styles.containerText}>
-                        <Text style={styles.firstText}>Endereço</Text>
+                        <Text style={styles.firstText}>Complemento</Text>
                         <TextInput
                             value={imovel.complemento}
                             style={styles.secondText}
                             onChange={setEndereço}
 
+                        />
+                    </View>
+
+                    <View style={styles.containerText}>
+                        <Text style={styles.firstText}>Número</Text>
+                        <TextInput
+                            value={String(imovel.numero)}
+                            style={styles.secondText}
+                            onChange={setNumero}
+                            keyboardType='numeric'
+                        />
+                    </View>
+
+                    <View style={styles.containerText}>
+                        <Text style={styles.firstText}>Dimensao</Text>
+                        <TextInput
+                            value={String(imovel.dimensao)}
+                            style={styles.secondText}
+                            onChange={setDimensao}
+                            keyboardType='numeric'
                         />
                     </View>
 
@@ -101,11 +124,15 @@ export default function GerenciarImovel() {
                     </TouchableOpacity>
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Tipo</Text>
-                        <TextInput
-                            style={styles.secondText}
-                            value={imovel.tipo}
-                            onChange={setTipo}
-                        />
+                        <Picker
+                        style={styles.secondText}
+                            selectedValue={tipo}
+                            onValueChange={(itemValue, itemIndex) =>
+                                setTipo(itemValue)
+                            }>
+                            <Picker.Item label="Alugar" value="Alugar" />
+                        <Picker.Item label="Vender" value="Vender" />
+                        </Picker>
                     </View>
 
 
@@ -136,7 +163,7 @@ export default function GerenciarImovel() {
             </Pressable>
 
             <View style={styles.centeredView}>
-                
+
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -146,52 +173,52 @@ export default function GerenciarImovel() {
                         setModalVisible(!modalVisible);
                     }}
                 >
-                    <BlurView intensity={100} style={[styles.contentWrap,StyleSheet.absoluteFill]}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                            <MapView
-                                showsUserLocation={true}
-                                showsMyLocationButton={true}
-                                showsCompass={false}
-                                loadingEnabled={true}
-                                style={{ width: '100%', height: '100%' }}
-                                region={regionMiniMap}
-                                onPress={e => {
-                                    setLatitude(e.nativeEvent.coordinate.latitude)
-                                    setLongitude(e.nativeEvent.coordinate.longitude)
-                                    Alert.alert("Localização alterada!");
-                                    setModalVisible(false)
-                                }}
-
-                            >
-                                <Marker
-                                    key={imovel.id}
-
-                                    coordinate={{
-                                        latitude: latitude,
-                                        longitude: longitude,
-
+                    <BlurView intensity={100} style={[styles.contentWrap, StyleSheet.absoluteFill]}>
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <MapView
+                                    showsUserLocation={true}
+                                    showsMyLocationButton={true}
+                                    showsCompass={false}
+                                    loadingEnabled={true}
+                                    style={{ width: '100%', height: '100%' }}
+                                    region={regionMiniMap}
+                                    onPress={e => {
+                                        setLatitude(e.nativeEvent.coordinate.latitude)
+                                        setLongitude(e.nativeEvent.coordinate.longitude)
+                                        Alert.alert("Localização alterada!");
+                                        setModalVisible(false)
                                     }}
-                                    image={require('../../../assets/map_marker.png')}
+
                                 >
+                                    <Marker
+                                        key={imovel.id}
 
-                                </Marker>
-                            </MapView>
-                            <Search callBackFuntion={(data, details) => {
-                                const loc = details.geometry.location
-                                let lat = Number(loc.lat);
-                                let long = Number(loc.lng);
-                                setRegionMiniMap({ latitude: lat, longitude: long, latitudeDelta: 0.014, longitudeDelta: 0.014 })
+                                        coordinate={{
+                                            latitude: latitude,
+                                            longitude: longitude,
 
-                            }} />
-                            <Pressable
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={() => setModalVisible(!modalVisible)}
-                            >
-                                <Text>Fechar Mapa</Text>
-                            </Pressable>
+                                        }}
+                                        image={require('../../../assets/map_marker.png')}
+                                    >
+
+                                    </Marker>
+                                </MapView>
+                                <Search callBackFuntion={(data, details) => {
+                                    const loc = details.geometry.location
+                                    let lat = Number(loc.lat);
+                                    let long = Number(loc.lng);
+                                    setRegionMiniMap({ latitude: lat, longitude: long, latitudeDelta: 0.014, longitudeDelta: 0.014 })
+
+                                }} />
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => setModalVisible(!modalVisible)}
+                                >
+                                    <Text>Fechar Mapa</Text>
+                                </Pressable>
+                            </View>
                         </View>
-                    </View>
                     </BlurView>
                 </Modal>
 

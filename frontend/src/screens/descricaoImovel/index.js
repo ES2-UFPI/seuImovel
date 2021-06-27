@@ -62,6 +62,7 @@ export default function DescricaoImovel() {
             .catch(() => { })
     }
 
+
     async function deleteFavorite() {
         await api.delete('/imovelFavoritacao', {
             data: {
@@ -74,6 +75,7 @@ export default function DescricaoImovel() {
             .catch(() => { })
 
     }
+
 
 
     useEffect(() => {

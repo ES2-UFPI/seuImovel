@@ -51,9 +51,11 @@ export default function ImoveisFavoritados() {
     }
 
 
+
     useEffect(()=>{
         loadListMovel();
     })
+
 
     useEffect(()=>{
         const unsubscribe = navigation.addListener('focus', () => {

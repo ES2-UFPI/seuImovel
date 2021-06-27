@@ -75,7 +75,6 @@ exports.notificacoes = functions.firestore
 
                 const docRef3 = db.collection('tokens')
                 let mensagens = [] //mensagens a serem enviadas
-                let token //token do usuario
                 let k = ''
 
                 for (i = 0; i < cpfDosUsuariosNotificados.length; i++) {
@@ -83,40 +82,47 @@ exports.notificacoes = functions.firestore
                         .then(
                             async (snapshot) => {
                                 if (snapshot.empty) {
-                                    console.log("Não existe token para esse usuário!")
+                                    console.log("Não existe token para o usuário: ", cpf)
                                 }
                                 else {//Envia Notificação para o usuário
+                                    
                                     snapshot.forEach(doc => {
-                                        token = doc.data().token
+
+                                        mensagens.push({
+                                            "to": doc.data().token,
+                                            "sound": "default",
+                                            "title": `O preço do imóvel ${k}!`,
+                                            "body": `${documentoNovo.descricao}`
+                                        })
                                     })
-                                    if(documentoNovo.valor>documentoAntigo.valor){
-                                        k='aumentou'
+                                    if (documentoNovo.valor > documentoAntigo.valor) {
+                                        k = 'aumentou'
                                     }
-                                    else{
-                                        k='diminuiu'
+                                    else {
+                                        k = 'diminuiu'
                                     }
-                                    mensagens.push({
-                                        "to": token,
-                                        "sound": "default",
-                                        "title":`O preço do imóvel ${k}!`,
-                                        "body":`${documentoNovo.descricao}`
-                                    })
+
+                                    
                                 }
                             }
                         )
                         .catch(() => { console.log("Erro ao fazer requisição no database tokens") })
-
-                    if (mensagens.length > 0) {//Envia mensagens 
-                        fetch("https://exp.host/--/api/v2/push/send", {
-                            method: "POST",
-                            headers: {
-                                "Accept": "application/json",
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify(mensagens)
-                        })
                     }
-                }
+                    console.log("Mensagens: ",mensagens.length)
+                    if (mensagens.length > 0) {//Envia mensagens 
+                        for(i=0;i<mensagens.length;i++){
+                            fetch("https://exp.host/--/api/v2/push/send", {
+                                method: "POST",
+                                headers: {
+                                    "Accept": "application/json",
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(mensagens[i])
+                            })
+                        }
+                        
+                    }
+                
                 console.log("Usuarios que desejam receber:", cpfDosUsuariosNotificados)
 
             }

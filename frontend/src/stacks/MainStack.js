@@ -12,15 +12,15 @@ import styles from '../styles/global'
 import DescricaoImovel from '../screens/descricaoImovel'
 import GerenciarPerfil from '../screens/gerenciarPerfil'
 import ImoveisFavoritados from '../screens/imoveisFavoritados'
-
-
+import GerenciarImovel from '../screens/GerenciarImovel';
 import CadastroImovel from '../screens/CadastroImovel/index'
 
 
 const Drawer = createDrawerNavigator()//Drawer
-const AppStack = createStackNavigator() //tela 1
-const AppStack2 = createStackNavigator() //tela 2
-const AppStack3 = createStackNavigator() //tela 3
+const AppStack = createStackNavigator() //MAPA -> LISTAGEM GERAL -> DESCRICAO -> GERENCIAR IMÓVEL
+const AppStack2 = createStackNavigator() //CONFIG DO USUARIO -> GERENCIAR PERFIL
+const AppStack3 = createStackNavigator() //CADASTRO DE IMÓVEL
+const AppStack4 = createStackNavigator() //FAVORITOS -> LISTAGEM DE FAVORITOS -> GERENCIAR IMÓVEL
 
 
 function mapaStack() {//Stack 1 -> telas: mapa + listagem + descrição 
@@ -45,6 +45,14 @@ function mapaStack() {//Stack 1 -> telas: mapa + listagem + descrição
             <AppStack.Screen name="DescricaoImovel" component={DescricaoImovel}
                 options={{
                     title: 'Descrição do Imóvel',
+                    //headerStyle:styles.headerStyle,
+                    //headerTitleStyle:styles.headerTitleStyle  
+                }}
+            />
+
+            <AppStack.Screen name="GerenciarImovel" component={GerenciarImovel}
+                options={{
+                    title: 'Editar Imóvel',
                     //headerStyle:styles.headerStyle,
                     //headerTitleStyle:styles.headerTitleStyle  
                 }}
@@ -93,8 +101,8 @@ function cadastroDeImovelStack() {
 
 function imoveisFavoritadosStack() {//Stack 3 -> telas : imoveis favoritados do Usuário
     return (
-        <AppStack2.Navigator screenOptions={{ headerShown: true }}>{/*headershown titulo da parte de cima ativado*/}
-            <AppStack2.Screen name="ImoveisFavoritados" component={ImoveisFavoritados}
+        <AppStack4.Navigator screenOptions={{ headerShown: true }}>{/*headershown titulo da parte de cima ativado*/}
+            <AppStack4.Screen name="ImoveisFavoritados" component={ImoveisFavoritados}
                 options={{
                     headerShown: false,
                     title: 'Imoveis Favoritados',
@@ -102,14 +110,22 @@ function imoveisFavoritadosStack() {//Stack 3 -> telas : imoveis favoritados do 
                     //headerTitleStyle:styles.headerTitleStyle  
                 }}
             />
-            <AppStack2.Screen name="DescricaoImovel" component={DescricaoImovel}
+            <AppStack4.Screen name="DescricaoImovel" component={DescricaoImovel}
                 options={{
                     title: 'Descrição Imovel',
                     //headerStyle:styles.headerStyle,
                     //headerTitleStyle:styles.headerTitleStyle  
                 }}
             />
-        </AppStack2.Navigator>
+            <AppStack4.Screen name="GerenciarImovel" component={GerenciarImovel}
+                options={{
+                    title: 'Editar Imóvel',
+                    //headerStyle:styles.headerStyle,
+                    //headerTitleStyle:styles.headerTitleStyle  
+                }}
+            />
+
+        </AppStack4.Navigator>
     )
 }
 
@@ -147,6 +163,20 @@ export default () => {
             />
 
 
+            <Drawer.Screen name="imoveisFavoritadosStack" component={imoveisFavoritadosStack}
+                options={{
+                    title: () => {
+                        return (
+                            <View style={styles.container}>
+                                <MaterialIcons name="favorite" size={24} color="black" />
+                                <Text style={styles.textDrawer}>Imóveis Favoritados</Text>
+                            </View>
+                        )
+                    }
+                }}
+            />
+
+
             <Drawer.Screen name="configuracaoStack" component={configuracaoStack}
                 options={{
                     title: () => {
@@ -160,18 +190,6 @@ export default () => {
                 }}
             />
 
-            <Drawer.Screen name="imoveisFavoritadosStack" component={imoveisFavoritadosStack}
-                options={{
-                    title: () => {
-                        return (
-                            <View style={styles.container}>
-                                <MaterialIcons name="favorite" size={24} color="black" />
-                                <Text style={styles.textDrawer}>Imóveis Favoritados</Text>
-                            </View>
-                        )
-                    }
-                }}
-            />
 
 
         </Drawer.Navigator>

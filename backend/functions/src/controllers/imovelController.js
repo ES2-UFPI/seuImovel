@@ -85,7 +85,7 @@ module.exports = {
         }
 
         const docRef2 = db.collection('users')
-        const docRef3 = db.collection('houses')
+        //const docRef3 = db.collection('houses')
         let idDocUsuario//id do documento do usuário
         let quantImoveis//quantidade de imoveis que o plano permite
         let quantAtualImoveis//quantidade atual de imoveis que o usuario possui
@@ -120,7 +120,7 @@ module.exports = {
                     res.status(200).send()
                 )
                 .catch(() => {
-                    res.status(400).send()
+                    res.status(404).send()
                 })
 
 
@@ -129,6 +129,45 @@ module.exports = {
                 quantAtualImoveis: quantAtualImoveis + 1
             })
         }
+    },
+
+    async update(request, response) {
+        const {
+            imovelID,
+            descricao,
+            numero,
+            banheiros,
+            complemento,
+            dimensao,
+            latitude,
+            longitude,
+            quartos,
+            tipo,
+            valor } = request.body
+
+        //imovel = new Imovel(cpf, descricao, numero, banheiros, complemento, dimensao, imagens, latitude, longitude, proprietario, quartos, tipo, valor)
+
+        const imovelJS = {//imovel json
+            descricao,
+            numero,
+            banheiros,
+            complemento,
+            dimensao,
+            latitude,
+            longitude,
+            quartos,
+            tipo,
+            valor
+        }
+
+        const docRef = db.collection('houses')
+
+
+        docRef.doc(imovelID).update(
+            imovelJS
+        )
+            .then(() => response.status(200).send())
+            .catch(() => response.status(404).send())
     }
 
 }

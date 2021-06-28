@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   iconeMenu:{
     position: 'absolute',
-    top: 20,
+    top: "5%",
     left: 20,
   },
   iconeLista: {

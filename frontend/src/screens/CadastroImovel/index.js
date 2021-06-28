@@ -184,7 +184,7 @@ export default({navigation})=>{
         <SafeAreaView style = {styles.screenContainer}>        
             <ScrollView>
                 <View style={{alignSelf: 'center', marginTop: 10}}>
-                    <Text style={{fontWeight: 'bold'}}>Cadastro de Imóvel</Text>
+                    <Text style={{fontWeight: 'bold', fontSize: 18}}>Cadastro de Imóvel</Text>
                 </View>
 
  
@@ -209,6 +209,7 @@ export default({navigation})=>{
                 {/* Carregar Imagens */}
                 <View style={{ marginRight: 5, margin: 5 , flexDirection: 'row', 
                 borderWidth: 1,
+                paddingHorizontal: 5,
                 justifyContent: 'space-between',
                 alignItems: 'center'}}> 
                     <Text style={{fontSize: 16, fontWeight: 'bold'}}>Carregar Imagens</Text>
@@ -233,6 +234,7 @@ export default({navigation})=>{
 
                 <View style={{ height: 35, marginRight: 5, margin: 5 , flexDirection: 'row', 
                 borderWidth: 1,
+                paddingHorizontal: 5, 
                 justifyContent: 'space-between',
                 alignItems: 'center'}}>
 
@@ -251,7 +253,9 @@ export default({navigation})=>{
                 {/* Carregar fotos MODAL */}
                 <CarregarFotos arrLinksImagens={arrLinksImagens} setArrLinks={setArrLinks} setImovel={setImovel} imovel={imovel} modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={usuario.numeroDeFotos}/>
 
+
                 <View style={{justifyContent: 'space-around', height:460}}>
+
                     {/* <Text>{checked}</Text> */}
 
             
@@ -361,22 +365,22 @@ export default({navigation})=>{
                      onChangeText={text => setImovel({...imovel,numero:text})}
                     keyboardType='numeric'/>
 
-                    {console.log("regiao clicada = ",regiao)}
+                    {/* {console.log("regiao clicada = ",regiao)} */}
 
                     <Input placeholder="Latitude" 
-                     value={regiao && String(regiao.latitude)}
+                     value={regiao && String(regiao.latitude.toFixed(4))}
                      onChangeText={text => setImovel({...imovel,latitude:text})}
-                    keyboardType='numeric'/>
+                     keyboardType='numeric'/>
 
                     <Input placeholder="Longitude" 
-                     value={regiao && String(regiao.longitude)}
+                     value={regiao && String(regiao.longitude.toFixed(4))}
                      onChangeText={text => setImovel({...imovel,longitude:text})}
-                     keyboardType='numeric'/>                     */}
+                     keyboardType='numeric'/>                     
                 </View>
 
                 {/* FOOTER */}
                 <View style={{marginTop: 10}}>
-                    <Button onPress={montarImovel} mode='outlined' color='green'>Enviar</Button>
+                    <Button onPress={montarImovel}  mode='outlined' color='green'>Enviar</Button>
                 </View>
  
                 

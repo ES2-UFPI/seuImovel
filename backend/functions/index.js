@@ -85,7 +85,12 @@ exports.notificacoes = functions.firestore
                                     console.log("Não existe token para o usuário: ", cpf)
                                 }
                                 else {//Envia Notificação para o usuário
-                                    
+                                    if (documentoNovo.valor > documentoAntigo.valor) {
+                                        k = 'aumentou'
+                                    }
+                                    else {
+                                        k = 'diminuiu'
+                                    }
                                     snapshot.forEach(doc => {
 
                                         mensagens.push({
@@ -95,34 +100,27 @@ exports.notificacoes = functions.firestore
                                             "body": `${documentoNovo.descricao}`
                                         })
                                     })
-                                    if (documentoNovo.valor > documentoAntigo.valor) {
-                                        k = 'aumentou'
-                                    }
-                                    else {
-                                        k = 'diminuiu'
-                                    }
 
-                                    
                                 }
                             }
                         )
                         .catch(() => { console.log("Erro ao fazer requisição no database tokens") })
+                }
+                console.log("Mensagens: ", mensagens.length)
+                if (mensagens.length > 0) {//Envia mensagens 
+                    for (i = 0; i < mensagens.length; i++) {
+                        fetch("https://exp.host/--/api/v2/push/send", {
+                            method: "POST",
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(mensagens[i])
+                        })
                     }
-                    console.log("Mensagens: ",mensagens.length)
-                    if (mensagens.length > 0) {//Envia mensagens 
-                        for(i=0;i<mensagens.length;i++){
-                            fetch("https://exp.host/--/api/v2/push/send", {
-                                method: "POST",
-                                headers: {
-                                    "Accept": "application/json",
-                                    "Content-Type": "application/json"
-                                },
-                                body: JSON.stringify(mensagens[i])
-                            })
-                        }
-                        
-                    }
-                
+
+                }
+
                 console.log("Usuarios que desejam receber:", cpfDosUsuariosNotificados)
 
             }

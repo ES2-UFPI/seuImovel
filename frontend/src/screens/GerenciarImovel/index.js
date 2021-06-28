@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Keyboard, Text, View, TouchableOpacity, TextInput, Modal, Pressable, ScrollView, StyleSheet, Alert } from 'react-native'
 import styles from './style';
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute, useNavigationState } from '@react-navigation/native'
 import { Picker } from '@react-native-picker/picker';
 import { BlurView } from 'expo-blur';
 import MapView, { Marker } from 'react-native-maps';
@@ -16,8 +16,7 @@ export default function GerenciarImovel() {
     var cpf = 41789623615;
     const [imovelID, setImovelID] = useState(imovel.id)
     const [titulo, setTitulo] = useState(imovel.descricao)
-    const [Endereço, setEndereço] = useState(imovel.complemento)
-    const [anunciante, setAnunciante] = useState(imovel.anunciante)
+    const [endereco, setendereco] = useState(imovel.complemento)
     const [tipo, setTipo] = useState(imovel.tipo)
     const [banheiros, setBanheiros] = useState(imovel.banheiros)
     const [valor, setValor] = useState(imovel.valor)
@@ -56,7 +55,7 @@ export default function GerenciarImovel() {
             descricao: titulo,
             numero: parseInt(numero),
             banheiros: parseInt(banheiros),
-            complemento: Endereço,
+            complemento: endereco,
             dimensao: parseFloat(dimensao),
             latitude: parseFloat(latitude),
             longitude: parseFloat(longitude),
@@ -64,6 +63,19 @@ export default function GerenciarImovel() {
             tipo: tipo,
             valor: parseFloat(valor) 
         })
+        imovel.descricao = titulo
+        imovel.numero = numero
+        imovel.banheiros = banheiros
+        imovel.complemento = endereco
+        imovel.dimensao = dimensao
+        imovel.latitude = latitude
+        imovel.longitude = longitude
+        imovel.quartos = quartos
+        imovel.tipo = tipo
+        imovel.valor = valor
+
+        navigation.navigate("DescricaoImovel",{imovel})
+        Alert.alert("Mudanças foram salvas")
 
     }
 
@@ -89,9 +101,9 @@ export default function GerenciarImovel() {
                     <View style={styles.containerText}>
                         <Text style={styles.firstText}>Complemento</Text>
                         <TextInput
-                            value={Endereço}
+                            value={endereco}
                             style={styles.secondText}
-                            onChangeText={setEndereço}
+                            onChangeText={setendereco}
 
                         />
                     </View>
@@ -107,7 +119,7 @@ export default function GerenciarImovel() {
                     </View>
 
                     <View style={styles.containerText}>
-                        <Text style={styles.firstText}>Dimensao</Text>
+                        <Text style={styles.firstText}>Dimensão</Text>
                         <TextInput
                             style={styles.secondText}
                             value={String(dimensao)}
@@ -202,8 +214,6 @@ export default function GerenciarImovel() {
                                     onPress={e => {
                                         setLatitude(e.nativeEvent.coordinate.latitude)
                                         setLongitude(e.nativeEvent.coordinate.longitude)
-                                        Alert.alert("Localização alterada!");
-                                        setModalVisible(false)
                                     }}
 
                                 >
@@ -229,7 +239,7 @@ export default function GerenciarImovel() {
                                 }} />
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible(!modalVisible)}
+                                    onPress={() => {setModalVisible(!modalVisible); Alert.alert("Localização alterada!")}}
                                 >
                                     <Text>Fechar Mapa</Text>
                                 </Pressable>

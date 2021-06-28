@@ -108,7 +108,7 @@ export default function DescricaoImovel() {
             <ScrollView>
                 {
                     imovelPertence &&
-                    <TouchableOpacity style={{ marginLeft: '90%' }} onPress={() => navigation.navigate("GerenciarImovel", { imovel })}>
+                    <TouchableOpacity style={{ marginLeft: '90%' }} onPress={() => navigation.navigate("GerenciarImovel", { imovel})}>
                         <FontAwesome name="pencil-square-o" size={24} color="black" />
                     </TouchableOpacity>
                 }
@@ -134,6 +134,16 @@ export default function DescricaoImovel() {
                                 imovel.descricao
                             }
                         </Text>
+                    </View>
+
+                    <View style={styles.containerText}>
+                        <Text style={styles.firstText}>Dimensão</Text>
+                        <Text style={styles.secondText}>{imovel.dimensao+" m²"}</Text>
+                    </View>
+
+                    <View style={styles.containerText}>
+                        <Text style={styles.firstText}>Valor</Text>
+                        <Text style={styles.secondText}>{"R$ "+imovel.valor}</Text>
                     </View>
 
                     <View style={{ height: 200 }}>

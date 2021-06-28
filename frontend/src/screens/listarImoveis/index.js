@@ -1,3 +1,4 @@
+  
 import React, {useState, useEffect} from 'react'
 import {FlatList, Text, View, TouchableOpacity, Image, StatusBar,} from 'react-native'
 import styles from './style'
@@ -23,7 +24,7 @@ export default function ListarImoveis() {
     }
     
     function navigateToImoveis(){
-        navigation.goBack('ImoveisNoMapa')
+        navigation.goBack()
     }
 
     //conexão de api

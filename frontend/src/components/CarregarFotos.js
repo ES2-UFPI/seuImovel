@@ -67,6 +67,7 @@ const envioParaImovel = () => {
   })
 
   setImovel({...imovel, imagens: arr})
+  Alert.alert('Fotos', 'Imagens Anexadas')
   
   
 }

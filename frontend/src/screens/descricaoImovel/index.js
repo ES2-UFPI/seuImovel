@@ -141,6 +141,11 @@ export default function DescricaoImovel() {
                         <Text style={styles.secondText}>{imovel.dimensao+" m²"}</Text>
                     </View>
 
+                    <View style={styles.containerText}>
+                        <Text style={styles.firstText}>Valor</Text>
+                        <Text style={styles.secondText}>{"R$ "+imovel.valor}</Text>
+                    </View>
+
                     <View style={{ height: 200 }}>
                         <SliderBox
                             dotColor="#0000CD"

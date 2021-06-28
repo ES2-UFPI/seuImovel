@@ -1,3 +1,4 @@
+  
 import React, {useState, useEffect} from 'react'
 import {FlatList, Text, View, TouchableOpacity, Image, StatusBar,} from 'react-native'
 import styles from './style'
@@ -16,11 +17,7 @@ export default function ListarImoveis() {
     const [loading,setLoading] = useState(false)
     const [page,setPage] = useState(1)
     const navigation = useNavigation()
-    const [state,setState] = useState('')
-    
-    function receivedValue(value){
-        setState(value)
-    }  
+
 
     function navigateToDescricao(imovel){
         navigation.navigate('DescricaoImovel', { imovel })

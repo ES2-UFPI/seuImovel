@@ -37,7 +37,7 @@ export default({navigation})=>{
     const [modalVisible, setModalVisible] = useState(false);
 
 
-    const {regiao, setRegiao,setCadastrando} = React.useContext(DadosContext)
+    const {regiao, setRegiao,setCadastrando, imovel, setImovel} = React.useContext(DadosContext)
 
     const getPermission = async ()=>{
         const {granted}  = await ImagePicker.requestCameraPermissionsAsync()
@@ -53,23 +53,23 @@ export default({navigation})=>{
 
     // -5.0945523
     // -42.8345395
-    const [imovel,setImovel] = useState({
-        cpf: usuario.cpf,
-        descricao:'',
-        proprietario: usuario.nome,
-        banheiros:'',
-        dimensao:'',
-        complemento:'',
-        latitude:'',
-        longitude:'',
-        quartos:'',
-        tipo:'',
-        valor:'',
-        numero:'',
-        imagens:[]
+    // const [imovel,setImovel] = useState({
+    //     cpf: usuario.cpf,
+    //     descricao:'',
+    //     proprietario: usuario.nome,
+    //     banheiros:'',
+    //     dimensao:'',
+    //     complemento:'',
+    //     latitude:'',
+    //     longitude:'',
+    //     quartos:'',
+    //     tipo:'',
+    //     valor:'',
+    //     numero:'',
+    //     imagens:[]
 
 
-    })
+    // })
 
     const upload = (uploadTask) => {
         let arr = []
@@ -133,7 +133,10 @@ export default({navigation})=>{
     const sendPost = async ()=>{
         try{
            
+            
             const response = await api.post('/cadastrarImovel', imovel)
+         
+           
             
             if(response){
                 console.log(response.status);
@@ -286,7 +289,8 @@ export default({navigation})=>{
                     containerStyle={{height: 70, marginBottom: 10}}/> */}
 
                     <TextInput
-                    placeholder="Valor" 
+                    placeholder="Valor"
+                    keyboardType='numeric'
                     style={{height: 40}}
                     onChangeText={val => setImovel({...imovel,valor:val})}
                     />
@@ -306,7 +310,6 @@ export default({navigation})=>{
                     />
 
                     <TextInput
-                    placeholder="Quartos" 
                     style={{height: 40}}
                     placeholder="Complemento"
                     onChangeText={text => setImovel({...imovel,complemento:text})}
@@ -329,45 +332,23 @@ export default({navigation})=>{
                     <TextInput
                     style={{height: 30}}
                     placeholder="Latitude" 
+                    value={regiao && String(regiao.latitude.toFixed(4))}
                     onChangeText={text => setImovel({...imovel,latitude:text})}
+                    // onChangeText={text => setImovel({...imovel,latitude:text})}
                     keyboardType='numeric'
                     />
 
                     <TextInput
                     style={{height: 30}}
                     placeholder="Longitude" 
+                    value={regiao && String(regiao.longitude.toFixed(4))}
                     onChangeText={text => setImovel({...imovel,longitude:text})}
+                    // onChangeText={text => setImovel({...imovel,longitude:text})}
                     keyboardType='numeric'
                     />
 
-                    {/* <Input placeholder="Valor" 
-                    inputStyle={{height: 20}}
-                    onChangeText={val => setImovel({...imovel,valor:val})}
-                    containerStyle={{marginBottom: 10}}/> */}
 
-                    {/* <Input placeholder="Banheiros"
-                     onChangeText={text => setImovel({...imovel,banheiros:text})}
-                    keyboardType='numeric'/>
-
-                    <Input placeholder="Quartos" 
-                     onChangeText={text => setImovel({...imovel,quartos:text})}
-                    keyboardType='numeric'/>
-
-                    <Input placeholder="Complemento"
-                     onChangeText={text => setImovel({...imovel,complemento:text})}
-                    />
-
-                    <Input placeholder="Dimensão"
-                     onChangeText={text => setImovel({...imovel,dimensao:text})}
-                    keyboardType='numeric'
-                    />
-                    <Input placeholder="Número" 
-                     onChangeText={text => setImovel({...imovel,numero:text})}
-                    keyboardType='numeric'/>
-
-                    {/* {console.log("regiao clicada = ",regiao)} */}
-
-                    <Input placeholder="Latitude" 
+                    {/* <Input placeholder="Latitude" 
                      value={regiao && String(regiao.latitude.toFixed(4))}
                      onChangeText={text => setImovel({...imovel,latitude:text})}
                      keyboardType='numeric'/>
@@ -375,7 +356,9 @@ export default({navigation})=>{
                     <Input placeholder="Longitude" 
                      value={regiao && String(regiao.longitude.toFixed(4))}
                      onChangeText={text => setImovel({...imovel,longitude:text})}
-                     keyboardType='numeric'/>                     
+                     keyboardType='numeric'/>      */}
+
+
                 </View>
 
                 {/* FOOTER */}
@@ -391,6 +374,7 @@ export default({navigation})=>{
 
     )
 }
+
 const styles = StyleSheet.create({
     screenContainer:{
         flex:1,

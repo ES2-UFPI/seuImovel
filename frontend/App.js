@@ -20,10 +20,27 @@ export default function App() {
   const [regiao, setRegiao] = React.useState()
   const [cadastrando, setCadastrando] = React.useState(false)
 
+  const [imovel,setImovel] = React.useState({
+    cpf: '78945612301',
+    descricao:'',
+    proprietario: "Juarez",
+    banheiros:'',
+    dimensao:'',
+    complemento:'',
+    latitude:'',
+    longitude:'',
+    quartos:'',
+    tipo:'',
+    valor:'',
+    numero:'',
+    imagens:[]
+
+
+})
   return (
    
     //Bloco principal de navegação. Todas as telas ficaram dentro dele
-  <DadosContext.Provider value={{regiao, setRegiao, cadastrando, setCadastrando}}>
+  <DadosContext.Provider value={{regiao, setRegiao, cadastrando, setCadastrando, imovel, setImovel}}>
     <NavigationContainer>
       <MainStack/>
     </NavigationContainer>

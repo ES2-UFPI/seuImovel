@@ -33,7 +33,7 @@ export default function ImoveisNoMapa({navigation}) {
   })
 
   const [expoPushToken, setExpoPushToken] = useState(null);//Guardará o token do celular do usuário
-  const {cadastrando, setCadastrando, setRegiao, regiao} = React.useContext(DadosContext)
+  const {cadastrando, setCadastrando, setRegiao, regiao, setImovel, imovel } = React.useContext(DadosContext)
 
 
   async function registerForPushNotificationsAsync () {//Regista o token do usuário
@@ -170,6 +170,7 @@ export default function ImoveisNoMapa({navigation}) {
             if(cadastrando === true){
 
               setRegiao(e.nativeEvent.coordinate)
+              setImovel({...imovel, latitude: e.nativeEvent.coordinate.latitude, longitude: e.nativeEvent.coordinate.longitude })
               setCadastrando(false)
               navigation.navigate("CadastroImovel")
             }
@@ -224,7 +225,6 @@ export default function ImoveisNoMapa({navigation}) {
              setRegion({ latitude:lat, longitude:long, latitudeDelta: 0.014, longitudeDelta: 0.014 })
 
         }}/>
-        
         <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
         <Entypo name="menu" size={40} color="green" />
         </TouchableOpacity>

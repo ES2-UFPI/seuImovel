@@ -1,14 +1,14 @@
-  
 import React, {useState, useEffect} from 'react'
 import {FlatList, Text, View, TouchableOpacity, Image, StatusBar,} from 'react-native'
 import styles from './style'
 import api from '../../services/api'
 import { Feather } from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native'
+import { Entypo } from '@expo/vector-icons'; 
 
 
 
-export default function ListarImoveis() {
+export default function ImoveisFavoritados() {
 
 
 
@@ -17,16 +17,18 @@ export default function ListarImoveis() {
     const [loading,setLoading] = useState(false)
     const [page,setPage] = useState(1)
     const navigation = useNavigation()
+    var cpf = '41789623615'
 
 
-    function navigateToDescricao(imovel){
+    const navigateToDescricao = (imovel)=>{
         navigation.navigate('DescricaoImovel', { imovel })
+        //console.log(page,listaImoveis,totalImoveis)
+        
     }
     
-    function navigateToImoveis(){
-        navigation.goBack()
+    function openMenu() {
+        navigation.openDrawer();
     }
-
     //conexão de api
     async function loadListMovel(){
         if(loading){
@@ -37,8 +39,10 @@ export default function ListarImoveis() {
             return ;
         }
   
+        //`/imovelFavoritacao?cpf=${cpf}?page=${page}` imovelFavoritacao?cpf=41789623615&page=1
+
         setLoading(true);
-        const response = await api.get(`/listaImoveis/?page=${page}`)
+        const response = await api.get(`/imovelFavoritacao?cpf=${cpf}&?page=${page}`)
         setListaImoveis(response.data)        
         setTotalImoveis(response.headers['x-total-count'])
         setListaImoveis([...listaImoveis,...response.data])
@@ -47,9 +51,26 @@ export default function ListarImoveis() {
     }
 
 
-    useEffect(() => {
-        loadListMovel()
-    }, []);
+
+    useEffect(()=>{
+        loadListMovel();
+    })
+
+
+    useEffect(()=>{
+        const unsubscribe = navigation.addListener('focus', () => {
+            setPage(1)
+            setListaImoveis([])
+            setTotalImoveis(0)
+          });
+
+
+        return () => {
+      // Unsubscribe for the focus Listener
+      unsubscribe;
+      loadListMovel();
+    };
+    },[navigation])
 
 
     return (
@@ -62,7 +83,9 @@ export default function ListarImoveis() {
                 keyExtractor={item => String(item.id)}
                 renderItem={({item}) =>{
                     return(
-                        <TouchableOpacity onPress={() => navigateToDescricao(item)}>
+                        <TouchableOpacity onPress={() => {
+                            navigateToDescricao(item)
+                        }}>
                             <View style={styles.contextHomes}>
                                 <Text style={styles.contextText}>
                                     <Text style={styles.title}>{'Casa - '+ item.tipo+ ' (R$' + item.valor+')\n'}</Text> 
@@ -79,7 +102,9 @@ export default function ListarImoveis() {
                 )}}        
             >
             </FlatList>
-            <Feather onPress={() => navigateToImoveis()} name="map" size={30} style={styles.icon}/>
+            <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
+                <Entypo name="menu" size={40} color="green" />
+            </TouchableOpacity>
         </View>
     )
 }

@@ -1,28 +1,35 @@
-name: Main - Build
+name: Node - DEV(pullrequest) - Build
 on:
- push:
+ pull_request:
    branches:
-     - main
+     - dev
+defaults:
+  run:
+    working-directory: ./backend/functions
 jobs:
  build:
    name: Build
    runs-on: ubuntu-latest
    strategy:
-     matrix:
-       dir: ['./backend/functions','./frontend']
-       node-version: [10.x]
+     matrix: 
+       node-version: [14.x]
    steps:
    - uses: actions/checkout@v2
+
    - name: Use Node.js ${{ matrix.node-version }}
-     uses: actions/setup-node@v1
+     uses: actions/setup-node@v2
      with:
-       node-version: ${{ matrix.node-version }}
+       node-version: ${{ matrix.node-version }}  
+       
    - name: Install Packages
      run: npm install
-     working-directory: ${{ matrix.dir }}
-   - name: Build project
-     run: npm build
-     working-directory: ${{ matrix.dir }}
+     
+   - name: Build project backend
+     run: npm run build
+   
+   - name: tests project backend
+     run: npm test
+     
    - name: Upload production-ready build files
      uses: actions/upload-artifact@v2
      with:

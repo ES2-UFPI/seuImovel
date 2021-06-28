@@ -50,11 +50,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
     },
-    pickerText:{
-        width: '70%',
-        color: 'black',
-        marginLeft: 20
-    },
     editPerfil: {
         fontSize: 13,
         color: 'black',

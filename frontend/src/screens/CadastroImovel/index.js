@@ -1,165 +1,154 @@
 import React,{useEffect, useState} from 'react'
 import { ScrollView } from 'react-native'
-import {View,Text,StyleSheet,StatusBar,Image} from 'react-native'
+import {View,Text,StyleSheet,StatusBar,Image, SafeAreaView, Alert, Modal} from 'react-native'
 import Formulario from '../../components/formulario/index'
 import { Inter_900Black } from '@expo-google-fonts/inter';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import { TouchableOpacity } from 'react-native';
 import api from '../../services/api'
 import * as ImagePicker from 'expo-image-picker'
 import {firebaseConfig }  from '../../../config/config'
 import * as firebase from 'firebase'
 import 'firebase/firestore'
 
+import Constants from 'expo-constants'
+import Input from '../../components/Input';
 
+import { RadioButton, Button, TextInput} from 'react-native-paper'
 
-export default()=>{
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
-    const [imageUri,setImageUri] = useState('');
-    const [imageUri2,setImageUri2] = useState('');
+import { TouchableOpacity } from 'react-native';
+import CarregarFotos from '../../components/CarregarFotos';
+
+import {DadosContext} from '../../DadosContext'
+
+export default({navigation})=>{
+
+  
     const [dataLoaded,setDataLoaded] = useState(false);
+    
+    const [usuario, setUsuario] = React.useState({nome: 'Juarez', cpf: '78945612301', numeroDeFotos: 3, espacoDisponivel: 1}) 
+    
+    const [arrLinksImagens, setArrLinks] = React.useState([])
+
+    const [checked, setChecked] = React.useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
 
-    const linkImagem = (nomeDaImagemNoStorage) => {//retorna o link da imagem no storage
-                
-        const Initial =  'https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com/o/imagens%2F'
-        const Final = '?alt=media'
-        return Initial+nomeDaImagemNoStorage+Final
+    const {regiao, setRegiao,setCadastrando, imovel, setImovel} = React.useContext(DadosContext)
+
+    const getPermission = async ()=>{
+        const {granted}  = await ImagePicker.requestCameraPermissionsAsync()
+        if(!granted){
+            Alert.alert('Permissão negada', 'Precisamos da sua permissão para carregar imagens.')
+        }
     }
 
- 
-    const uploadImagem = async (url) => {
-        
-        let fileName = null; //nome do arquivo
-        fileName = url.split('ImagePicker/').pop() //eu quebro a url da img da galeria
-        const response = await fetch(url) //retorna uma promise resolvida, o dado  .. aqui eu busco as imagem la do diretorio do teu celular
-        const blob = await response.blob(); //convertendo a resposta para BLob
+    useEffect(()=>{
+        getPermission()
 
-        let ref = firebase.storage().ref().child("imagens/" + fileName); //ref do storage
-        let uploadTask = ref.put(blob) //envio o arquivo
+    },[])
 
+    // -5.0945523
+    // -42.8345395
+    // const [imovel,setImovel] = useState({
+    //     cpf: usuario.cpf,
+    //     descricao:'',
+    //     proprietario: usuario.nome,
+    //     banheiros:'',
+    //     dimensao:'',
+    //     complemento:'',
+    //     latitude:'',
+    //     longitude:'',
+    //     quartos:'',
+    //     tipo:'',
+    //     valor:'',
+    //     numero:'',
+    //     imagens:[]
+
+
+    // })
+
+    const upload = (uploadTask) => {
+        let arr = []
         uploadTask.on('state_changed', function(snapshot){
             // Observe state change events such as progress, pause, and resume
             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             //console.log('Upload is ' + progress + '% done');
             switch (snapshot.state) {
-              case firebase.storage.TaskState.PAUSED: // or 'paused'
-                console.log('Upload is paused');
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                // console.log('Upload is paused');
                 break;
-              case firebase.storage.TaskState.RUNNING: // or 'running'
-                console.log('Upload is running');
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+            //  console.log('Upload is running');
                 break;
             }
-          }, function() {
+        }, function(error) {
+            alert('deu error ', error.message)
+        }, function() {
             // Handle successful uploads on complete
-
-            uploadTask.then((snapshot) => {
-                snapshot.ref.getDownloadURL().then((downloadURL) => {
-                    enviarBD(fileName, downloadURL)
-                });
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) { 
+                console.log(downloadURL);
+                arr.push(downloadURL)
+                console.log("UPLOAD REALIZADO")
             });
-            
-            /*
-            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-             enviarBD(fileName, downloadURL)
-            var firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/seuimovel-2b042.appspot.com"  + "/o/";
-                   
-
-            });*/
-          });
-    }
-const enviarBD = (fileName, downloadURL) => {
-        let refDB = firebase.firestore();
-        setImageUri(downloadURL);
-        setImageUri2(downloadURL)
-        refDB.collection('imagens').doc(fileName).set({
-            fileName: fileName, 
-            uri: downloadURL
-        }).then(() => alert('Foto enviada com sucesso!!')).catch(error => alert('bd erro'))
+        });
     }
 
-    
+    const enviar = async (uri, fileName) => {
 
-
-    const getPermission = async ()=>{
-        const {granted}  = await ImagePicker.requestCameraPermissionsAsync()
-        if(!granted){
-            alert('Permissão negada')
-        }
-    }
-
-    const getImage = async(image_op)=>{
-
-        const result = await ImagePicker.launchImageLibraryAsync();
-        if(!result.cancelled){
-            if(image_op===1){
-            setImageUri(result.uri)
-            }
-            else if(image_op===2){
-                setImageUri2(result.uri)
-            }
-        }
-    }
-     
-    useEffect(()=>{
-
-
-            getPermission()
-
-    },[])
-
-    const [imovel,setImovel] = useState({
-        descricao:'',
-        proprietario:'',
-        banheiros:'',
-        dimensao:'',
-        complemento:'',
-        latitude:'',
-        longitude:'',
-        quartos:'',
-        tipo:'',
-        valor:'',
-        numero:'',
-        imagens:[]
-
-
-    })
-
-    const sendPost = async ()=>{
-        try{//faz a inicializacao da conexao com o firebase
-            await firebase.initializeApp(firebaseConfig)
-        }
-        catch{//se der erro é pq a inicializacao já foi feita
-
-        }
+            const response = await fetch(uri) //retorna uma promise resolvida, o dado 
+            const blob = await response.blob(); //convertendo a resposta para BLob
         
-        uploadImagem(imageUri)
-        uploadImagem(imageUri2)
-        setImageUri(fileName)
-        setImageUri2(fileName)
+            let ref = firebase.storage().ref().child("imoveis/" + fileName);
+            let uploadTask = ref.put(blob)
 
+            upload(uploadTask)
+    
+    }
+   
+    const uploadImagem = async (produto) => {
+        // console.log(produto);
+        
+        produto.map(async uri => {
 
-        const response = await api.post('/cadastrarImovel',{
-
-            cpf:"41789623615",
-            banheiros: Number(imovel.banheiros),
-            descricao:imovel.descricao,
-            complemento:imovel.complemento,
-            dimensao:Number(imovel.dimensao),
-            latitude:Number(imovel.latitude),
-            longitude:Number(imovel.longitude),
-            quartos:Number(imovel.quartos),
-            tipo:imovel.tipo,
-            valor:Number(imovel.valor),
-            imagens:[imageUri,imageUri2],
-            numero:Number(imovel.numero),
-            proprietario:"Hugo"
-
+            let fileName = null;
+            fileName = uri.split('ImagePicker/').pop()
+           
+            await enviar(uri, fileName)
+            
         })
 
-        console.log(imovel)
+        //  console.log(imovel);
+        // console.log(arrLinksImagens);
+         sendPost()
+       
+     }
+
+
+    const sendPost = async ()=>{
+        try{
+           
+            
+            const response = await api.post('/cadastrarImovel', imovel)
+         
+           
+            
+            if(response){
+                console.log(response.status);
+                Alert.alert('Imóvel Cadastrado', 'Seu imóvel foi cadastrado com sucesso!')
+            }
+
+        }
+        catch(error){//se der erro é pq a inicializacao já foi feita
+            console.log(error)
+        }
+        
+   
     }
 
     /* CARREGANDO FONTE */
@@ -181,121 +170,215 @@ const enviarBD = (fileName, downloadURL) => {
         );
       }
 
+      const montarImovel = () => {
+         if(!imovel.tipo){
+             Alert.alert('Defina o tipo', 'Imóvel para vender ou alugar')
+         }else{
+            if(imovel.imagens.length === 0){
+                Alert.alert('Imagens', 'Cadastre as fotos do imóvel')
+            }
+
+             uploadImagem(arrLinksImagens)
+          
+         }
+      }
+
     return (
-        <View style = {styles.screenContainer}>        
-            <ScrollView style = {styles.container}>
-                <StatusBar></StatusBar>
-                <View style = {styles.titleContainer}>
-                    <Text style = {styles.title} >Cadastro de Imóvel</Text>
+        <SafeAreaView style = {styles.screenContainer}>        
+            <ScrollView>
+                <View style={{alignSelf: 'center', marginTop: 10}}>
+                    <Text style={{fontWeight: 'bold', fontSize: 18}}>Cadastro de Imóvel</Text>
                 </View>
 
-                <Formulario setValue = {value =>setImovel({
-                                ...imovel,descricao:value})} 
-                      formPlaceHolder = {'Descricao'}>
-                </Formulario>
+ 
 
-                <Formulario formPlaceHolder = {'Banheiros'}
-                keyboardType = {"numeric"}
-                            setValue = {value=>setImovel({...imovel,banheiros:value})}
-                > </Formulario>
+                {/* Radios - venda ou aluguel */}
+                <View style={{flexDirection:'row', borderWidth: 1, height: 40, marginHorizontal:5, marginVertical: 15, justifyContent: 'space-around'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <RadioButton value='vender' color='green'
+                         status={ imovel.tipo === 'vender' ? 'checked' : 'unchecked' }
+                         onPress={() => setImovel({...imovel,tipo:"vender"})}/>
+                        <Text style={{fontWeight: 'bold'}}>Vender</Text>
+                    </View>
 
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <RadioButton value='alugar' color='green'
+                         status={ imovel.tipo === 'alugar' ? 'checked' : 'unchecked' }
+                         onPress={() => setImovel({...imovel,tipo:"alugar"})}/>
+                        <Text style={{fontWeight: 'bold'}}>Alugar</Text>
+                    </View>
+                </View>
 
-                <Formulario formPlaceHolder = {'Complemento'}
-                        setValue = {value=>setImovel({...imovel,complemento:value})}
+                {/* Carregar Imagens */}
+                <View style={{ marginRight: 5, margin: 5 , flexDirection: 'row', 
+                borderWidth: 1,
+                paddingHorizontal: 5,
+                justifyContent: 'space-between',
+                alignItems: 'center'}}> 
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Carregar Imagens</Text>
 
-                ></Formulario>
-
-                <Formulario formPlaceHolder = {'Dimensão'}
-                keyboardType = {"numeric"}
-                    setValue = {value=>setImovel({...imovel,dimensao:value})}>
-                </Formulario>
-                
-                <View style = {{justifyContent:'center',width:'100%',flex:1,alignItems:'center'}}>
-                    <Text style = {styles.firstText}>Imagens</Text>
-                    <View style = {{display:'flex',flexDirection:'row',padding:10,justifyContent:'space-around',width:'100%'}}>
-                    <TouchableOpacity onPress = {()=>{
-                        getImage(1)
-                    }}>
-                    <View style = {{width:140,height:120,borderWidth:1,borderRadius:15,flex:1}}>
-                        {imageUri!==''?
-                            <Image source = {{uri:imageUri}} style = {{flex:1,width:'100%',height:'100%'}} />:
-                            <View style ={{alignItems:'center',justifyContent:'center'}}>
-                                <Text>Imagem 1</Text>
-                            </View>
+                    <TouchableOpacity style={{width: 100, alignItems: 'center'}}
+                    onPress={() => {
+                        if(usuario.espacoDisponivel > 0){
+                            setModalVisible(true)
+                        }else{
+                            Alert.alert('Limite', 'Você já atingiu o limite de imagens do plano!!')
                         }
-                    </View>    
-                </TouchableOpacity>                         
-                    <TouchableOpacity onPress = {()=>{getImage(2)}}>
-                        <View style = {{width:140,height:120,borderWidth:1,borderRadius:15,flex:1}}>
-                            {imageUri2!==''?
-                                <Image source = {{uri:imageUri2}} style = {{flex:1,width:'100%',height:'100%'}} />:
-                                <View style ={{alignItems:'center',justifyContent:'center'}}>
-                                    <Text>Imagem 2</Text>
-                                </View>
-                            }
-                        </View>    
-                    </TouchableOpacity> 
-                    </View>
-                </View>  
+                    }}
+                    >
+                      <MaterialCommunityIcons  name="plus" size={30} color="green" />
+                    </TouchableOpacity>
 
-                <Formulario formPlaceHolder = {'Latitude'}
-                    keyboardType = {"numeric"}
-                    setValue = {value=>setImovel({...imovel,latitude:value})}
-                ></Formulario>
+                </View> 
 
-                <Formulario formPlaceHolder = {'Longitude'}
-                    keyboardType = {"numeric"}
-                    setValue = {value=>setImovel({...imovel,longitude:value})}
+                                   
+                {/* Colocar Localização no mapa */}
 
-                ></Formulario>
+
+                <View style={{ height: 35, marginRight: 5, margin: 5 , flexDirection: 'row', 
+                borderWidth: 1,
+                paddingHorizontal: 5, 
+                justifyContent: 'space-between',
+                alignItems: 'center'}}>
+
+                    {/* Touch */}
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}} >Localizar Imóvel</Text> 
+                    <TouchableOpacity style={{width: 100, alignItems: 'center'}}
+                    onPress={() => {
+                    setCadastrando(true)
+                    navigation.navigate("Mapa")}}
+                    >
+                      <FontAwesome5 name="map-marker-alt" size={24} color="green" />
+                    </TouchableOpacity>
+                </View>
+
+
+                {/* Carregar fotos MODAL */}
+                <CarregarFotos arrLinksImagens={arrLinksImagens} setArrLinks={setArrLinks} setImovel={setImovel} imovel={imovel} modalVisible={modalVisible} setModalVisible={setModalVisible} numeroDeFotos={usuario.numeroDeFotos}/>
+
+
+                <View style={{justifyContent: 'space-around', height:460}}>
+
+                    {/* <Text>{checked}</Text> */}
+
+            
+                    <TextInput
+                      outlineColor='green'
+                      mode='outlined'
+                      style={{height: 40}}
+                      value={usuario.nome}
+                      editable={false} 
+                    />
+                    {/* <Input
                 
+                    inputStyle={{height: 20, borderWidth: 0, color: 'black', fontWeight: 'bold', backgroundColor: '#bfbfbf'}}
+                    value={usuario.nome}
+                    editable={false} 
+                    containerStyle={{marginBottom: 10}}/> */}
 
-                <Formulario formPlaceHolder = {'Numero'}
-                keyboardType = {"numeric"}
-                    setValue = {value=>setImovel({...imovel,numero:value})}
-
-                ></Formulario>
-                
-                <Formulario formPlaceHolder = {'Quartos'}
-                keyboardType = {"numeric"}
-                    setValue = {value=>setImovel({...imovel,quartos:value})}
-
-                ></Formulario>
-
-                <Formulario formPlaceHolder = {'Tipo'}
-                    setValue = {value=>setImovel({...imovel,tipo:value})}
-                ></Formulario>
-                <Formulario formPlaceHolder = {'Valor'}
+                    <TextInput
                     
-                    keyboardType = {"numeric"}
-                setValue = {value=>setImovel({...imovel,valor:value})}
+                    mode='flat'
+                    placeholder="Descrição" 
+                    style={{height: 40}}
+                    onChangeText={text => setImovel({...imovel,descricao:text})}
+                    />
 
-                ></Formulario>
+                    {/* <Input placeholder="Descrição" 
+                    onChangeText={text => setImovel({...imovel,descricao:text})}
+                    containerStyle={{height: 70, marginBottom: 10}}/> */}
 
-                <TouchableOpacity onPress = {sendPost}>
-                    <View style = {styles.cadastrarBtn}>
-                        <Text stlye = {styles.cadastrarText}>CADASTRAR</Text>
-                    </View>
-                </TouchableOpacity>
+                    <TextInput
+                    placeholder="Valor"
+                    keyboardType='numeric'
+                    style={{height: 40}}
+                    onChangeText={val => setImovel({...imovel,valor:val})}
+                    />
+
+                    <TextInput
+                    placeholder="Banheiros"
+                    style={{height: 40}}
+                    onChangeText={text => setImovel({...imovel,banheiros:text})}
+                    keyboardType='numeric'
+                    />
+                    
+                    <TextInput
+                    placeholder="Quartos" 
+                    style={{height: 40}}
+                    onChangeText={text => setImovel({...imovel,quartos:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 40}}
+                    placeholder="Complemento"
+                    onChangeText={text => setImovel({...imovel,complemento:text})}
+                    />
+
+                    <TextInput
+                    style={{height: 40}}
+                    placeholder="Dimensão ex: 11m"
+                    onChangeText={text => setImovel({...imovel,dimensao:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 30}}
+                    placeholder="Número" 
+                    onChangeText={text => setImovel({...imovel,numero:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 30}}
+                    placeholder="Latitude" 
+                    value={regiao && String(regiao.latitude.toFixed(4))}
+                    onChangeText={text => setImovel({...imovel,latitude:text})}
+                    // onChangeText={text => setImovel({...imovel,latitude:text})}
+                    keyboardType='numeric'
+                    />
+
+                    <TextInput
+                    style={{height: 30}}
+                    placeholder="Longitude" 
+                    value={regiao && String(regiao.longitude.toFixed(4))}
+                    onChangeText={text => setImovel({...imovel,longitude:text})}
+                    // onChangeText={text => setImovel({...imovel,longitude:text})}
+                    keyboardType='numeric'
+                    />
+
+
+                    {/* <Input placeholder="Latitude" 
+                     value={regiao && String(regiao.latitude.toFixed(4))}
+                     onChangeText={text => setImovel({...imovel,latitude:text})}
+                     keyboardType='numeric'/>
+
+                    <Input placeholder="Longitude" 
+                     value={regiao && String(regiao.longitude.toFixed(4))}
+                     onChangeText={text => setImovel({...imovel,longitude:text})}
+                     keyboardType='numeric'/>      */}
+
+
+                </View>
+
+                {/* FOOTER */}
+                <View style={{marginTop: 10}}>
+                    <Button onPress={montarImovel}  mode='outlined' color='green'>Enviar</Button>
+                </View>
+ 
+                
+              
             </ScrollView>
 
-        </View>
+        </SafeAreaView>
 
     )
 }
+
 const styles = StyleSheet.create({
     screenContainer:{
         flex:1,
-        alignItems:'center'  ,
-        justifyContent:'center',
-        width:'100%'
-    },
-    container:{
-        flex:1,
-        width:'100%',
-        borderWidth:1,
-        borderColor:'green',
-        borderRadius:20
+        marginTop: Constants.statusBarHeight
     },
     title:{
         fontSize:18,

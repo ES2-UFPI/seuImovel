@@ -1,28 +1,51 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native'
 import Constants from 'expo-constants'
 import styles from './style'
+import {useNavigation} from '@react-navigation/native'
 
 import api from '../../services/api'
 
 const index = () => {
 
-   const [listaImoveis, setListaImoveis] = React.useState([{
-    id: "0LSRd5uFruysZ5K1ROy7",
-    banheiros:3,
-    complemento :"Proximo ao Posto são José teste",
-    cpf :"41789623615",
-    descricao:"Casa com piscina e bem localizada",
-    dimensao: 500,
-    imagens: "https://s2.glbimg.com/l5tf5ALrBpZgm6SyiYv55yoUlh0=/620x413/smart/e.glbimg.com/og/ed/f/original/2020/01/20/leve-e-iluminada-esta-casa-na-bahia-mistura-estrutura-metalica-madeira-e-vidro_9.jpg",
-    latitude :-5.096235980369862,
-    longitude: -42.83879868686199,
-    numero:8877,
-    proprietario:"Joaquim",
-    quartos: 4,
-    tipo: "Venda",
-    valor:387482
-   }])
+
+    let cpf = '41789623615'//cpf do usuario ficticio
+  
+  
+    const [listaImoveis, setListaImoveis] = useState([])//vetor de imóveis
+    const [loading,setLoading] = useState(false)
+    const [page,setPage] = useState(1)
+    const [totalImoveis,setTotalImoveis] = useState(0)
+    const navigation = useNavigation()
+
+    function navigateToDescricao(imovel){
+        navigation.navigate('DescricaoImovel', { imovel })
+    }
+    
+
+    //conexão de api
+    async function loadListMovel(){
+        if(loading){
+            return;
+        }
+  
+        if(totalImoveis >0 && listaImoveis.length >= totalImoveis){
+            return ;
+        }
+  
+        setLoading(true);
+        const response = await api.get(`/listaImoveisUsuario?cpf=${cpf}&page=${page}`)
+        setListaImoveis(response.data)        
+        setTotalImoveis(response.headers['x-total-count'])
+        setListaImoveis([...listaImoveis,...response.data])
+        setPage(page+1)
+        setLoading(false)
+    }
+
+
+    useEffect(() => {
+        loadListMovel()
+    }, []);
 
 
 
@@ -36,7 +59,7 @@ const index = () => {
             keyExtractor={item => String(item.id)}
             renderItem={({item}) =>{
                 return(
-                    // <TouchableOpacity onPress={() => navigateToDescricao(item)}>
+                     <TouchableOpacity onPress={() => navigateToDescricao(item)}>
                         <View style={styles.contextHomes}>
                             <Text style={styles.contextText}>
                                 <Text style={styles.title}>{'Casa - '+ item.tipo+ ' (R$' + item.valor+')\n'}</Text> 
@@ -45,10 +68,10 @@ const index = () => {
                             </Text>
                             <Image
                             style={styles.imageHome}
-                            source={{uri: item.imagens}}
+                            source={{uri: item.imagens[0]}}
                             />
                         </View>
-                    // </TouchableOpacity>
+                     </TouchableOpacity>
                                       
             )}}        
         >

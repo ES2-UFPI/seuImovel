@@ -29,7 +29,10 @@ const ScreenVendedor = () => {
     return (
         <StackVendedor.Navigator headerMode='none'>
             <StackVendedor.Screen name='meusImoveis' component={ListarImoveisVendedor}/>
+            <StackVendedor.Screen name='DescricaoImovel' component={DescricaoImovel}/>
         </StackVendedor.Navigator>
+
+        
     )
 }
 

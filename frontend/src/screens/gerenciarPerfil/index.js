@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Keyboard, Text, View, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, Pressable } from 'react-native'
+import { Keyboard, Text, View, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, Pressable, Alert } from 'react-native'
 import styles from './style';
 import api from '../../services/api'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -34,8 +34,11 @@ export default function GerenciarPerfil() {
             nome: nome,
             email: email,
             idade: parseInt(idade),
-            nascimento: usuarioPerfil.nascimento,
+            nascimento: nascimento,
             telefone: parseInt(telefone),
+        }).then(()=>{
+            Alert.alert("Informações atualizadas com sucesso!")
+            navigation.goBack()
         })
     }
 

@@ -14,7 +14,11 @@ const imovelFavoritacaoController = require('./controllers/imovelFavoritacaoCont
 
 const imovelUserController = require('./controllers/imovelUserController')
 
+const allImovelUserController = require('./controllers/allImovelUserController')
+
 //Imovel
+routes.get('/listaImoveisUsuario',allImovelUserController.index)
+
 routes.get('/listaImoveis',imovelController.index)
 
 routes.post('/cadastrarImovel',imovelController.create)

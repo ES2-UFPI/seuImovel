@@ -15,13 +15,23 @@ import ImoveisFavoritados from '../screens/imoveisFavoritados'
 import GerenciarImovel from '../screens/GerenciarImovel';
 import CadastroImovel from '../screens/CadastroImovel/index'
 
+import ListarImoveisVendedor from '../screens/listarImoveisVendedor/index'
 
 const Drawer = createDrawerNavigator()//Drawer
 const AppStack = createStackNavigator() //MAPA -> LISTAGEM GERAL -> DESCRICAO -> GERENCIAR IMÓVEL
 const AppStack2 = createStackNavigator() //CONFIG DO USUARIO -> GERENCIAR PERFIL
 const AppStack3 = createStackNavigator() //CADASTRO DE IMÓVEL
 const AppStack4 = createStackNavigator() //FAVORITOS -> LISTAGEM DE FAVORITOS -> GERENCIAR IMÓVEL
+const StackVendedor = createStackNavigator() // pilha dos imoveis do usuario
 
+
+const ScreenVendedor = () => {
+    return (
+        <StackVendedor.Navigator headerMode='none'>
+            <StackVendedor.Screen name='meusImoveis' component={ListarImoveisVendedor}/>
+        </StackVendedor.Navigator>
+    )
+}
 
 function mapaStack() {//Stack 1 -> telas: mapa + listagem + descrição 
     return (
@@ -175,6 +185,19 @@ export default () => {
                     }
                 }}
             />
+
+            <Drawer.Screen name="Meus Imoveis" component={ScreenVendedor}
+                            options={{
+                                title: () => {
+                                    return (
+                                        <View style={styles.container}>
+                                            <MaterialCommunityIcons name="home-city" size={24} color="black" />
+                                            <Text style={styles.textDrawer}>Meus Imoveis</Text>
+                                        </View>
+                                    )
+                                }
+                            }}
+                        />
 
 
             <Drawer.Screen name="configuracaoStack" component={configuracaoStack}

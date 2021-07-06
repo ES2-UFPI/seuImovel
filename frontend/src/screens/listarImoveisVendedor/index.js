@@ -52,7 +52,7 @@ const index = () => {
     return (
         <View style={styles.container}>
         <FlatList 
-            // onEndReached={loadListMovel}
+            onEndReached={loadListMovel}
             onEndReachedThreshold={0.2}
             showsVerticalScrollIndicator={true}
             data={listaImoveis}

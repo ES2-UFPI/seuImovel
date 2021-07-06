@@ -68,5 +68,37 @@ module.exports = {
             .catch(() => {
                 response.status(404).send()
             })
+    },
+
+    async updateToFreeAccount(request,response){
+        const docRef = db.collection('users')
+        const { cpf } = request.params
+
+        await docRef.where('cpf', '==', String(cpf)).get()
+            .then(snapshot => {
+                if (snapshot.empty) {//nao encontrou nenhum com o cpf informado
+                    response.status(404).send()
+                    console.log('s')
+                }
+
+                snapshot.forEach(doc => {
+                    db.collection('users').doc(doc.id).update({//muda o tipo do plano e a descricao do plano no banco de dados
+                        plano: 'grátis',
+                        descricaoPlano: 'Plano de até 3 imóveis e 3 fotos por imóvel.',
+                        quantImagens: 3,
+                        quantImoveis: 3
+                    })
+                    response.status(200).send()
+                });
+            })
+            .catch(() => {
+                response.status(404).send()
+               
+            })
+
+
+        //configUsuario = new ConfigUsuario(plano, descricaoPlano, notificacoes,quantImagens,quantImoveis)
+
+
     }
 }

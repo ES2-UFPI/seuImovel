@@ -64,11 +64,6 @@ module.exports = {
             })
             
             
-            
-            .update({
-                quantAtualImoveis: quantAtualImoveis -1
-            })
-            response.status(200).send()
         }
 
     }

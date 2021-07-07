@@ -68,6 +68,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#7FFF00'
     },
+    cancelText: {
+        marginTop: 20,
+        fontSize: 13,
+        fontWeight: 'bold',
+        color: 'red'
+    },
     modalContainer: {
         alignSelf: 'center',
         bottom: 1,

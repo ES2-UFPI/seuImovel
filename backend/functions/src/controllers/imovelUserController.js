@@ -26,7 +26,6 @@ module.exports = {
         const docRef = db.collection('houses')
         const docRef2 = db.collection('users')
         let flagImovelPertenceAoUsuario = false;//verifica se o imovel pertence ou nao ao usuario
-        let quantAtualImoveis = -1;
 
         const { cpf = '', imovelID = '' } = request.query
 

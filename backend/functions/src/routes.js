@@ -37,7 +37,9 @@ routes.get('/imovelFavoritacaoUnica',imovelFavoritacaoController.oneIndex)
 
 //Usuario 
 routes.get('/usuarioConfig/:cpf',usuarioConfigController.index)
-//Alterei aqui - mike
+
+routes.put('/updateToFreeAccount/:cpf',usuarioConfigController.updateToFreeAccount)
+
 routes.put('/usuarioConfig/:cpf',usuarioConfigController.update)
 
 routes.get('/usuarioPerfil/:cpf',usuarioPerfilController.index)

@@ -12,6 +12,7 @@ import { Picker } from '@react-native-picker/picker';
 
 export default function ConfigUsuario() {
 
+    var cpf = '41789623615'
     const [isEnabled, setIsEnabled] = useState()
     const [modalVisible, setModalVisible] = useState(false)
     const [usuarioConfig, setusuarioConfig] = useState([])
@@ -34,10 +35,16 @@ export default function ConfigUsuario() {
     function openMenu() {
         navigation.openDrawer();
     }
+    
+    async function changeFreeAccount() {
+        console.log(usuarioConfig)
+        await api.put(`/updateToFreeAccount/${cpf}`)
+        loadUsuarioConfig()
+    }
 
     async function changeUsuario() {
         console.log(usuarioConfig)
-        await api.put('/usuarioConfig/41789623615', {
+        await api.put(`/usuarioConfig/${cpf}`, {
             plano: usuarioConfig.plano,
             descricaoPlano: usuarioConfig.descricaoPlano,
             quantImagens: usuarioConfig.quantImagens,
@@ -50,28 +57,16 @@ export default function ConfigUsuario() {
     function navigateToEditProfile() {
         navigation.navigate('GerenciarPerfil')
     }
-    /*
-        function actionNotification() {
-            if (isEnabled === false) {
-                setIsEnabled(true)
-                console.log('aqui')
-                setusuarioConfig({
-                    notificacoes: true
-                })
-            } else {
-                setIsEnabled(false)
-                setusuarioConfig({
-                    notificacoes: false
-                })
-            }
-        }
+
     
-    */
+
     useEffect(() => {
         loadUsuarioConfig()
     }, []);
 
+    
 
+// updateToFreeAccount/41789623615 
     return (
         <View style={styles.container}>
             <View style={styles.firstContainer}>
@@ -116,6 +111,14 @@ export default function ConfigUsuario() {
                     <Text style={styles.upgradeText}>{'MUDAR PLANO'}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={changeUsuario}><Text style={styles.upgradeText}>Salvar Mudança</Text></TouchableOpacity>
+
+
+                {(usuarioConfig.plano != ("grátis" || "gratis")) &&
+                    <TouchableOpacity onPress={changeFreeAccount}>
+                        <Text style={styles.cancelText}>{'Cancelar conta Premium'}</Text>
+                    </TouchableOpacity>
+                }
+
 
             </View>
 

@@ -68,7 +68,11 @@ export default function ConfigUsuario() {
 
 // updateToFreeAccount/41789623615 
     return (
+        
         <View style={styles.container}>
+            <ScrollView
+            showsVerticalScrollIndicator={false}
+            >
             <View style={styles.firstContainer}>
                 <Image
                     style={styles.imageUser}
@@ -110,12 +114,12 @@ export default function ConfigUsuario() {
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <Text style={styles.upgradeText}>{'MUDAR PLANO'}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={changeUsuario}><Text style={styles.upgradeText}>Salvar Mudança</Text></TouchableOpacity>
+                <TouchableOpacity onPress={changeUsuario}><Text style={styles.upgradeText}>Salvar Mudanças</Text></TouchableOpacity>
 
 
-                {(usuarioConfig.plano != ("grátis" || "gratis")) &&
+                {((usuarioConfig.plano != "grátis") && (usuarioConfig.plano !="gratis")) &&
                     <TouchableOpacity onPress={changeFreeAccount}>
-                        <Text style={styles.cancelText}>{'Cancelar conta Premium'}</Text>
+                        <Text style={styles.cancelText}>Cancelar conta Premium</Text>
                     </TouchableOpacity>
                 }
 
@@ -222,7 +226,8 @@ export default function ConfigUsuario() {
             <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
                 <Entypo name="menu" size={40} color="green" />
             </TouchableOpacity>
-
+            </ScrollView>                    
         </View>
+       
     )
 }

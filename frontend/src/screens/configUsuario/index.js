@@ -7,6 +7,8 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { ScrollView } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import Banner from '../../components/banner/banner'
+import { DadosContext } from '../../DadosContext'
 
 
 
@@ -22,6 +24,7 @@ export default function ConfigUsuario() {
     const [quantImoveis, setQuantImoveis] = useState()
     const [notificacoes, setNotificacoes] = useState()
     const navigation = useNavigation()
+    const { tipoDeConta, setTipoDeconta } = React.useContext(DadosContext)
 
     //conexão de api
     async function loadUsuarioConfig() {
@@ -40,6 +43,7 @@ export default function ConfigUsuario() {
         console.log(usuarioConfig)
         await api.put(`/updateToFreeAccount/${cpf}`)
         loadUsuarioConfig()
+        setTipoDeconta(usuarioConfig.plano)
     }
 
     async function changeUsuario() {
@@ -51,6 +55,7 @@ export default function ConfigUsuario() {
             quantImoveis: usuarioConfig.quantImoveis,
             notificacoes: usuarioConfig.notificacoes,
         })
+        setTipoDeconta(usuarioConfig.plano)
     }
 
     //falta criar a tela de editar perfil
@@ -68,7 +73,7 @@ export default function ConfigUsuario() {
 
 // updateToFreeAccount/41789623615 
     return (
-        
+        <>
         <View style={styles.container}>
             <ScrollView
             showsVerticalScrollIndicator={false}
@@ -228,6 +233,9 @@ export default function ConfigUsuario() {
             </TouchableOpacity>
             </ScrollView>                    
         </View>
-       
+        {(tipoDeConta == "grátis" || tipoDeConta == "gratis") &&
+                <Banner />
+            }
+       </>
     )
 }

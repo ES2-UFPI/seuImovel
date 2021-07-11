@@ -25,6 +25,7 @@ module.exports = {
     async delete(request,response){
         const docRef = db.collection('houses')
         const docRef2 = db.collection('users')
+        const docRef3 = db.collection('favorites')
         let flagImovelPertenceAoUsuario = false;//verifica se o imovel pertence ou nao ao usuario
 
         const { cpf = '', imovelID = '' } = request.query
@@ -55,12 +56,27 @@ module.exports = {
                         docRef2.doc(doc.id).update({//muda o tipo do plano e a descricao do plano no banco de dados
                             quantAtualImoveis:doc.data().quantAtualImoveis -1 
                         })
-                        response.status(200).send()
                 });
                 }
             }).catch(() => {
                 response.status(404).send()
             })
+
+            await docRef3.where('imovelID', '==', String(imovelID)).get()
+            .then(snapshot => {
+                if (snapshot.empty) {//nao encontrou o imovel favoritado para nenhum usuario
+                    response.status(200).send()
+                }
+                else{
+                    snapshot.forEach(async doc => {
+                        await docRef3.doc(doc.id).delete();//se já existir apaga do database
+                });
+                response.status(200).send()
+                }
+            }).catch(() => {
+                response.status(404).send()
+            })
+            
             
             
         }

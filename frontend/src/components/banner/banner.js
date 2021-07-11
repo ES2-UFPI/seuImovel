@@ -15,7 +15,7 @@ function Banner(){
         bannerSize="smartBannerPortrait"
         adUnitID={adUnitID}
         servePersonalizedAds // true or false
-        onDidFailToReceiveAdWithError={(err)=>console.log(err)} />
+        onDidFailToReceiveAdWithError={(err)=>console.log('deu erro no banner')} />
     )
 }
 

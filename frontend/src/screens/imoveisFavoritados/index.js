@@ -5,6 +5,9 @@ import api from '../../services/api'
 import { Feather } from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native'
 import { Entypo } from '@expo/vector-icons'; 
+import Banner from '../../components/banner/banner'
+import { DadosContext } from '../../DadosContext'
+
 
 
 
@@ -17,6 +20,7 @@ export default function ImoveisFavoritados() {
     const [loading,setLoading] = useState(false)
     const [page,setPage] = useState(1)
     const navigation = useNavigation()
+    const { tipoDeConta } = React.useContext(DadosContext)
     var cpf = '41789623615'
 
 
@@ -74,6 +78,7 @@ export default function ImoveisFavoritados() {
 
 
     return (
+        <>
         <View style={styles.container}>
             <FlatList 
                 onEndReached={loadListMovel}
@@ -106,5 +111,9 @@ export default function ImoveisFavoritados() {
                 <Entypo name="menu" size={40} color="green" />
             </TouchableOpacity>
         </View>
+        {(tipoDeConta == "grátis" || tipoDeConta == "gratis") &&
+                <Banner />
+            }
+        </>
     )
 }

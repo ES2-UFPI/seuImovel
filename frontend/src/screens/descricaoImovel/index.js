@@ -160,20 +160,25 @@ export default function DescricaoImovel() {
                     </View>
 
 
-                    <TouchableOpacity onPress={postOrDelete} style={styles.containerFavorite}>
+                        <TouchableOpacity onPress={postOrDelete} style={styles.containerFavorite}>
 
-                        <Text style={styles.favoriteText}>Favoritar</Text>
+                            <Text style={styles.favoriteText}>Favoritar</Text>
 
-                        {favorite ?
-                            <MaterialIcons name="favorite" size={24} color="red" style={{ paddingLeft: 10 }} /> :
-                            <MaterialIcons name="favorite" size={24} color="grey" style={{ paddingLeft: 10 }} />
-                        }
-                    </TouchableOpacity>
+                            {favorite ?
+                                <MaterialIcons name="favorite" size={24} color="red" style={{ paddingLeft: 10 }} /> :
+                                <MaterialIcons name="favorite" size={24} color="grey" style={{ paddingLeft: 10 }} />
+                            }
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={sendWhatsapp} style={styles.containerShare}>
-                        <Text style={styles.thirdText}>WhatsApp do anunciante</Text>
-                        <FontAwesome name="whatsapp" size={30} color="green" />
-                    </TouchableOpacity>
+                  
+                        <TouchableOpacity onPress={sendWhatsapp} style={{ marginTop: 40, backgroundColor: '#E8F0F2', alignItems: 'center', flexDirection: 'row', width: '100%', justifyContent: 'space-around'}}>
+                             
+                            <Text style={styles.thirdText}>WhatsApp do anunciante</Text>
+                        
+                            <View>
+                                    <FontAwesome name="whatsapp" size={30} color="#4AA96C" />
+                            </View>
+                        </TouchableOpacity>
 
                 </View>
 

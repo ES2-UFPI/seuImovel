@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons'; 
 import { WebView } from 'react-native-webview';
 import { Platform } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Search from '../../components/Search/index'
 
 import  Constants  from 'expo-constants';
@@ -182,7 +183,7 @@ export default function ImoveisNoMapa({navigation}) {
             listaImoveis2.map(imovel => (
               <Marker
                 key={imovel.id}
-                
+                // pinColor='green'
                 coordinate={{
                   latitude: imovel.latitude,
                   longitude: imovel.longitude,

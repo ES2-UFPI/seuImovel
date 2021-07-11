@@ -65,7 +65,7 @@ export default function ListarImoveis() {
                         <TouchableOpacity onPress={() => navigateToDescricao(item)}>
                             <View style={styles.contextHomes}>
                                 <Text style={styles.contextText}>
-                                    <Text style={styles.title}>{'Casa - '+ item.tipo+ ' (R$' + item.valor+')\n'}</Text> 
+                                    <Text style={styles.title}>{'Casa - '+ item.tipo + ' (R$' + item.valor+')\n'}</Text> 
                                     <Text style={styles.description}>{item.descricao.substr(0, 50)+'...\n'}</Text> 
                                     <Text style={styles.endereco}>{item.complemento}</Text>
                                 </Text>

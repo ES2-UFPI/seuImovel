@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     thirdText:{
         fontSize: 18,
         fontWeight: 'bold',
-        color: 'green',
+        color: 'black',
     },
     favoriteText:{
         fontSize: 18,
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
         color: 'grey', 
     },
     containerShare:{
+      
         backgroundColor: '#90EE90',
         alignItems: 'center',
         flexDirection: 'column',
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
         width: '70%',
     },
     containerFavorite:{
+        marginTop: 10,
         alignItems: 'center',
         flexDirection: 'row',
         width: '25%',

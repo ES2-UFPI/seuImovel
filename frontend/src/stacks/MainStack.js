@@ -146,14 +146,14 @@ function imoveisFavoritadosStack() {//Stack 3 -> telas : imoveis favoritados do 
 export default () => {
     return (
 
-        <Drawer.Navigator>
+        <Drawer.Navigator drawerContentOptions={{activeTintColor: 'lime'}} >
 
             <Drawer.Screen name="mapaStack" component={mapaStack}
                 options={{
                     title: () => {
                         return (
                             <View style={styles.container}>
-                                <MaterialIcons style={styles.iconDrawer} name='house' size={28} />
+                                <MaterialIcons style={styles.iconDrawer}  color="green" name='house' size={28} />
                                 <Text style={styles.textDrawer}>Imóveis</Text>
                             </View>
                         )
@@ -167,7 +167,7 @@ export default () => {
                     title: () => {
                         return (
                             <View style={styles.container}>
-                                <MaterialCommunityIcons style={styles.iconDrawer} name='home-currency-usd' size={28} />
+                                <MaterialCommunityIcons style={styles.iconDrawer}  color="green" name='home-currency-usd' size={28} />
                                 <Text style={styles.textDrawer}>Anúncie seu Imóvel</Text>
                             </View>
                         )
@@ -181,7 +181,7 @@ export default () => {
                     title: () => {
                         return (
                             <View style={styles.container}>
-                                <MaterialIcons name="favorite" size={24} color="black" />
+                                <MaterialIcons name="favorite" size={24}  color="green" />
                                 <Text style={styles.textDrawer}>Imóveis Favoritados</Text>
                             </View>
                         )
@@ -194,7 +194,7 @@ export default () => {
                                 title: () => {
                                     return (
                                         <View style={styles.container}>
-                                            <MaterialCommunityIcons name="home-city" size={24} color="black" />
+                                            <MaterialCommunityIcons name="home-city" size={24} color="green" />
                                             <Text style={styles.textDrawer}>Meus Imoveis</Text>
                                         </View>
                                     )
@@ -208,7 +208,7 @@ export default () => {
                     title: () => {
                         return (
                             <View style={styles.container}>
-                                <MaterialIcons style={styles.iconDrawer} name='settings' size={28} />
+                                <MaterialIcons style={styles.iconDrawer} name='settings'  color="green"  size={28} />
                                 <Text style={styles.textDrawer}>Configurações</Text>
                             </View>
                         )

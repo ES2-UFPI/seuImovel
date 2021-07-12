@@ -263,8 +263,10 @@ export default({navigation})=>{
 
             
                     <TextInput
-                      outlineColor='green'
+                       outlineColor='green'
+                     
                       mode='outlined'
+                      
                       style={{height: 40}}
                       value={usuario.nome}
                       editable={false} 
@@ -279,8 +281,8 @@ export default({navigation})=>{
                     <TextInput
                     
                     mode='flat'
+            
                     placeholder="Descrição" 
-                    style={{height: 40}}
                     onChangeText={text => setImovel({...imovel,descricao:text})}
                     />
 

@@ -14,6 +14,7 @@ import GerenciarPerfil from '../screens/gerenciarPerfil'
 import ImoveisFavoritados from '../screens/imoveisFavoritados'
 import GerenciarImovel from '../screens/GerenciarImovel';
 import CadastroImovel from '../screens/CadastroImovel/index'
+import CadastroUsuario from '../screens/CadastroUsuario/index'
 
 import ListarImoveisVendedor from '../screens/listarImoveisVendedor/index'
 
@@ -23,7 +24,17 @@ const AppStack2 = createStackNavigator() //CONFIG DO USUARIO -> GERENCIAR PERFIL
 const AppStack3 = createStackNavigator() //CADASTRO DE IMÓVEL
 const AppStack4 = createStackNavigator() //FAVORITOS -> LISTAGEM DE FAVORITOS -> GERENCIAR IMÓVEL
 const StackVendedor = createStackNavigator() // pilha dos imoveis do usuario
+const StackUsuario = createStackNavigator()
 
+// nome, nascimento, cpf, email, 
+
+const ScrenUsuario = () => {
+    return (
+        <StackUsuario.Navigator>
+            <StackUsuario.Screen name='cadastroUsuario' component={CadastroUsuario}/>
+        </StackUsuario.Navigator>
+    )
+}
 
 const ScreenVendedor = () => {
     return (
@@ -70,6 +81,8 @@ function mapaStack() {//Stack 1 -> telas: mapa + listagem + descrição
                     //headerTitleStyle:styles.headerTitleStyle  
                 }}
             />
+
+        
 
         </AppStack.Navigator>
     )
@@ -210,6 +223,19 @@ export default () => {
                             <View style={styles.container}>
                                 <MaterialIcons style={styles.iconDrawer} name='settings'  color="green"  size={28} />
                                 <Text style={styles.textDrawer}>Configurações</Text>
+                            </View>
+                        )
+                    }
+                }}
+            />
+
+            <Drawer.Screen name="Usuario" component={CadastroUsuario}
+                options={{
+                    title: () => {
+                        return (
+                            <View style={styles.container}>
+                                <MaterialIcons style={styles.iconDrawer} name='login'  color="green"  size={28} />
+                                <Text style={styles.textDrawer}>Login</Text>
                             </View>
                         )
                     }

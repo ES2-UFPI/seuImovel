@@ -7,6 +7,8 @@ import { SliderBox } from "react-native-image-slider-box"
 import { MaterialIcons } from '@expo/vector-icons';
 import api from '../../services/api'
 import { useNavigation } from '@react-navigation/native'
+import Banner from '../../components/banner/banner'
+import { DadosContext } from '../../DadosContext'
 
 
 
@@ -20,6 +22,7 @@ export default function DescricaoImovel() {
     const [imovelPertence, setImovelPertence] = useState(false)//verifica se imóvel pertence ou não ao usuário
     const [favorite, setFavorite] = useState()
     const message = 'Olá, tenho interesse no imóvel'
+    const { tipoDeConta } = React.useContext(DadosContext)
 
     const navigation = useNavigation()
 
@@ -104,6 +107,7 @@ export default function DescricaoImovel() {
     }, []);
 
     return (
+        <>
         <View style={styles.container}>
             <ScrollView>
                 {
@@ -184,7 +188,10 @@ export default function DescricaoImovel() {
 
             </ScrollView>
         </View>
-
+        {(tipoDeConta == "grátis" || tipoDeConta == "gratis") &&
+            <Banner />
+        }
+        </>                
 
     )
 }

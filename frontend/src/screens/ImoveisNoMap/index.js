@@ -5,19 +5,20 @@ import api from '../../services/api'
 import MapView, { Marker, Callout } from 'react-native-maps';
 import * as Location from 'expo-location'
 import { Ionicons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';
 import { WebView } from 'react-native-webview';
 import { Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Search from '../../components/Search/index'
+import Banner from '../../components/banner/banner'
 
-import  Constants  from 'expo-constants';
+import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions'
 import * as Notifications from 'expo-notifications';
 
-import {DadosContext} from '../../DadosContext'
+import { DadosContext } from '../../DadosContext'
 
-export default function ImoveisNoMapa({navigation}) {
+export default function ImoveisNoMapa({ navigation }) {
 
   let totalImoveis = 0;
   let listaImoveis = []
@@ -34,10 +35,10 @@ export default function ImoveisNoMapa({navigation}) {
   })
 
   const [expoPushToken, setExpoPushToken] = useState(null);//Guardará o token do celular do usuário
-  const {cadastrando, setCadastrando, setRegiao, regiao, setImovel, imovel } = React.useContext(DadosContext)
+  const { cadastrando, setCadastrando, setRegiao, regiao, setImovel, imovel, tipoDeConta } = React.useContext(DadosContext)
 
 
-  async function registerForPushNotificationsAsync () {//Regista o token do usuário
+  async function registerForPushNotificationsAsync() {//Regista o token do usuário
     if (Constants.isDevice) {
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
@@ -56,7 +57,7 @@ export default function ImoveisNoMapa({navigation}) {
     } else {
       //console.log('Notificações não funcionam em emulador!\nPrecisa ser um dispositivo físico!');
     }
-  
+
     if (Platform.OS === 'android') {
       Notifications.setNotificationChannelAsync('default', {
         name: 'default',
@@ -65,27 +66,27 @@ export default function ImoveisNoMapa({navigation}) {
         lightColor: '#FF231F7C',
       });
     }
-    };
+  };
 
-    async function registraToken(cpf){//Salva o token do usuario no bd do firebase
-        await api.post('/usuarioToken', {
-          cpf: cpf,
-          token: expoPushToken,
-        })
-        .then(()=>{})//()=>console.log("Token foi add no bd!"))
-        .catch(()=>{})//()=>console.log("Token já foi adicionado antes no bd!"))
-    } 
+  async function registraToken(cpf) {//Salva o token do usuario no bd do firebase
+    await api.post('/usuarioToken', {
+      cpf: cpf,
+      token: expoPushToken,
+    })
+      .then(() => { })//()=>console.log("Token foi add no bd!"))
+      .catch(() => { })//()=>console.log("Token já foi adicionado antes no bd!"))
+  }
 
 
-  useEffect(()=>{
+  useEffect(() => {
     registerForPushNotificationsAsync()
-  },[])
+  }, [])
 
-  useEffect(()=>{
-    if (expoPushToken !== null){
+  useEffect(() => {
+    if (expoPushToken !== null) {
       registraToken(cpf)
     }
-  },[expoPushToken])
+  }, [expoPushToken])
 
 
 
@@ -94,14 +95,14 @@ export default function ImoveisNoMapa({navigation}) {
     navigation.navigate('ListagemDeImoveis')
   }
 
-  function navigateToDescricaoImovel(imovel){//imovel selecionado
-    navigation.navigate('DescricaoImovel',{imovel})
+  function navigateToDescricaoImovel(imovel) {//imovel selecionado
+    navigation.navigate('DescricaoImovel', { imovel })
   }
 
-  function openMenu(){
+  function openMenu() {
     navigation.openDrawer();
-}
-  
+  }
+
 
   //console.log(cadastrando);
 
@@ -111,9 +112,9 @@ export default function ImoveisNoMapa({navigation}) {
 
     if (!granted) return
     const { coords: { latitude, longitude } } = await Location.getCurrentPositionAsync({
-      timeout:2000,
-      enableHighAccuracy:true,
-      maximumAge:1000
+      timeout: 2000,
+      enableHighAccuracy: true,
+      maximumAge: 1000
     })
     setRegion({ latitude, longitude, latitudeDelta: 0.014, longitudeDelta: 0.014 })
 
@@ -121,13 +122,13 @@ export default function ImoveisNoMapa({navigation}) {
 
   //conexão de api
   async function loadListMovel() {
-    
+
     if ((totalImoveis > 0 && listaImoveis.length >= totalImoveis)) {//se todos imóveis já tiverem sidos carregados
       return
     }
     else {//se não tiver recebido todos imóveis da api
       let page = 1
-      while(true){
+      while (true) {
         if (totalImoveis > 0 && listaImoveis.length >= totalImoveis) {//quando receber todos imóveis
           setListaImoveis2(listaImoveis)
           return
@@ -168,22 +169,21 @@ export default function ImoveisNoMapa({navigation}) {
           style={styles.map}
           region={region}
           onPress={e => {
-            if(cadastrando === true){
+            if (cadastrando === true) {
 
               setRegiao(e.nativeEvent.coordinate)
-              setImovel({...imovel, latitude: e.nativeEvent.coordinate.latitude, longitude: e.nativeEvent.coordinate.longitude })
+              setImovel({ ...imovel, latitude: e.nativeEvent.coordinate.latitude, longitude: e.nativeEvent.coordinate.longitude })
               setCadastrando(false)
               navigation.navigate("CadastroImovel")
             }
           }}
         >
 
-           { regiao && <Marker pinColor='green' coordinate={{...regiao, latitudeDelta: 0.014, longitudeDelta: 0.014  }}/>}
+          {regiao && <Marker pinColor='green' coordinate={{ ...regiao, latitudeDelta: 0.014, longitudeDelta: 0.014 }} />}
           {
             listaImoveis2.map(imovel => (
               <Marker
                 key={imovel.id}
-                // pinColor='green'
                 coordinate={{
                   latitude: imovel.latitude,
                   longitude: imovel.longitude,
@@ -191,7 +191,7 @@ export default function ImoveisNoMapa({navigation}) {
                 }}
                 image={require('../../../assets/map_marker.png')}
               >
-                <Callout tooltip onPress = {()=>navigateToDescricaoImovel(imovel)}>
+                <Callout tooltip onPress={() => navigateToDescricaoImovel(imovel)}>
                   <>
                     <View style={styles.bubble}>
                       <Text style={styles.titulo}>{imovel.tipo} {"\n"} R$ {imovel.valor}</Text>
@@ -219,22 +219,26 @@ export default function ImoveisNoMapa({navigation}) {
 
 
         </MapView>
-        <Search callBackFuntion = {(data,details)=>{
-             const loc = details.geometry.location
-             let lat = Number(loc.lat);
-             let long = Number(loc.lng);
-             setRegion({ latitude:lat, longitude:long, latitudeDelta: 0.014, longitudeDelta: 0.014 })
+        <Search callBackFuntion={(data, details) => {
+          const loc = details.geometry.location
+          let lat = Number(loc.lat);
+          let long = Number(loc.lng);
+          setRegion({ latitude: lat, longitude: long, latitudeDelta: 0.014, longitudeDelta: 0.014 })
 
-        }}/>
+        }} />
         <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
-        <Entypo name="menu" size={40} color="green" />
+          <Entypo name="menu" size={40} color="green" />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigateToListagem()} style={styles.iconeLista}>
           <Ionicons name="md-list-circle-outline" size={60} color="green" />
         </TouchableOpacity>
 
+
       </View>
+      {(tipoDeConta == "grátis" || tipoDeConta == "gratis") &&
+        <Banner />
+      }
     </View>
   )
 }

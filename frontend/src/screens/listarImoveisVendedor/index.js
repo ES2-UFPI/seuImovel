@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, Image
 import Constants from 'expo-constants'
 import styles from './style'
 import {useNavigation} from '@react-navigation/native'
+import Banner from '../../components/banner/banner'
+import { DadosContext } from '../../DadosContext'
 
 import api from '../../services/api'
 
@@ -17,6 +19,7 @@ const index = () => {
     const [page,setPage] = useState(1)
     const [totalImoveis,setTotalImoveis] = useState(0)
     const navigation = useNavigation()
+    const { tipoDeConta } = React.useContext(DadosContext)
 
     function navigateToDescricao(imovel){
         navigation.navigate('DescricaoImovel', { imovel })
@@ -50,6 +53,7 @@ const index = () => {
 
 
     return (
+        <>
         <View style={styles.container}>
         <FlatList 
             onEndReached={loadListMovel}
@@ -78,6 +82,10 @@ const index = () => {
         </FlatList>
         {/* <Feather onPress={() => navigateToImoveis()} name="map" size={30} style={styles.icon}/> */}
     </View>
+    {(tipoDeConta == "grátis" || tipoDeConta == "gratis") &&
+                <Banner />
+            }
+    </>
     )
 }
 

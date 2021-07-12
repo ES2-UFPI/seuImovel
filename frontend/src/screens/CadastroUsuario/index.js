@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-const CadastroUsuario = () => {
+const CadastroUsuario = ({navigation}) => {
     return (
         <View>
             <Text></Text>

@@ -11,7 +11,6 @@ export default function GerenciarPerfil() {
     const [usuarioPerfil, setusuarioPerfil] = useState([])
     const [nome, setNome] = useState(null)
     const [email, setEmail] = useState(null)
-    const [idade, setIdade] = useState(null)
     const [nascimento, setNascimento] = useState(null)
     const [telefone, setTelefone] = useState(null)
 
@@ -24,7 +23,6 @@ export default function GerenciarPerfil() {
         setusuarioPerfil(response.data)
         setNome(response.data.nome.toString())
         setEmail(response.data.email.toString())
-        setIdade(response.data.idade.toString())
         setNascimento(response.data.nascimento.toString())
         setTelefone(response.data.telefone.toString())
     }
@@ -33,7 +31,6 @@ export default function GerenciarPerfil() {
         await api.put('/usuarioPerfil/78945612301', {
             nome: nome,
             email: email,
-            idade: parseInt(idade),
             nascimento: nascimento,
             telefone: parseInt(telefone),
         }).then(()=>{
@@ -71,15 +68,6 @@ export default function GerenciarPerfil() {
                             value={email}
                             style={styles.secondText}
                             keyboardType='email-address'
-                        />
-                    </View>
-                    <View style={styles.containerText}>
-                        <Text style={styles.firstText}>Idade</Text>
-                        <TextInput
-                            onChangeText={setIdade}
-                            value={idade}
-                            style={styles.secondText}
-                            keyboardType='numeric'
                         />
                     </View>
                     <View style={styles.containerText}>

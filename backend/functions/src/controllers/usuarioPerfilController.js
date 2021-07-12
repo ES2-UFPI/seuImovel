@@ -58,7 +58,44 @@ module.exports = {
             .catch(() => {
                 response.status(404).send()
             })
+    },
 
+    async create(request, response){
+        const docRef = db.collection('users')
 
-    }
+        const {email, cpf,nascimento,proprietario,telefone} = request.body
+
+        await docRef.where('cpf', '==', String(cpf)).get()
+        .then(async snapshot => {
+            if (snapshot.empty) {//nao encontrou nenhum com o cpf informado entao cadastra
+                await docRef.add({
+                    cpf: String(cpf),
+                    descricaoPlano: "Plano de até 3 imóveis e 3 fotos por imóvel",
+                    email:String(email),
+                    nascimento:String(nascimento),
+                    plano:"grátis",
+                    proprietario:String(proprietario),
+                    quantAtualImoveis:0,
+                    quantImovel:3,
+                    quantImagens:3,
+                    telefone:Number(telefone),
+                    notificacoes: true
+                })
+                .then(()=>{
+                    response.json({Cadastrado:"Usuário foi cadastrado"})
+                })
+                .catch(() => {//deu algum erro ao adicionar
+                    response.status(404).send()
+                })
+
+            }
+            else{
+                response.status(404).json({Cadastrado:"Usuário já foi cadastrado"}).send()
+            }
+        })
+        .catch(()=>{
+            response.status(404).send()
+        })
+    },
+
 }

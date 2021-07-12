@@ -38,6 +38,8 @@ routes.get('/imovelFavoritacaoUnica',imovelFavoritacaoController.oneIndex)
 routes.delete('/imovelDelecao',imovelUserController.delete)
 
 //Usuario 
+
+
 routes.get('/usuarioConfig/:cpf',usuarioConfigController.index)
 
 routes.put('/updateToFreeAccount/:cpf',usuarioConfigController.updateToFreeAccount)
@@ -45,6 +47,8 @@ routes.put('/updateToFreeAccount/:cpf',usuarioConfigController.updateToFreeAccou
 routes.put('/usuarioConfig/:cpf',usuarioConfigController.update)
 
 routes.get('/usuarioPerfil/:cpf',usuarioPerfilController.index)
+
+routes.post('/usuarioPerfil',usuarioPerfilController.create)
 
 routes.put('/usuarioPerfil/:cpf',usuarioPerfilController.update)
 

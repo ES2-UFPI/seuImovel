@@ -15,12 +15,20 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
     },
+    secondContainer: {
+       
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     imageUser: {
         marginBottom: 20,
         marginTop: 30,
         width: 150,
         height: 150,
         borderRadius: 80, //alterar depois 
+    },
+    firstText: {
+        fontSize: 18
     },
 })
 

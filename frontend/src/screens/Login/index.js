@@ -1,16 +1,22 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import {Button} from 'react-native-paper'
+import { StyleSheet, Text, View, Image } from 'react-native'
+import { Button } from 'react-native-paper'
+import styles from './style'
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
     return (
-        <View>
-            <Text>Login</Text>
-            <Button color='green' onPress={() => navigation.navigate('Cadastrar Usuario')} >Cadastrar</Button>
+
+        <View style={styles.cotainer}>
+            <View style={styles.firstContainer}>
+                <Image
+                    style={styles.imageUser}
+                    source={require('../../../assets/splash.png')}
+                />
+                <Button style={{ marginBottom: 20 }} color='green' mode="contained" >Login</Button>
+                <Button color='green' mode="contained" onPress={() => navigation.navigate('Cadastrar Usuario')} >Cadastrar</Button>
+            </View>
         </View>
     )
 }
-
 export default Login
 
-const styles = StyleSheet.create({})

@@ -13,11 +13,10 @@ module.exports = {
                 snapshot.forEach(doc => {
                     nome = doc.data().proprietario
                     email = doc.data().email
-                    idade = doc.data().idade
                     nascimento = doc.data().nascimento
                     telefone = doc.data().telefone
                 });
-                response.json({ cpf, nome, email, idade, nascimento, telefone})
+                response.json({ cpf, nome, email, nascimento, telefone})
             })
             .catch(() => {//erro ao fazer requisição do banco de dados
                 response.status(404).send()
@@ -35,7 +34,7 @@ module.exports = {
 
         const docRef = db.collection('users')
         const { cpf } = request.params
-        const { nome, email, idade, nascimento, telefone} = request.body
+        const { nome, email, nascimento, telefone} = request.body
 
        
         await docRef.where('cpf', '==', String(cpf)).get()
@@ -48,7 +47,6 @@ module.exports = {
                     db.collection('users').doc(doc.id).update({//muda o tipo do plano e a descricao do plano no banco de dados
                         proprietario: String(nome),
                         email: String(email),
-                        idade: parseInt(String(idade)),
                         nascimento: String(nascimento),
                         telefone: parseInt(String(telefone))
                     })

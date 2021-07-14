@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-evenly',
         alignItems:'center',
         flexDirection:'row',
-        width: '60%',
+        width: '70%',
         height: 48,
         borderRadius:7,
         shadowColor: "#000",
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
         elevation: 7,
     },
     logo: {
-        width: "13%",
-        height: "60%",
+        width: "10%",
+        height: "50%",
       }
 })
 

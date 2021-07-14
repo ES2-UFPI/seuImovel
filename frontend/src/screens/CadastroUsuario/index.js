@@ -32,17 +32,17 @@ const CadastroUsuario = ({ navigation }) => {
         firebase.auth().signInWithCredential(credential)
         
           .then(async (result) => {
-            
             await api.post('/usuarioPerfil', {//cadastra usuario no banco de dados
               "email":result.user.email,
-              "cpf":cpf.replace('-','').replaceAll('.',''),
+              "cpf":cpf.replace('-','').replace('.','').replace('.',''),
               "nascimento":nascimento,
               "proprietario":result.user.displayName,
               "telefone":telefone.replace('(','').replace(')','').replace('-','').replace(' ','')
             }).then(()=>{
                 setFotoDoPerfil(result.user.photoURL)//coloca o link da foto do perfil do usuario
                 Alert.alert("Usuário cadastrado com sucesso!")
-                navigation.navigate('ImoveisNoMapa')
+                //navigation.navigate('ImoveisNoMapa')
+                navigation.goBack()
                 /*
                 navigation.reset({
                   routes: [{ name:'ImoveisNoMapa' }],
@@ -61,6 +61,7 @@ const CadastroUsuario = ({ navigation }) => {
             // User signed in.
           })
           .catch((error) => {
+            console.log(error)
             Alert.alert("Erro ao fazer login!")
             // Error occurred.
           });
@@ -143,7 +144,7 @@ const CadastroUsuario = ({ navigation }) => {
             contain
             style={styles.logo}
             source={{ uri: 'https://img.icons8.com/color/48/000000/google-logo.png' }} />
-          <Text style={styles.buttonDescription}>Entrar com o Google</Text>
+          <Text style={styles.buttonDescription}>Cadastrar com o Google</Text>
         </RectButton>
 
 

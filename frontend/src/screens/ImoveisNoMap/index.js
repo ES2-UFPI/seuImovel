@@ -100,6 +100,7 @@ export default function ImoveisNoMapa({ navigation }) {
   }
 
   function openMenu() {
+    
     navigation.openDrawer();
   }
 

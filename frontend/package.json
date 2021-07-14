@@ -20,6 +20,8 @@
     "expo-blur": "~9.0.3",
     "expo-constants": "~11.0.1",
     "expo-font": "~9.2.1",
+    "expo-google-app-auth": "^8.2.2",
+    "expo-google-sign-in": "~9.2.1",
     "expo-image-picker": "~10.2.2",
     "expo-location": "~12.1.2",
     "expo-notifications": "~0.12.2",

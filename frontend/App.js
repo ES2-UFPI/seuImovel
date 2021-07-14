@@ -6,15 +6,9 @@ import MainStack from './src/stacks/MainStack'
 import ListarImoveis from './src/screens/listarImoveis/'
 import {firebaseConfig }  from './config/config'
 import {DadosContext} from './src/DadosContext'
-
 // Firebase
-import firebase from 'firebase/app'
-import 'firebase/database'
+import './src/services/firebase'
  
- if(!firebase.apps.length){
-   firebase.initializeApp(firebaseConfig)
-   console.log(firebase.app().name);  // "[DEFAULT]"
- }
 
 export default function App() {
 
@@ -22,6 +16,7 @@ export default function App() {
   var cpf = '41789623615'
   const [regiao, setRegiao] = useState()
   const [cadastrando, setCadastrando] = useState(false)
+  const [fotoDoPerfil,setFotoDoPerfil] = useState('')
 
   const [imovel,setImovel] = useState({
     cpf: '78945612301',
@@ -56,7 +51,7 @@ useEffect(() => {
   return (
    
     //Bloco principal de navegação. Todas as telas ficaram dentro dele
-  <DadosContext.Provider value={{regiao, setRegiao, cadastrando, setCadastrando, imovel, setImovel,tipoDeConta,setTipoDeconta }}>
+  <DadosContext.Provider value={{regiao, setRegiao, cadastrando, setCadastrando, imovel, setImovel,tipoDeConta,setTipoDeconta,fotoDoPerfil,setFotoDoPerfil}}>
     <NavigationContainer>
       <MainStack/>
     </NavigationContainer>

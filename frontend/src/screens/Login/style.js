@@ -30,6 +30,9 @@ const styles = StyleSheet.create({
     firstText: {
         fontSize: 18
     },
+    spinnerTextStyle: {
+        color: '#FFF',
+      },
 })
 
 export default styles

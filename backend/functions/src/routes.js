@@ -39,6 +39,7 @@ routes.delete('/imovelDelecao',imovelUserController.delete)
 
 //Usuario 
 
+routes.get('/usuarioConfig2/:email',usuarioPerfilController.index2)
 
 routes.get('/usuarioConfig/:cpf',usuarioConfigController.index)
 

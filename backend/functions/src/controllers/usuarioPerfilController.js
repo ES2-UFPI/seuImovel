@@ -1,6 +1,28 @@
 const db = require('../database/db')
 
 module.exports = {
+    async index2(request, response) {//Informações sobre o perfil do usuário
+        const docRef = db.collection('users')
+        const { email } = request.params
+
+        await docRef.where('email', '==', String(email)).get()
+            .then(snapshot => {
+                if (snapshot.empty) {//nao encontrou nenhum com o cpf informado
+                    response.status(404).send()
+                }
+                snapshot.forEach(doc => {
+                    nome = doc.data().proprietario
+                    nascimento = doc.data().nascimento
+                    telefone = doc.data().telefone
+                    cpf = doc.data().cpf
+                });
+                response.json({ cpf, nome, nascimento, telefone})
+            })
+            .catch(() => {//erro ao fazer requisição do banco de dados
+                response.status(404).send()
+            })
+    },
+
     async index(request, response) {//Informações sobre o perfil do usuário
         const docRef = db.collection('users')
         const { cpf } = request.params

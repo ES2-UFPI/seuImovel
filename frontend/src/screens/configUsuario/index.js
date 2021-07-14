@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FlatList, Text, View, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal } from 'react-native'
+import { FlatList, Text, View, TouchableOpacity, Image, Platform, Modal } from 'react-native'
 import styles from './style'
 import api from '../../services/api'
 import { FontAwesome } from '@expo/vector-icons';
@@ -9,6 +9,7 @@ import { Entypo } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import Banner from '../../components/banner/banner'
 import { DadosContext } from '../../DadosContext'
+
 
 
 
@@ -63,7 +64,7 @@ export default function ConfigUsuario() {
         navigation.navigate('GerenciarPerfil')
     }
 
-    
+   
 
     useEffect(() => {
         loadUsuarioConfig()
@@ -97,9 +98,13 @@ export default function ConfigUsuario() {
                     <Text style={styles.firstText}>Descrição</Text>
                     <Text style={styles.secondText}>{usuarioConfig.descricaoPlano}</Text>
                 </View>
-                <View style={styles.containerText}>
-                    <Text style={styles.firstText}>Notificações</Text>
+                
+                <View style={(Platform.OS === 'ios') ? styles.containerTextIos : styles.containerText}>
+                
+                    <Text style={(Platform.OS === 'ios') ? styles.firstTextIos : styles.firstText}>Notificações</Text>
+                   
                     <Picker
+                        itemStyle={{height: 80,}}
                         style={styles.pickerText}
                         selectedValue={usuarioConfig.notificacoes}
                         onValueChange={(itemValue, itemIndex) =>
@@ -127,6 +132,9 @@ export default function ConfigUsuario() {
                         <Text style={styles.cancelText}>Cancelar conta Premium</Text>
                     </TouchableOpacity>
                 }
+                <TouchableOpacity>
+                    <Text style={styles.cancelText}>{'Deletar Perfil'}</Text>
+                </TouchableOpacity>
 
 
             </View>

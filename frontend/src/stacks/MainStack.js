@@ -16,6 +16,7 @@ import GerenciarImovel from '../screens/GerenciarImovel';
 import CadastroImovel from '../screens/CadastroImovel/index'
 import CadastroUsuario from '../screens/CadastroUsuario/index'
 import Login from '../screens/Login/index'
+import ImoveisNoMapa from '../screens/ImoveisNoMap/index';
 
 import ListarImoveisVendedor from '../screens/listarImoveisVendedor/index'
 
@@ -32,8 +33,12 @@ const StackUsuario = createStackNavigator()
 const ScrenUsuario = () => {
     return (
         <StackUsuario.Navigator>
-            <StackUsuario.Screen name='Login' component={Login}/>
+            <StackUsuario.Screen name='Login' component={Login} />
             <StackUsuario.Screen name='Cadastrar Usuario' component={CadastroUsuario}/>
+            <StackUsuario.Screen name='ImoveisNoMapa' component={ImoveisNoMapa} 
+            options={{
+                headerShown: false,
+            }}/>
         </StackUsuario.Navigator>
     )
 }

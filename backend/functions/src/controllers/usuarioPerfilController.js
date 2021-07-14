@@ -63,37 +63,57 @@ module.exports = {
 
         const {email, cpf,nascimento,proprietario,telefone} = request.body
 
+        let flagEmail = false
+
         await docRef.where('cpf', '==', String(cpf)).get()
         .then(async snapshot => {
-            if (snapshot.empty) {//nao encontrou nenhum com o cpf informado entao cadastra
-                await docRef.add({
-                    cpf: String(cpf),
-                    descricaoPlano: "Plano de até 3 imóveis e 3 fotos por imóvel",
-                    email:String(email),
-                    nascimento:String(nascimento),
-                    plano:"grátis",
-                    proprietario:String(proprietario),
-                    quantAtualImoveis:0,
-                    quantImovel:3,
-                    quantImagens:3,
-                    telefone:Number(telefone),
-                    notificacoes: true
-                })
-                .then(()=>{
-                    response.json({Cadastrado:"Usuário foi cadastrado"})
-                })
-                .catch(() => {//deu algum erro ao adicionar
-                    response.status(404).send()
-                })
-
+            if (snapshot.empty) {
+                flagEmail = true//nao encontrou nenhum com o cpf informado entao verifica agora se já existe algum email já cadastrado
             }
             else{
-                response.status(404).json({Cadastrado:"Usuário já foi cadastrado"}).send()
+                response.status(404).json({Cadastrado:"CPF já foi cadastrado"}).send()
             }
         })
         .catch(()=>{
-            response.status(404).send()
+            response.status(404).json({Database:"Erro ao obter requisição do database"}).send()
         })
+
+
+        if(flagEmail){
+            console.log(email)
+            
+            await docRef.where('email', '==', String(email)).get()
+            .then(async snapshot =>{
+                if (snapshot.empty){//entao é porque o email não foi cadastrado ainda
+                    await docRef.add({
+                        cpf: String(cpf),
+                        descricaoPlano: "Plano de até 3 imóveis e 3 fotos por imóvel",
+                        email:String(email),
+                        nascimento:String(nascimento),
+                        plano:"grátis",
+                        proprietario:String(proprietario),
+                        quantAtualImoveis:0,
+                        quantImovel:3,
+                        quantImagens:3,
+                        telefone:Number(telefone),
+                        notificacoes: true
+                    })
+                    .then(()=>{
+                        response.json({Cadastrado:"Usuário foi cadastrado"})
+                    })
+                    .catch(() => {//deu algum erro ao adicionar
+                        response.status(404).json({Database:"Erro ao adicionar usuario no database"}).send()
+                    })
+                }
+                else{
+                    response.status(404).json({Database:"Email já existe"}).send()
+                }
+            })
+            .catch(()=>{
+                response.status(404).json({Database:"Erro ao obter requisição do database"}).send()
+            })
+            
+        }
     },
 
 }

@@ -11,13 +11,13 @@ import { DadosContext } from '../../DadosContext'
 
 
 
+
 const CadastroUsuario = ({ navigation }) => {
 
   const [telefone, setTelefone] = React.useState('')
   const [cpf, setCpf] = React.useState('')
   const [nascimento, setNascimento] = React.useState('')
   const {setFotoDoPerfil } = React.useContext(DadosContext)
-
 
   signInWithGoogleAsync = async () => {
     try {
@@ -26,7 +26,7 @@ const CadastroUsuario = ({ navigation }) => {
         iosClientId: '467362086277-v9sb1qbf58at9airp4gc6dng9t8enpab.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       })
-
+  
       if (result.type === 'success') {
         const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken, result.accessToken);
         firebase.auth().signInWithCredential(credential)
@@ -50,8 +50,8 @@ const CadastroUsuario = ({ navigation }) => {
                   index: 0
                 });
                 */
-
-
+  
+  
             }).catch((e)=>{
                 console.log(e)
                 Alert.alert("Email/CPF já cadastrados!")
@@ -73,6 +73,7 @@ const CadastroUsuario = ({ navigation }) => {
       return { error: true };
     }
   }
+
 
   function cadastrar() {
     if (telefone.length != 15) {
@@ -97,7 +98,7 @@ const CadastroUsuario = ({ navigation }) => {
     else {//Todos campos foram preenchidos
       
       signInWithGoogleAsync()
-
+  
     }
   }
 
@@ -139,7 +140,7 @@ const CadastroUsuario = ({ navigation }) => {
         />
 
 
-        <RectButton rippleColor="#FFF" style={styles.button} onPress={() => cadastrar()}>
+        <RectButton rippleColor="#FFF" style={styles.button} onPress={cadastrar}>
           <Image
             contain
             style={styles.logo}

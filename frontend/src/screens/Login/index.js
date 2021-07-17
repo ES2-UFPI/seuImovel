@@ -10,7 +10,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 
 const Login = ({ navigation }) => {
-    const {setFotoDoPerfil } = React.useContext(DadosContext)
+    const {setFotoDoPerfil, setCpf,setTipoDeconta} = React.useContext(DadosContext)
 
 
     signInWithGoogleAsync2 = async () => {
@@ -27,9 +27,22 @@ const Login = ({ navigation }) => {
             
               .then(async (result) => {
                 api.get(`/usuarioConfig2/${result.user.email}`).
-                then(()=>{
+                then((response)=>{
+                    setCpf(response.data.cpf)
                     setFotoDoPerfil(result.user.photoURL)//coloca o link da foto do perfil do usuario
                     navigation.navigate('Mapa')
+
+
+                    api.get(`/usuarioConfig/${response.data.cpf}`)
+                    .then((response2)=>{
+                      setTipoDeconta(response2.data.plano)
+                    })
+                    .catch(()=>{
+                      //erro ao obter dados da api
+                    })
+
+
+
                 }).catch((e)=>{
                     console.log(e)
                     Alert.alert("Usuário não foi cadastrado!")
@@ -79,4 +92,3 @@ const Login = ({ navigation }) => {
     )
 }
 export default Login
-

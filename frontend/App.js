@@ -12,11 +12,11 @@ import './src/services/firebase'
 
 export default function App() {
 
-
-  var cpf = '41789623615'
+  const [cpf,setCpf] = useState('')
   const [regiao, setRegiao] = useState()
   const [cadastrando, setCadastrando] = useState(false)
   const [fotoDoPerfil,setFotoDoPerfil] = useState('')
+  const [tipoDeConta,setTipoDeconta] = useState('')
 
   const [imovel,setImovel] = useState({
     cpf: '78945612301',
@@ -34,29 +34,13 @@ export default function App() {
     imagens:[]
 })
 
-const [tipoDeConta,setTipoDeconta] = useState('grátis')
-
-async function loadTipoDeConta(){
-  const response = await api.get(`/usuarioConfig/${cpf}`)
-  setTipoDeconta(response.data.plano.toString())
-}
-
-
-
-
-useEffect(() => {
-  loadTipoDeConta()
-}, []);
-
   return (
    
     //Bloco principal de navegação. Todas as telas ficaram dentro dele
-  <DadosContext.Provider value={{regiao, setRegiao, cadastrando, setCadastrando, imovel, setImovel,tipoDeConta,setTipoDeconta,fotoDoPerfil,setFotoDoPerfil}}>
+  <DadosContext.Provider value={{regiao, setRegiao, cadastrando, setCadastrando, imovel, setImovel,tipoDeConta,setTipoDeconta,fotoDoPerfil,setFotoDoPerfil, cpf, setCpf}}>
     <NavigationContainer>
       <MainStack/>
     </NavigationContainer>
   </DadosContext.Provider>
   );
 }
-
-

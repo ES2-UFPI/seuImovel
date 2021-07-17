@@ -1,7 +1,7 @@
 const db = require('../database/db')
 
 module.exports = {
-    async index2(request, response) {//Informações sobre o perfil do usuário
+    async index2(request, response) {//Informações sobre o perfil do usuário pelo email
         const docRef = db.collection('users')
         const { email } = request.params
 
@@ -16,14 +16,14 @@ module.exports = {
                     telefone = doc.data().telefone
                     cpf = doc.data().cpf
                 });
-                response.json({ cpf, nome, nascimento, telefone})
+                response.json({ cpf, nome, nascimento, telefone })
             })
             .catch(() => {//erro ao fazer requisição do banco de dados
                 response.status(404).send()
             })
     },
 
-    async index(request, response) {//Informações sobre o perfil do usuário
+    async index(request, response) {//Informações sobre o perfil do usuário pelo cpf
         const docRef = db.collection('users')
         const { cpf } = request.params
 
@@ -38,7 +38,7 @@ module.exports = {
                     nascimento = doc.data().nascimento
                     telefone = doc.data().telefone
                 });
-                response.json({ cpf, nome, email, nascimento, telefone})
+                response.json({ cpf, nome, email, nascimento, telefone })
             })
             .catch(() => {//erro ao fazer requisição do banco de dados
                 response.status(404).send()
@@ -56,9 +56,9 @@ module.exports = {
 
         const docRef = db.collection('users')
         const { cpf } = request.params
-        const { nome, email, nascimento, telefone} = request.body
+        const { nome, email, nascimento, telefone } = request.body
 
-       
+
         await docRef.where('cpf', '==', String(cpf)).get()
             .then(snapshot => {
                 if (snapshot.empty) {//nao encontrou nenhum com o cpf informado
@@ -80,62 +80,149 @@ module.exports = {
             })
     },
 
-    async create(request, response){
+    async create(request, response) {
         const docRef = db.collection('users')
 
-        const {email, cpf,nascimento,proprietario,telefone} = request.body
+        const { email, cpf, nascimento, proprietario, telefone } = request.body
 
         let flagEmail = false
 
         await docRef.where('cpf', '==', String(cpf)).get()
-        .then(async snapshot => {
-            if (snapshot.empty) {
-                flagEmail = true//nao encontrou nenhum com o cpf informado entao verifica agora se já existe algum email já cadastrado
-            }
-            else{
-                response.status(404).json({Cadastrado:"CPF já foi cadastrado"}).send()
-            }
-        })
-        .catch(()=>{
-            response.status(404).json({Database:"Erro ao obter requisição do database"}).send()
-        })
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    flagEmail = true//nao encontrou nenhum com o cpf informado entao verifica agora se já existe algum email já cadastrado
+                }
+                else {
+                    response.status(404).json({ Cadastrado: "CPF já foi cadastrado" }).send()
+                }
+            })
+            .catch(() => {
+                response.status(404).json({ Database: "Erro ao obter requisição do database" }).send()
+            })
 
 
-        if(flagEmail){
+        if (flagEmail) {
             console.log(email)
-            
+
             await docRef.where('email', '==', String(email)).get()
-            .then(async snapshot =>{
-                if (snapshot.empty){//entao é porque o email não foi cadastrado ainda
-                    await docRef.add({
-                        cpf: String(cpf),
-                        descricaoPlano: "Plano de até 3 imóveis e 3 fotos por imóvel",
-                        email:String(email),
-                        nascimento:String(nascimento),
-                        plano:"grátis",
-                        proprietario:String(proprietario),
-                        quantAtualImoveis:0,
-                        quantImovel:3,
-                        quantImagens:3,
-                        telefone:Number(telefone),
-                        notificacoes: true
-                    })
-                    .then(()=>{
-                        response.json({Cadastrado:"Usuário foi cadastrado"})
-                    })
-                    .catch(() => {//deu algum erro ao adicionar
-                        response.status(404).json({Database:"Erro ao adicionar usuario no database"}).send()
+                .then(async snapshot => {
+                    if (snapshot.empty) {//entao é porque o email não foi cadastrado ainda
+                        await docRef.add({
+                            cpf: String(cpf),
+                            descricaoPlano: "Plano de até 3 imóveis e 3 fotos por imóvel",
+                            email: String(email),
+                            nascimento: String(nascimento),
+                            plano: "grátis",
+                            proprietario: String(proprietario),
+                            quantAtualImoveis: 0,
+                            quantImovel: 3,
+                            quantImagens: 3,
+                            telefone: Number(telefone),
+                            notificacoes: true
+                        })
+                            .then(() => {
+                                response.json({ Cadastrado: "Usuário foi cadastrado" })
+                            })
+                            .catch(() => {//deu algum erro ao adicionar
+                                response.status(404).json({ Database: "Erro ao adicionar usuario no database" }).send()
+                            })
+                    }
+                    else {
+                        response.status(404).json({ Database: "Email já existe" }).send()
+                    }
+                })
+                .catch(() => {
+                    response.status(404).json({ Database: "Erro ao obter requisição do database" }).send()
+                })
+
+        }
+    },
+
+    async delete(request, response) {
+        docRef = db.collection('users')
+        docRef2 = db.collection('favorites')
+        docRef3 = db.collection('tokens')
+        docRef4 = db.collection('houses')
+
+        const { cpf } = request.params
+
+        let flag1 = False
+
+        //DELETA EMAIL DO USUARIO CADASTRADO
+        await docRef.where('cpf', '==', String(cpf)).get()
+            .then(snapshot => {
+                if (snapshot.empty) {//entao é o usuario não está cadastrado
+                    response.status(404).json({ Erro: "Usuário cadastrado não existe!" })
+                }
+                else {
+                    flag1 = True
+                    snapshot.forEach(async doc => {
+                        await docRef.doc(doc.id).delete();
                     })
                 }
+            })
+            .catch(() => {
+                response.status(404).json({ Erro: "Falha ao deletar" })
+            })
+
+        if (flag1) {//se o usuario existe
+
+            //DELETA IMÓVEIS FAVORITADOS
+            await docRef2.where('cpf', '==', String(cpf)).get()
+            .then(snapshot =>{
+                if(snapshot.empty){//usuario não possui imóveis favoritados
+                    
+                }
                 else{
-                    response.status(404).json({Database:"Email já existe"}).send()
+                    snapshot.forEach(async doc => {
+                        await docRef.doc(doc.id).delete();//apaga todos imóveis favoritados
+                    })
                 }
             })
             .catch(()=>{
-                response.status(404).json({Database:"Erro ao obter requisição do database"}).send()
+                response.status(404).json({ Erro: "Falha ao deletar" })
             })
+
+            //Deleta tokens do usuário no dispositivo
+            await docRef3.where('cpf','==',String(cpf)).get()
+            .then(snapshot =>{
+                if(snapshot.empty){
+
+                }
+                else{
+                    snapshot.forEach(async doc => {
+                        await docRef.doc(doc.id).delete();//apaga todos tokens do usuario
+                    })
+                }
+            })
+            .catch(()=>{
+                response.status(404).json({ Erro: "Falha ao deletar" })
+            })
+
+
+            //Deleta Imóveis cadastrados pelo usuário
+            await docRef4.where('cpf','==',String(cpf)).get()
+            .then(snapshot =>{
+                if(snapshot.empty){
+
+                }
+                else{
+                    snapshot.forEach(async doc => {
+                        await docRef.doc(doc.id).delete();//apaga imóveis do usuario
+                    })
+                }
+            })
+            .catch(()=>{
+                response.status(404).json({ Erro: "Falha ao deletar" })
+            })
+
+            response.status(200).json({ Erro: "Usuário deletado!" })
+
             
         }
-    },
+
+
+
+    }
 
 }

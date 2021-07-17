@@ -53,6 +53,8 @@ routes.post('/usuarioPerfil',usuarioPerfilController.create)
 
 routes.put('/usuarioPerfil/:cpf',usuarioPerfilController.update)
 
+routes.delete('/usuarioPerfil/:cpf',usuarioPerfilController.delete)
+
 routes.get('/usuarioToken',usuarioTokenController.index)//retorna todos tokens e cada usuario correspondente
 
 routes.post('/usuarioToken',usuarioTokenController.create)

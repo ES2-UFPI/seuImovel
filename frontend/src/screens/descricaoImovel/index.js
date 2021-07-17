@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { ScrollView, Linking, Text, View, TouchableOpacity, Image, StatusBar, Share, ImageBackground, TouchableHighlight, } from 'react-native'
+import { ScrollView, Linking, Text, View, TouchableOpacity, Image, StatusBar, Share, ImageBackground, TouchableHighlight, Alert, } from 'react-native'
 import styles from './style'
 import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons'; 
 import { useRoute } from '@react-navigation/native'
 import { SliderBox } from "react-native-image-slider-box"
 import { MaterialIcons } from '@expo/vector-icons';
 import api from '../../services/api'
 import { useNavigation } from '@react-navigation/native'
+import Banner from '../../components/banner/banner'
+import { DadosContext } from '../../DadosContext'
 
 
 
@@ -89,7 +92,28 @@ export default function DescricaoImovel() {
 
     }
 
+    async function deleteImovel(){
+        Alert.alert(
+            "Remoção do Imóvel",
+            "Você deseja excluir o imóvel?",
+            [
+              {
+                text: "Cancelar",
+                onPress: () => {},
+                style: "cancel"
+              },
+              { text: "Sim", onPress: () => {
+                api.delete(`/imovelDelecao?cpf=${cpf}&imovelID=${imovel.id}`)
+                .then(()=>{
+                    navigation.goBack()
+                    Alert.alert("Imóvel foi deletado!")
+                })
+                .catch(()=>{})
 
+              } }
+            ]
+          )
+    }
 
     useEffect(() => {
         loadFavorite()
@@ -108,9 +132,14 @@ export default function DescricaoImovel() {
             <ScrollView>
                 {
                     imovelPertence &&
-                    <TouchableOpacity style={{ marginLeft: '90%' }} onPress={() => navigation.navigate("GerenciarImovel", { imovel})}>
+                    <View style={styles.iconsContainer}>
+                    <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate("GerenciarImovel", { imovel})}>
                         <FontAwesome name="pencil-square-o" size={24} color="black" />
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.icon} onPress={() =>deleteImovel()}>
+                        <AntDesign name="delete" size={24} color="black" />
+                    </TouchableOpacity>
+                    </View>
                 }
                 <View style={styles.firstContainer}>
                     <View style={styles.containerText}>

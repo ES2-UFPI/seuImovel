@@ -121,11 +121,11 @@ describe("Testes Imóvel",()=>{//dentro do decribe que serão colocados os teste
 
 describe("Testes Perfil do Usuário",()=>{//dentro do decribe que serão colocados os testes
 
-    it("Conferindo se o Cpf está correto",()=>{
+    it("Conferindo se o cpf está correto",()=>{
         assert.strictEqual(Perfil.cpf,'2221110003')
     })
 
-    it("Conferindo se o E-mail passado está correto",()=>{
+    it("Conferindo se o e-mail passado está correto",()=>{
         assert.strictEqual(Perfil.email,'joaomota59@hotmail.com')
     })
 

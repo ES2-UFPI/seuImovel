@@ -146,7 +146,7 @@ module.exports = {
 
         const { cpf } = request.params
 
-        let flag1 = False
+        let flag1 = false
 
         //DELETA EMAIL DO USUARIO CADASTRADO
         await docRef.where('cpf', '==', String(cpf)).get()
@@ -155,7 +155,7 @@ module.exports = {
                     response.status(404).json({ Erro: "Usuário cadastrado não existe!" })
                 }
                 else {
-                    flag1 = True
+                    flag1 = true
                     snapshot.forEach(async doc => {
                         await docRef.doc(doc.id).delete();
                     })
@@ -216,7 +216,7 @@ module.exports = {
                 response.status(404).json({ Erro: "Falha ao deletar" })
             })
 
-            response.status(200).json({ Erro: "Usuário deletado!" })
+            response.status(200).json({ Ok: "Usuário deletado!" })
 
             
         }

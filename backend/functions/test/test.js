@@ -137,7 +137,7 @@ describe("Testes Perfil do Usuário",()=>{//dentro do decribe que serão colocad
         assert.strictEqual(Perfil.proprietario,'João Lucas')
     })
 
-    it("Conferindo se o nome passado está correto",()=>{
+    it("Conferindo se o telefone passado está correto",()=>{
         assert.strictEqual(Perfil.telefone,86999221344)
     })
 

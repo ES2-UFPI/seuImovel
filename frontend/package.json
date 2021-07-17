@@ -38,6 +38,7 @@
     "react-native-google-places-autocomplete": "^2.2.0",
     "react-native-image-picker": "^4.0.2",
     "react-native-image-slider-box": "^1.0.12",
+    "react-native-loading-spinner-overlay": "^2.0.0",
     "react-native-maps": "0.28.0",
     "react-native-masked-text": "^1.13.0",
     "react-native-paper": "^4.9.1",
@@ -49,7 +50,8 @@
     "react-native-swipeable": "^0.6.0",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
-    "react-native-webview": "11.6.2"
+    "react-native-webview": "11.6.2",
+    "expo-updates": "~0.8.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

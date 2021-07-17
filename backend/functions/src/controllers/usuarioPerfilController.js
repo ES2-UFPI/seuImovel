@@ -175,7 +175,7 @@ module.exports = {
                 }
                 else{
                     snapshot.forEach(async doc => {
-                        await docRef.doc(doc.id).delete();//apaga todos imóveis favoritados
+                        await docRef2.doc(doc.id).delete();//apaga todos imóveis favoritados
                     })
                 }
             })
@@ -191,7 +191,7 @@ module.exports = {
                 }
                 else{
                     snapshot.forEach(async doc => {
-                        await docRef.doc(doc.id).delete();//apaga todos tokens do usuario
+                        await docRef3.doc(doc.id).delete();//apaga todos tokens do usuario
                     })
                 }
             })
@@ -208,7 +208,7 @@ module.exports = {
                 }
                 else{
                     snapshot.forEach(async doc => {
-                        await docRef.doc(doc.id).delete();//apaga imóveis do usuario
+                        await docRef4.doc(doc.id).delete();//apaga imóveis do usuario
                     })
                 }
             })
@@ -216,7 +216,7 @@ module.exports = {
                 response.status(404).json({ Erro: "Falha ao deletar" })
             })
 
-            response.status(200).json({ Ok: "Usuário deletado!" })
+            response.status(200).json({ Erro: "Usuário deletado!" })
 
             
         }

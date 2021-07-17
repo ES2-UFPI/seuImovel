@@ -74,6 +74,15 @@ const styles = StyleSheet.create({
     },
     swipe:{  
         height: '40%', 
+    },
+    iconsContainer:{
+        margin:10,
+        justifyContent:"flex-end",
+        alignItems:"center",
+        flexDirection:"row",
+    },
+    icon:{
+        margin:10
     }
 })
 

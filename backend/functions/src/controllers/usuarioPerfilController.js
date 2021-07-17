@@ -216,7 +216,7 @@ module.exports = {
                 response.status(404).json({ Erro: "Falha ao deletar" })
             })
 
-            response.status(200).json({ Erro: "Usuário deletado!" })
+            response.status(200).json({ Ok: "Usuário deletado!" })
 
             
         }

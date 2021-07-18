@@ -7,5 +7,7 @@
 
 # Veja o Aplicativo
 ✅ Instale o aplicativo **Expo go** em sua Play Store ou em sua App Store<br/>
+✅ Faça login no app **Expo Go** <br/>
+✅ Entre em contato com o admin do projeto para autorizar sua permissão de visualização<br/>
 ✅ Aponte a câmera de seu celular para o Qr-Code abaixo<br/><br/>
 ![Expo QR](https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=exp://exp.host/@joaomota59/seu-imovel)

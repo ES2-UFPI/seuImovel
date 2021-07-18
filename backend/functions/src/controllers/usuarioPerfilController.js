@@ -87,7 +87,7 @@ module.exports = {
 
         const { email, cpf, nascimento, proprietario, telefone } = request.body
 
-        const Perfil = new PerfilUsuario(email,cpf,nascimento,proprietario,telefone)
+        const Perfil = new PerfilUsuario(cpf,email,nascimento,proprietario,telefone)
 
         let flagEmail = false
 

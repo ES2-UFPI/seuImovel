@@ -3,6 +3,7 @@
     "name": "Seu Imóvel",
     "slug": "seu-imovel",
     "version": "1.0.0",
+    "privacy":"public",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,18 +18,27 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.eng2.seuimovel",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.467362086277-vrk69hc6afibqku7aqjn1t49qgbfm2da"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.joaolucas59.frontend"
+      "package": "com.eng2.seuimovel",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "Aplicativo mobile voltado para alugar e vender imóveis.",
+    "githubUrl": "https://github.com/ES2-UFPI/seuImovel"
   }
 }

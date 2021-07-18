@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "467362086277",
+    "project_id": "seuimovel-2b042",
+    "storage_bucket": "seuimovel-2b042.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467362086277:android:4fc8ab6a7abdef707f58ec",
+        "android_client_info": {
+          "package_name": "com.eng2.seuimovel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467362086277-7465f2m3v6si7chnntpabhtsdhb088q5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eng2.seuimovel",
+            "certificate_hash": "e1d51186543b034d1e65e3220626150ee2d00246"
+          }
+        },
+        {
+          "client_id": "467362086277-t37ta950f20ula8d5odskr9tma94db8s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwDbG-7oq-x2l6lOBIyMN0U8diQAzIPGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467362086277-t37ta950f20ula8d5odskr9tma94db8s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "467362086277-v9sb1qbf58at9airp4gc6dng9t8enpab.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

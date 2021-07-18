@@ -4,6 +4,7 @@ import styles from './styles'
 import { RectButton } from 'react-native-gesture-handler'
 import { TextInputMask } from 'react-native-masked-text'
 import { auth } from '../../services/firebase'
+import * as GoogleSignIn from 'expo-google-sign-in';
 import * as Google from 'expo-google-app-auth';
 import firebase from "firebase/app";
 import api from '../../services/api'

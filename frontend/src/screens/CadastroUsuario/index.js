@@ -4,6 +4,7 @@ import styles from './styles'
 import { RectButton } from 'react-native-gesture-handler'
 import { TextInputMask } from 'react-native-masked-text'
 import { auth } from '../../services/firebase'
+import * as GoogleSignIn from 'expo-google-sign-in';
 import * as Google from 'expo-google-app-auth';
 import firebase from "firebase/app";
 import api from '../../services/api'
@@ -74,6 +75,58 @@ const CadastroUsuario = ({ navigation }) => {
     }
   }
 
+  signInAsync2 = async () => {
+    try {
+      await GoogleSignIn.askForPlayServicesAsync();
+      const result = await GoogleSignIn.signInAsync();
+      if (result.type === 'success') {
+        const credential = firebase.auth.GoogleAuthProvider.credential(result.user.auth.idToken,result.user.auth.accessToken);
+        firebase.auth().signInWithCredential(credential)
+        
+        .then(async (result) => {
+          await api.post('/usuarioPerfil', {//cadastra usuario no banco de dados
+            "email":result.user.email,
+            "cpf":cpf.replace('-','').replace('.','').replace('.',''),
+            "nascimento":nascimento,
+            "proprietario":result.user.displayName,
+            "telefone":telefone.replace('(','').replace(')','').replace('-','').replace(' ','')
+          }).then(()=>{
+              setFotoDoPerfil(result.user.photoURL)//coloca o link da foto do perfil do usuario
+              Alert.alert("Usuário cadastrado com sucesso!")
+              //navigation.navigate('ImoveisNoMapa')
+              navigation.goBack()
+              /*
+              navigation.reset({
+                routes: [{ name:'ImoveisNoMapa' }],
+                key: null,
+                index: 0
+              });
+              */
+
+
+          }).catch((e)=>{
+              console.log(e)
+              Alert.alert("Email/CPF já cadastrados!")
+          })
+          
+          
+          // User signed in.
+        })
+        .catch((error) => {
+          console.log(error)
+          Alert.alert("Erro ao fazer login!")
+          // Error occurred.
+        });
+      return result.accessToken;
+
+        //_syncUserWithStateAsync();
+      }
+    } catch ({ message }) {//Se não for um dispositivo físico, entao chama a outra função que só funciona para o expo go
+      //alert('login: Error:' + message);
+      signInWithGoogleAsync()
+    }
+  };
+
 
   function cadastrar() {
     if (telefone.length != 15) {
@@ -97,7 +150,7 @@ const CadastroUsuario = ({ navigation }) => {
     }
     else {//Todos campos foram preenchidos
       
-      signInWithGoogleAsync()
+      signInAsync2()
   
     }
   }

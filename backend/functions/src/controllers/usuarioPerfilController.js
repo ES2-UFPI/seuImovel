@@ -1,4 +1,6 @@
 const db = require('../database/db')
+const PerfilUsuario = require('../classes/PerfilUsuario')
+
 
 module.exports = {
     async index2(request, response) {//Informações sobre o perfil do usuário pelo email
@@ -85,9 +87,11 @@ module.exports = {
 
         const { email, cpf, nascimento, proprietario, telefone } = request.body
 
+        const Perfil = new PerfilUsuario(cpf,email,nascimento,proprietario,telefone)
+
         let flagEmail = false
 
-        await docRef.where('cpf', '==', String(cpf)).get()
+        await docRef.where('cpf', '==', Perfil.cpf).get()
             .then(async snapshot => {
                 if (snapshot.empty) {
                     flagEmail = true//nao encontrou nenhum com o cpf informado entao verifica agora se já existe algum email já cadastrado
@@ -104,20 +108,20 @@ module.exports = {
         if (flagEmail) {
             console.log(email)
 
-            await docRef.where('email', '==', String(email)).get()
+            await docRef.where('email', '==', Perfil.email).get()
                 .then(async snapshot => {
                     if (snapshot.empty) {//entao é porque o email não foi cadastrado ainda
                         await docRef.add({
-                            cpf: String(cpf),
+                            cpf: Perfil.cpf,
                             descricaoPlano: "Plano de até 3 imóveis e 3 fotos por imóvel",
-                            email: String(email),
-                            nascimento: String(nascimento),
+                            email: Perfil.email,
+                            nascimento: Perfil.nascimento,
                             plano: "grátis",
-                            proprietario: String(proprietario),
+                            proprietario: Perfil.proprietario,
                             quantAtualImoveis: 0,
                             quantImovel: 3,
                             quantImagens: 3,
-                            telefone: Number(telefone),
+                            telefone: Perfil.telefone,
                             notificacoes: true
                         })
                             .then(() => {

@@ -77,7 +77,7 @@ const CadastroUsuario = ({ navigation }) => {
   signInAsync2 = async () => {
     try {
       await GoogleSignIn.askForPlayServicesAsync();
-      const result = await GoogleSignIn.signInAsync2();
+      const result = await GoogleSignIn.signInAsync();
       if (result.type === 'success') {
         const credential = firebase.auth.GoogleAuthProvider.credential(result.user.auth.idToken,result.user.auth.accessToken);
         firebase.auth().signInWithCredential(credential)

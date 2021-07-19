@@ -15,7 +15,7 @@ import { DadosContext } from '../../DadosContext'
 
 export default function ConfigUsuario() {
 
-    var cpf = '41789623615'
+    const {cpf, fotoDoPerfil} = React.useContext(DadosContext)
     const [isEnabled, setIsEnabled] = useState()
     const [modalVisible, setModalVisible] = useState(false)
     const [usuarioConfig, setusuarioConfig] = useState([])
@@ -29,7 +29,7 @@ export default function ConfigUsuario() {
 
     //conexão de api
     async function loadUsuarioConfig() {
-        await api.get('/usuarioConfig/41789623615')
+        await api.get(`/usuarioConfig/${cpf}`)
             .then((response) => {
                 setusuarioConfig(response.data)
             })
@@ -82,7 +82,7 @@ export default function ConfigUsuario() {
             <View style={styles.firstContainer}>
                 <Image
                     style={styles.imageUser}
-                    source={require('../../../assets/me.jpeg')}
+                    source={{uri: fotoDoPerfil}}
                 />
                 <View style={styles.containerText}>
                     <Text style={styles.editPerfil}>Editar informações do perfil</Text>

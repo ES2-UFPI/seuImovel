@@ -4,7 +4,7 @@ import Constants from 'expo-constants'
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: Constants.statusBarHeight + 10,
+        paddingTop: Constants.statusBarHeight + 30,
     },
     contextHomes:{
         height: 120,
@@ -46,8 +46,22 @@ const styles = StyleSheet.create({
     },
     iconeMenu: {
         position: 'absolute',
-        top: 20,
+        top: "5%",
         left: 20,
+    },
+    container2: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    contextText2: {
+        width: '80%',
+        fontSize: 40,
+    },
+    upgradeText: {
+        marginTop: 20,
+        fontSize: 20,
+        fontWeight: 'bold',
     },
 })
 

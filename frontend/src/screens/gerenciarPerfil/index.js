@@ -3,11 +3,12 @@ import { Keyboard, Text, View, TouchableOpacity, Image, StatusBar, TextInput, Sw
 import styles from './style';
 import api from '../../services/api'
 import { useNavigation, useRoute } from '@react-navigation/native'
-
+import { DadosContext } from '../../DadosContext'
 
 
 export default function GerenciarPerfil() {
-
+    
+    const {cpf} = React.useContext(DadosContext)
     const [usuarioPerfil, setusuarioPerfil] = useState([])
     const [nome, setNome] = useState(null)
     const [email, setEmail] = useState(null)
@@ -19,7 +20,7 @@ export default function GerenciarPerfil() {
 
     //conexão de api
     async function loadUsuarioPerfil() {
-        const response = await api.get('/usuarioPerfil/78945612301')
+        const response = await api.get(`/usuarioPerfil/${cpf}`)
         setusuarioPerfil(response.data)
         setNome(response.data.nome.toString())
         setEmail(response.data.email.toString())
@@ -28,7 +29,7 @@ export default function GerenciarPerfil() {
     }
 
     async function changePerfil() {
-        await api.put('/usuarioPerfil/78945612301', {
+        await api.put(`/usuarioPerfil/${cpf}`, {
             nome: nome,
             email: email,
             nascimento: nascimento,

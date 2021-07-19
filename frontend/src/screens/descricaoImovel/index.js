@@ -19,7 +19,7 @@ export default function DescricaoImovel() {
     const imovel = route.params.imovel
     //var contato = '5586995279594'
     const [contato, setContato] = useState()
-    const [cpf, setCpf] = useState('41789623615')
+    const {cpf} = React.useContext(DadosContext)
     const [imovelPertence, setImovelPertence] = useState(false)//verifica se imóvel pertence ou não ao usuário
     const [favorite, setFavorite] = useState()
     const message = 'Olá, tenho interesse no imóvel'

@@ -11,18 +11,18 @@ import { Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Search from '../../components/Search/index'
 import Banner from '../../components/banner/banner'
+import { DadosContext } from '../../DadosContext'
 
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions'
 import * as Notifications from 'expo-notifications';
 
-import { DadosContext } from '../../DadosContext'
 
 export default function ImoveisNoMapa({ navigation }) {
 
   let totalImoveis = 0;
   let listaImoveis = []
-  let cpf = '41789623615'//cpf do usuario ficticio
+  const {cpf} = React.useContext(DadosContext)
 
 
   const [listaImoveis2, setListaImoveis2] = useState([])//vetor de imóveis

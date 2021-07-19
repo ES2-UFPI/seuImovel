@@ -6,7 +6,12 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: Constants.statusBarHeight + 10,
     },
-    contextHomes:{
+    container2: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    contextHomes: {
         height: 120,
         flexDirection: 'row',
         backgroundColor: '#fff',
@@ -17,18 +22,22 @@ const styles = StyleSheet.create({
         borderColor: 'grey'
 
     },
-    contextText:{
+    contextText: {
         width: '80%'
-    },  
-    title:{
+    },
+    contextText2: {
+        width: '80%',
+        fontSize: 40,
+    },
+    title: {
         fontSize: 22,
         fontWeight: 'bold'
     },
-    description:{
+    description: {
         fontSize: 18,
         opacity: 0.7
     },
-    endereco:{
+    endereco: {
         fontSize: 14,
         opacity: 0.8,
         color: 'green'
@@ -38,11 +47,15 @@ const styles = StyleSheet.create({
         height: 80,
         borderRadius: 12,
     },
-    icon:{
+    icon: {
         color: 'green',
         position: 'absolute',
         right: 20,
-        bottom: 20,   
+        bottom: 20,
+    }, iconeMenu: {
+        position: 'absolute',
+        top: "5%",
+        left: 20,
     }
 })
 

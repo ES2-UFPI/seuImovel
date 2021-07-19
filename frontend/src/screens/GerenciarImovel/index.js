@@ -7,13 +7,14 @@ import { BlurView } from 'expo-blur';
 import MapView, { Marker } from 'react-native-maps';
 import Search from '../../components/Search'
 import api from '../../services/api'
+import { DadosContext } from '../../DadosContext'
 
 export default function GerenciarImovel() {
 
     const route = useRoute()
     const imovel = route.params.imovel
+    const {cpf} = React.useContext(DadosContext)
 
-    var cpf = 41789623615;
     const [imovelID, setImovelID] = useState(imovel.id)
     const [titulo, setTitulo] = useState(imovel.descricao)
     const [endereco, setendereco] = useState(imovel.complemento)

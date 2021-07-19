@@ -125,6 +125,13 @@ function configuracaoStack() {//Stack 2 -> telas : configuração do Usuário
                     //headerTitleStyle:styles.headerTitleStyle  
                 }}
             />
+            <AppStack2.Screen name='Login' component={Login} options={{
+                headerShown: false,
+                gestureEnabled:false,//nao exibe o drawer no login
+                    title: 'Login',
+                    //headerStyle:styles.headerStyle,
+                    //headerTitleStyle:styles.headerTitleStyle  
+                }}/>
         </AppStack2.Navigator>
     )
 }

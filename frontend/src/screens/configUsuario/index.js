@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FlatList, Text, View, TouchableOpacity, Image, Platform, Modal } from 'react-native'
+import { FlatList, Text, View, TouchableOpacity, Image, Platform, Modal, Alert } from 'react-native'
 import styles from './style'
 import api from '../../services/api'
 import { FontAwesome } from '@expo/vector-icons';
@@ -71,6 +71,33 @@ export default function ConfigUsuario() {
     }, []);
 
     
+    async function deletePerfil() {
+       
+
+
+
+        Alert.alert(
+            "Remoção do Imóvel",
+            "Você deseja excluir o imóvel?",
+            [
+              {
+                text: "Cancelar",
+                onPress: () => {},
+                style: "cancel"
+              },
+              { text: "Sim", onPress: () => {
+                api.delete(`/usuarioPerfil/${cpf}`).
+                then(() => { Alert.alert("Perfil deletado!"); navigation.navigate('Login');})
+                .catch(() => { })
+
+              } 
+            }
+            ]
+          )
+
+    }
+
+    
 
 // updateToFreeAccount/41789623615 
     return (
@@ -132,7 +159,7 @@ export default function ConfigUsuario() {
                         <Text style={styles.cancelText}>Cancelar conta Premium</Text>
                     </TouchableOpacity>
                 }
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>deletePerfil()}>
                     <Text style={styles.cancelText}>{'Deletar Perfil'}</Text>
                 </TouchableOpacity>
 

@@ -7,7 +7,7 @@ const Search = ({ callBackFuntion }) => {
 
 
     return (<GooglePlacesAutocomplete
-        placeholder="Qual lugar?"
+        placeholder="Escolha seu lugar"
         placeholderTextColor='red'
         onPress={(data, details) => { callBackFuntion(data, details) }}
         query={{

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FlatList, Text, View, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal } from 'react-native'
+import { FlatList, Text, View, TouchableOpacity, Image, Platform, Modal, Alert } from 'react-native'
 import styles from './style'
 import api from '../../services/api'
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,11 +7,15 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { ScrollView } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import Banner from '../../components/banner/banner'
+import { DadosContext } from '../../DadosContext'
+
 
 
 
 export default function ConfigUsuario() {
 
+    const {cpf, fotoDoPerfil} = React.useContext(DadosContext)
     const [isEnabled, setIsEnabled] = useState()
     const [modalVisible, setModalVisible] = useState(false)
     const [usuarioConfig, setusuarioConfig] = useState([])
@@ -21,10 +25,11 @@ export default function ConfigUsuario() {
     const [quantImoveis, setQuantImoveis] = useState()
     const [notificacoes, setNotificacoes] = useState()
     const navigation = useNavigation()
+    const { tipoDeConta, setTipoDeconta } = React.useContext(DadosContext)
 
     //conexão de api
     async function loadUsuarioConfig() {
-        await api.get('/usuarioConfig/41789623615')
+        await api.get(`/usuarioConfig/${cpf}`)
             .then((response) => {
                 setusuarioConfig(response.data)
             })
@@ -34,50 +39,77 @@ export default function ConfigUsuario() {
     function openMenu() {
         navigation.openDrawer();
     }
+    
+    async function changeFreeAccount() {
+        console.log(usuarioConfig)
+        await api.put(`/updateToFreeAccount/${cpf}`)
+        loadUsuarioConfig()
+        setTipoDeconta(usuarioConfig.plano)
+    }
 
     async function changeUsuario() {
         console.log(usuarioConfig)
-        await api.put('/usuarioConfig/41789623615', {
+        await api.put(`/usuarioConfig/${cpf}`, {
             plano: usuarioConfig.plano,
             descricaoPlano: usuarioConfig.descricaoPlano,
             quantImagens: usuarioConfig.quantImagens,
             quantImoveis: usuarioConfig.quantImoveis,
             notificacoes: usuarioConfig.notificacoes,
         })
+        setTipoDeconta(usuarioConfig.plano)
     }
 
     //falta criar a tela de editar perfil
     function navigateToEditProfile() {
         navigation.navigate('GerenciarPerfil')
     }
-    /*
-        function actionNotification() {
-            if (isEnabled === false) {
-                setIsEnabled(true)
-                console.log('aqui')
-                setusuarioConfig({
-                    notificacoes: true
-                })
-            } else {
-                setIsEnabled(false)
-                setusuarioConfig({
-                    notificacoes: false
-                })
-            }
-        }
-    
-    */
+
+   
+
     useEffect(() => {
         loadUsuarioConfig()
     }, []);
 
+    
+    async function deletePerfil() {
+       
 
+
+
+        Alert.alert(
+            "Remoção do Imóvel",
+            "Você deseja excluir o imóvel?",
+            [
+              {
+                text: "Cancelar",
+                onPress: () => {},
+                style: "cancel"
+              },
+              { text: "Sim", onPress: () => {
+                api.delete(`/usuarioPerfil/${cpf}`).
+                then(() => { Alert.alert("Perfil deletado!"); navigation.navigate('Login');})
+                .catch(() => { })
+
+              } 
+            }
+            ]
+          )
+
+    }
+
+    
+
+// updateToFreeAccount/41789623615 
     return (
+        <>
         <View style={styles.container}>
+            <ScrollView
+            showsVerticalScrollIndicator={false}
+            >
             <View style={styles.firstContainer}>
                 <Image
                     style={styles.imageUser}
-                    source={require('../../../assets/me.jpeg')}
+                    source={{uri: fotoDoPerfil}}
                 />
                 <View style={styles.containerText}>
                     <Text style={styles.editPerfil}>Editar informações do perfil</Text>
@@ -93,9 +125,13 @@ export default function ConfigUsuario() {
                     <Text style={styles.firstText}>Descrição</Text>
                     <Text style={styles.secondText}>{usuarioConfig.descricaoPlano}</Text>
                 </View>
-                <View style={styles.containerText}>
-                    <Text style={styles.firstText}>Notificações</Text>
+                
+                <View style={(Platform.OS === 'ios') ? styles.containerTextIos : styles.containerText}>
+                
+                    <Text style={(Platform.OS === 'ios') ? styles.firstTextIos : styles.firstText}>Notificações</Text>
+                   
                     <Picker
+                        itemStyle={{height: 80,}}
                         style={styles.pickerText}
                         selectedValue={usuarioConfig.notificacoes}
                         onValueChange={(itemValue, itemIndex) =>
@@ -115,7 +151,18 @@ export default function ConfigUsuario() {
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <Text style={styles.upgradeText}>{'MUDAR PLANO'}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={changeUsuario}><Text style={styles.upgradeText}>Salvar Mudança</Text></TouchableOpacity>
+                <TouchableOpacity onPress={changeUsuario}><Text style={styles.upgradeText}>Salvar Mudanças</Text></TouchableOpacity>
+
+
+                {((usuarioConfig.plano != "grátis") && (usuarioConfig.plano !="gratis")) &&
+                    <TouchableOpacity onPress={changeFreeAccount}>
+                        <Text style={styles.cancelText}>Cancelar conta Premium</Text>
+                    </TouchableOpacity>
+                }
+                <TouchableOpacity onPress={()=>deletePerfil()}>
+                    <Text style={styles.cancelText}>{'Deletar Perfil'}</Text>
+                </TouchableOpacity>
+
 
             </View>
 
@@ -219,7 +266,11 @@ export default function ConfigUsuario() {
             <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
                 <Entypo name="menu" size={40} color="green" />
             </TouchableOpacity>
-
+            </ScrollView>                    
         </View>
+        {(tipoDeConta == "grátis" || tipoDeConta == "gratis") &&
+                <Banner />
+            }
+       </>
     )
 }

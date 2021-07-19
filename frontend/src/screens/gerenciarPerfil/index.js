@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { Keyboard, Text, View, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, Pressable } from 'react-native'
+import { Keyboard, Text, View, TouchableOpacity, Image, StatusBar, TextInput, Switch, Modal, Pressable, Alert } from 'react-native'
 import styles from './style';
 import api from '../../services/api'
 import { useNavigation, useRoute } from '@react-navigation/native'
-
+import { DadosContext } from '../../DadosContext'
 
 
 export default function GerenciarPerfil() {
-
+    
+    const {cpf} = React.useContext(DadosContext)
     const [usuarioPerfil, setusuarioPerfil] = useState([])
     const [nome, setNome] = useState(null)
     const [email, setEmail] = useState(null)
-    const [idade, setIdade] = useState(null)
     const [nascimento, setNascimento] = useState(null)
     const [telefone, setTelefone] = useState(null)
 
@@ -20,22 +20,23 @@ export default function GerenciarPerfil() {
 
     //conexão de api
     async function loadUsuarioPerfil() {
-        const response = await api.get('/usuarioPerfil/78945612301')
+        const response = await api.get(`/usuarioPerfil/${cpf}`)
         setusuarioPerfil(response.data)
         setNome(response.data.nome.toString())
         setEmail(response.data.email.toString())
-        setIdade(response.data.idade.toString())
         setNascimento(response.data.nascimento.toString())
         setTelefone(response.data.telefone.toString())
     }
 
     async function changePerfil() {
-        await api.put('/usuarioPerfil/78945612301', {
+        await api.put(`/usuarioPerfil/${cpf}`, {
             nome: nome,
             email: email,
-            idade: parseInt(idade),
-            nascimento: usuarioPerfil.nascimento,
+            nascimento: nascimento,
             telefone: parseInt(telefone),
+        }).then(()=>{
+            Alert.alert("Informações atualizadas com sucesso!")
+            navigation.goBack()
         })
     }
 
@@ -68,15 +69,6 @@ export default function GerenciarPerfil() {
                             value={email}
                             style={styles.secondText}
                             keyboardType='email-address'
-                        />
-                    </View>
-                    <View style={styles.containerText}>
-                        <Text style={styles.firstText}>Idade</Text>
-                        <TextInput
-                            onChangeText={setIdade}
-                            value={idade}
-                            style={styles.secondText}
-                            keyboardType='numeric'
                         />
                     </View>
                     <View style={styles.containerText}>

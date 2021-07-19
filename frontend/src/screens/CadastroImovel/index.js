@@ -8,6 +8,7 @@ import AppLoading from 'expo-app-loading';
 import api from '../../services/api'
 import * as ImagePicker from 'expo-image-picker'
 import {firebaseConfig }  from '../../../config/config'
+import { Entypo } from '@expo/vector-icons';
 import * as firebase from 'firebase'
 import 'firebase/firestore'
 
@@ -44,6 +45,10 @@ export default({navigation})=>{
         if(!granted){
             Alert.alert('Permissão negada', 'Precisamos da sua permissão para carregar imagens.')
         }
+    }
+
+    function openMenu() {
+        navigation.openDrawer();
     }
 
     useEffect(()=>{
@@ -263,8 +268,10 @@ export default({navigation})=>{
 
             
                     <TextInput
-                      outlineColor='green'
+                       outlineColor='green'
+                     
                       mode='outlined'
+                      
                       style={{height: 40}}
                       value={usuario.nome}
                       editable={false} 
@@ -279,8 +286,8 @@ export default({navigation})=>{
                     <TextInput
                     
                     mode='flat'
+            
                     placeholder="Descrição" 
-                    style={{height: 40}}
                     onChangeText={text => setImovel({...imovel,descricao:text})}
                     />
 
@@ -369,6 +376,9 @@ export default({navigation})=>{
                 
               
             </ScrollView>
+            <TouchableOpacity onPress={() => openMenu()} style={styles.iconeMenu}>
+                <Entypo name="menu" size={40} color="green" />
+            </TouchableOpacity>
 
         </SafeAreaView>
 
@@ -416,5 +426,10 @@ const styles = StyleSheet.create({
         color: 'black',
         borderRightWidth: 1,
         paddingRight:4
+    },
+    iconeMenu: {
+        position: 'absolute',
+        top: 5,
+        left: 20,
     },
 })

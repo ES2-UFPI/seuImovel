@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
         borderRadius: 12,
     },
     icon:{
-        color: 'green',
         position: 'absolute',
         right: 20,
         bottom: 20,   

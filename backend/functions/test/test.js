@@ -1,6 +1,7 @@
 const assert = require('assert');
 const Imovel = require('../src/classes/imovel')//classe imóvel
 const ConfigUsuario = require('../src/classes/ConfigUsuario')
+const PerfilUsuario = require('../src/classes/PerfilUsuario')
 
 // plano, descricaoPlano, notificacoes, raioNotificacoes
 const configUsuario = new ConfigUsuario("premium","Plano de até 7 imóveis e até 7 fotos por imóvel",false,7,7,6)
@@ -19,6 +20,9 @@ const imovel1 = new Imovel(
     3, 
     'Venda', 
     500000)
+
+const Perfil = new PerfilUsuario('2221110003','joaomota59@hotmail.com','11/02/1998','João Lucas',86999221344)
+
 
 
 //Teste da Configuração
@@ -96,7 +100,7 @@ describe("Testes Imóvel",()=>{//dentro do decribe que serão colocados os teste
         assert.strictEqual(imovel1.longitude,-42.7955821)
     })
 
-    it("Conferindo se as imagens passadas estão correts",()=>{
+    it("Conferindo se as imagens passadas estão corretas",()=>{
         assert.strictEqual(imovel1.imagens[0],'https://resizedimgs.zapimoveis.com.br/crop/272x224/vr.images.sp/54dfc9f4a92cc0f90b4f737988369abc.jpg')
         assert.strictEqual(imovel1.imagens[1],'https://imagens-revista.vivadecora.com.br/uploads/2020/03/arquitetura-para-casas-de-luxo-modernas-com-piscina-Foto-Pinterest.jpg')
     })
@@ -114,4 +118,27 @@ describe("Testes Imóvel",()=>{//dentro do decribe que serão colocados os teste
     })
 
 })
-//
+
+describe("Testes Perfil do Usuário",()=>{//dentro do decribe que serão colocados os testes
+
+    it("Conferindo se o cpf está correto",()=>{
+        assert.strictEqual(Perfil.cpf,'2221110003')
+    })
+
+    it("Conferindo se o e-mail passado está correto",()=>{
+        assert.strictEqual(Perfil.email,'joaomota59@hotmail.com')
+    })
+
+    it("Conferindo se o nascimento passado está correto",()=>{
+        assert.strictEqual(Perfil.nascimento,'11/02/1998')
+    })
+
+    it("Conferindo se o nome passado está correto",()=>{
+        assert.strictEqual(Perfil.proprietario,'João Lucas')
+    })
+
+    it("Conferindo se o telefone passado está correto",()=>{
+        assert.strictEqual(Perfil.telefone,86999221344)
+    })
+
+})

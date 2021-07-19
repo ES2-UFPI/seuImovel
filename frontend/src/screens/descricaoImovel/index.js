@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { ScrollView, Linking, Text, View, TouchableOpacity, Image, StatusBar, Share, ImageBackground, TouchableHighlight, } from 'react-native'
+import { ScrollView, Linking, Text, View, TouchableOpacity, Image, StatusBar, Share, ImageBackground, TouchableHighlight, Alert, } from 'react-native'
 import styles from './style'
 import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons'; 
 import { useRoute } from '@react-navigation/native'
 import { SliderBox } from "react-native-image-slider-box"
 import { MaterialIcons } from '@expo/vector-icons';
 import api from '../../services/api'
 import { useNavigation } from '@react-navigation/native'
+import Banner from '../../components/banner/banner'
+import { DadosContext } from '../../DadosContext'
 
 
 
@@ -16,10 +19,11 @@ export default function DescricaoImovel() {
     const imovel = route.params.imovel
     //var contato = '5586995279594'
     const [contato, setContato] = useState()
-    const [cpf, setCpf] = useState('41789623615')
+    const {cpf} = React.useContext(DadosContext)
     const [imovelPertence, setImovelPertence] = useState(false)//verifica se imóvel pertence ou não ao usuário
     const [favorite, setFavorite] = useState()
     const message = 'Olá, tenho interesse no imóvel'
+    const { tipoDeConta } = React.useContext(DadosContext)
 
     const navigation = useNavigation()
 
@@ -89,6 +93,28 @@ export default function DescricaoImovel() {
 
     }
 
+    async function deleteImovel(){
+        Alert.alert(
+            "Remoção do Imóvel",
+            "Você deseja excluir o imóvel?",
+            [
+              {
+                text: "Cancelar",
+                onPress: () => {},
+                style: "cancel"
+              },
+              { text: "Sim", onPress: () => {
+                api.delete(`/imovelDelecao?cpf=${cpf}&imovelID=${imovel.id}`)
+                .then(()=>{
+                    navigation.goBack()
+                    Alert.alert("Imóvel foi deletado!")
+                })
+                .catch(()=>{})
+
+              } }
+            ]
+          )
+    }
 
 
     useEffect(() => {
@@ -104,13 +130,20 @@ export default function DescricaoImovel() {
     }, []);
 
     return (
+        <>
         <View style={styles.container}>
             <ScrollView>
                 {
                     imovelPertence &&
-                    <TouchableOpacity style={{ marginLeft: '90%' }} onPress={() => navigation.navigate("GerenciarImovel", { imovel})}>
+                    <View style={styles.iconsContainer}>
+                    <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate("GerenciarImovel", { imovel})}>
                         <FontAwesome name="pencil-square-o" size={24} color="black" />
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.icon} onPress={() =>deleteImovel()}>
+                        <AntDesign name="delete" size={24} color="black" />
+                    </TouchableOpacity>
+                    </View>
+
                 }
                 <View style={styles.firstContainer}>
                     <View style={styles.containerText}>
@@ -160,26 +193,34 @@ export default function DescricaoImovel() {
                     </View>
 
 
-                    <TouchableOpacity onPress={postOrDelete} style={styles.containerFavorite}>
+                        <TouchableOpacity onPress={postOrDelete} style={styles.containerFavorite}>
 
-                        <Text style={styles.favoriteText}>Favoritar</Text>
+                            <Text style={styles.favoriteText}>Favoritar</Text>
 
-                        {favorite ?
-                            <MaterialIcons name="favorite" size={24} color="red" style={{ paddingLeft: 10 }} /> :
-                            <MaterialIcons name="favorite" size={24} color="grey" style={{ paddingLeft: 10 }} />
-                        }
-                    </TouchableOpacity>
+                            {favorite ?
+                                <MaterialIcons name="favorite" size={24} color="red" style={{ paddingLeft: 10 }} /> :
+                                <MaterialIcons name="favorite" size={24} color="grey" style={{ paddingLeft: 10 }} />
+                            }
+                        </TouchableOpacity>
 
-                    <TouchableOpacity onPress={sendWhatsapp} style={styles.containerShare}>
-                        <Text style={styles.thirdText}>WhatsApp do anunciante</Text>
-                        <FontAwesome name="whatsapp" size={30} color="green" />
-                    </TouchableOpacity>
+                  
+                        <TouchableOpacity onPress={sendWhatsapp} style={{ marginTop: 40, backgroundColor: '#E8F0F2', alignItems: 'center', flexDirection: 'row', width: '100%', justifyContent: 'space-around'}}>
+                             
+                            <Text style={styles.thirdText}>WhatsApp do anunciante</Text>
+                        
+                            <View>
+                                    <FontAwesome name="whatsapp" size={30} color="#4AA96C" />
+                            </View>
+                        </TouchableOpacity>
 
                 </View>
 
             </ScrollView>
         </View>
-
+        {(tipoDeConta == "grátis" || tipoDeConta == "gratis") &&
+            <Banner />
+        }
+        </>                
 
     )
 }

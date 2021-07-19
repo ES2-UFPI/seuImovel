@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     },
     containerText: {
         flexDirection: 'row',
+        alignItems: 'center',
         width: '90%',
         marginVertical: 5,
         paddingHorizontal: 20,
@@ -36,9 +37,27 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'grey',
     },
+    containerTextIos: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '90%',
+        marginVertical: 5,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 40,
+        borderWidth: 1,
+        borderColor: 'grey',
+    },
     firstText: {
         width: '30%',
         fontSize: 13,
+        fontWeight: 'bold',
+        color: 'black',
+        borderRightWidth: 1,
+    },
+    firstTextIos: {
+        width: '30%',
+        fontSize: 15,
         fontWeight: 'bold',
         color: 'black',
         borderRightWidth: 1,
@@ -67,6 +86,12 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: 'bold',
         color: '#7FFF00'
+    },
+    cancelText: {
+        marginTop: 20,
+        fontSize: 13,
+        fontWeight: 'bold',
+        color: 'red'
     },
     modalContainer: {
         alignSelf: 'center',

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>467362086277-vrk69hc6afibqku7aqjn1t49qgbfm2da.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.467362086277-vrk69hc6afibqku7aqjn1t49qgbfm2da</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>467362086277-7465f2m3v6si7chnntpabhtsdhb088q5.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDB2hbykYg-Qe_P0FpSlO1FoEmgdOPj9Xw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>467362086277</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.eng2.seuimovel</string>
+	<key>PROJECT_ID</key>
+	<string>seuimovel-2b042</string>
+	<key>STORAGE_BUCKET</key>
+	<string>seuimovel-2b042.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:467362086277:ios:4bfa823f9e6506e17f58ec</string>
+</dict>
+</plist>

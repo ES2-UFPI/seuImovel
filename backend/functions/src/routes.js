@@ -14,7 +14,11 @@ const imovelFavoritacaoController = require('./controllers/imovelFavoritacaoCont
 
 const imovelUserController = require('./controllers/imovelUserController')
 
+const allImovelUserController = require('./controllers/allImovelUserController')
+
 //Imovel
+routes.get('/listaImoveisUsuario',allImovelUserController.index)
+
 routes.get('/listaImoveis',imovelController.index)
 
 routes.post('/cadastrarImovel',imovelController.create)
@@ -31,14 +35,25 @@ routes.delete('/imovelFavoritacao',imovelFavoritacaoController.delete)
 
 routes.get('/imovelFavoritacaoUnica',imovelFavoritacaoController.oneIndex)
 
+routes.delete('/imovelDelecao',imovelUserController.delete)
+
 //Usuario 
+
+routes.get('/usuarioConfig2/:email',usuarioPerfilController.index2)
+
 routes.get('/usuarioConfig/:cpf',usuarioConfigController.index)
-//Alterei aqui - mike
+
+routes.put('/updateToFreeAccount/:cpf',usuarioConfigController.updateToFreeAccount)
+
 routes.put('/usuarioConfig/:cpf',usuarioConfigController.update)
 
 routes.get('/usuarioPerfil/:cpf',usuarioPerfilController.index)
 
+routes.post('/usuarioPerfil',usuarioPerfilController.create)
+
 routes.put('/usuarioPerfil/:cpf',usuarioPerfilController.update)
+
+routes.delete('/usuarioPerfil/:cpf',usuarioPerfilController.delete)
 
 routes.get('/usuarioToken',usuarioTokenController.index)//retorna todos tokens e cada usuario correspondente
 
